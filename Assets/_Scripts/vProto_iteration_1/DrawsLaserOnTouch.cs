@@ -34,7 +34,6 @@ public class DrawsLaserOnTouch : MonoBehaviour
                 lineRend.positionCount = 2;
 
             lineRend.SetPosition(0, transform.position);
-            lineRend.SetPosition(1, mousePos);
 
 
             DrawLaserReflection(this.transform.position, -dirMouse, maxSplitCount);
@@ -53,6 +52,8 @@ public class DrawsLaserOnTouch : MonoBehaviour
 
         if (hit2D)
         {
+            lineRend.SetPosition(1, hit2D.point);
+
             Debug.Log("hitting something");
             lineRend.positionCount = maxSplitCount - reflectRemaining + 2; //+ 3
             Debug.Log(maxSplitCount - reflectRemaining + 2 + " ,, ref rem " + reflectRemaining ); //+ 1

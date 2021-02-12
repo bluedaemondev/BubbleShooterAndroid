@@ -21,11 +21,6 @@ public class Bubble : MonoBehaviour, IPooleableObject
     float rowY;
     public SpriteRenderer sprRend;
 
-    void Start()
-    {
-        //this.sprRend = GetComponent<SpriteRenderer>();
-    }
-
     public void GenerateNewCoords(int row, int col, float tileSize)
     {
         this.rowY = col * tileSize;
@@ -38,7 +33,6 @@ public class Bubble : MonoBehaviour, IPooleableObject
     public void GetHit()
     {
         Debug.Log(this.gameObject.name + " , got hit");
-        //throw new NotImplementedException();
     }
 
     public void OnObjectSpawn(int row, int col, float tileSize)
@@ -46,12 +40,31 @@ public class Bubble : MonoBehaviour, IPooleableObject
         GenerateColor();
         GenerateNewCoords(row, col, tileSize);
     }
-
     private void GenerateColor()
     {
         int rndColor = Random.Range(0, colorBubbles.Count);
-        
+
         this.sprRend.color = colorBubbles[rndColor];
 
     }
+
+    #region ThrowableMutation
+    public void SetImpulseForce(Vector3 force)
+    {
+        GetComponent<Rigidbody2D>().AddForce(force, ForceMode2D.Impulse);
+
+
+    }
+
+    
+
+    public void GenerateThrowableBubble()
+    {
+        GenerateColor();
+        Rigidbody2D rbAdded = this.gameObject.AddComponent<Rigidbody2D>();
+        rbAdded.gravityScale = 0;
+        rbAdded.constraints = RigidbodyConstraints2D.FreezeRotation;
+        // algo mas ?
+    }
+    #endregion
 }
