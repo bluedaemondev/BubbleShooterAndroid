@@ -30,10 +30,10 @@ public class PointsManager : MonoBehaviour
         }
     }
 
-    public void AddKillToTotal(int pts)
+    public void AddToTotal(int pts)
     {
-        PointsManager.current.total += System.Convert.ToInt32(pts * PointsManager.current.comboMultiplier);
-        SumToComboMultiplier();
+        PointsManager.current.total += pts; //System.Convert.ToInt32(pts * PointsManager.current.comboMultiplier);
+        //SumToComboMultiplier();
 
         HudController.current.UpdatePointsUI(PointsManager.current.total);
         Debug.Log("total actual = " + PointsManager.current.total);

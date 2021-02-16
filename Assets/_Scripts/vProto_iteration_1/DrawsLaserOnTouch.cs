@@ -57,7 +57,7 @@ public class DrawsLaserOnTouch : MonoBehaviour
             Debug.Log("hitting something");
             lineRend.positionCount = maxSplitCount - reflectRemaining + 2; //+ 3
             Debug.Log(maxSplitCount - reflectRemaining + 2 + " ,, ref rem " + reflectRemaining ); //+ 1
-            lineRend.SetPosition(reflectRemaining, hit2D.point); //+ 1
+            //lineRend.SetPosition(reflectRemaining, hit2D.point); //+ 1
 
             if (hit2D.transform.gameObject.CompareTag(bounceTag))
             {

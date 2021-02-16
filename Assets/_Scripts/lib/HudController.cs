@@ -5,22 +5,19 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 using Text = TMPro.TextMeshProUGUI;
 
-public enum EnumPuerta
-{
-    Azul,
-    Verde,
-    Naranja
-}
 public class HudController : MonoBehaviour
 {
-    // singleton para poder acceder desde los otros scripts
     public static HudController current { get; private set; }
 
-    public Text roundsText;
+    [Header("Control de puntos")]
     public Text pointsText;
-    public Text missionText;
+    public Slider pointsSlider;
 
-    public GameObject defeatPanelPrefab;
+    [Header("Popup de pausa")]
+    public GameObject pauseMenu;
+
+    //[Header("Shuffle de musica")]
+    //public ShuffleMusicController shuffler;
 
 
     private void Awake()
@@ -31,29 +28,24 @@ public class HudController : MonoBehaviour
     }
     private void Start()
     {
-        //GameManagerActions.current.defeatEvent.AddListener(InstantiateDefeatPanel);
     }
 
-    public void InstantiateDefeatPanel() // hacer activador/switch
-    {
-        //var pnl = Instantiate(defeatPanelPrefab, transform.position, Quaternion.identity, this.transform);
-    }
-
-    public void UpdateRoundsUI()
-    {
-        //if ( != 0)
-        //    this.roundsText.text = curVal + "/" + maxVal + " rnds.";
-        //else
-        //    this.roundsText.text = "melee";
-
-    }
     public void UpdatePointsUI(int newVal)
     {
         this.pointsText.text = newVal + " points";
+        this.pointsSlider.value = newVal;
     }
-    public void SetMissionUI(string newMission)
+
+    public void ShowPauseMenu()
     {
-        this.missionText.text = newMission;
+        pauseMenu.SetActive(true);
+        Time.timeScale = 0.2f;
     }
+    public void DisablePauseMenu()
+    {
+        pauseMenu.SetActive(false);
+        Time.timeScale = 1f;
+    }
+
 
 }
