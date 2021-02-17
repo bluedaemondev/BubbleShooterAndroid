@@ -26,7 +26,7 @@ public class ShuffleMusicUIController : MonoBehaviour
         if (btnEnabled)
         {
             StartCoroutine(StartCooldown());
-            ShuffleMusicManager.instance.onShuffleMusic.Invoke();
+            ShuffleMusicManager.instance.onShuffleMusic.Invoke(ShuffleOptions.Reset);
         }
     }
 

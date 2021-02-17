@@ -15,10 +15,4 @@ public class SizeScaler : MonoBehaviour
         transform.position = normalizedPos;
         //transform.position = 
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

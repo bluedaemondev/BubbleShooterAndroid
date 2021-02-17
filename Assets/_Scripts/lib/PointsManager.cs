@@ -18,17 +18,17 @@ public class PointsManager : MonoBehaviour
             current = this;
     }
 
-    private void Update()
-    {
-        currentTimeInCombo += Time.deltaTime;
+    //private void Update()
+    //{
+    //    currentTimeInCombo += Time.deltaTime;
 
-        if(currentTimeInCombo >= timeToResetComboMultiplier)
-        {
-            //ResetComboMultiplier();
-            print("reset combo");
-            currentTimeInCombo = 0;
-        }
-    }
+    //    if(currentTimeInCombo >= timeToResetComboMultiplier)
+    //    {
+    //        //ResetComboMultiplier();
+    //        //print("reset combo");
+    //        currentTimeInCombo = 0;
+    //    }
+    //}
 
     public void AddToTotal(int pts)
     {
