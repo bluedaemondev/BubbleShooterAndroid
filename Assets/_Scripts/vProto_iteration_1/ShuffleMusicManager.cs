@@ -54,6 +54,8 @@ public class ShuffleMusicManager : MonoBehaviour
                 } while (sceneLoops.Contains(listAllAvailableLoops[rndPick]));
                 sceneLoops.Add(listAllAvailableLoops[rndPick]);
             }
+            SoundManager.instance.PlayMusic(sceneLoops[currentIndexSelected]);
+
         }
     }
 
@@ -67,7 +69,10 @@ public class ShuffleMusicManager : MonoBehaviour
                 if(currentIndexSelected == sceneLoops.Count - 1)
                 {
                     Debug.Log("Terminados todos los loops, saliendo.");
+                    break;
                 }
+
+                SoundManager.instance.PlayMusic(sceneLoops[currentIndexSelected]);
 
                 break;
 

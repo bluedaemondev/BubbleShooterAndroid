@@ -14,10 +14,12 @@ public class BackgroundImage : MonoBehaviour
 
     [HideInInspector]
     public int currentIndexSelected = 0;
+    private SpriteRenderer sprRendBg;
 
     // Start is called before the first frame update
     void Start()
     {
+        sprRendBg = GetComponent<SpriteRenderer>();
         LoadSceneBackgroundList();
         ShuffleMusicManager.instance.onShuffleMusic.AddListener(ChangeBackground);
     }
@@ -37,6 +39,7 @@ public class BackgroundImage : MonoBehaviour
                 } while (sceneBackgrounds.Contains(listAllAvailableBackgrounds[rndPick]));
                 sceneBackgrounds.Add(listAllAvailableBackgrounds[rndPick]);
             }
+            sprRendBg.sprite = sceneBackgrounds[currentIndexSelected];
         }
     }
 
@@ -47,6 +50,7 @@ public class BackgroundImage : MonoBehaviour
             // pasa a la siguiente cancion
             case ShuffleOptions.Next:
                 currentIndexSelected = Mathf.Clamp(currentIndexSelected + 1, 0, sceneBackgrounds.Count-1);
+                this.sprRendBg.sprite = sceneBackgrounds[currentIndexSelected];
                 break;
 
             // arma una nueva lista con los loops

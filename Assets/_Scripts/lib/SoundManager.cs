@@ -25,7 +25,9 @@ public class SoundManager : MonoBehaviour
 
     public void PlayMusic(AudioClip clip)
     {
-        this.sources[0].PlayOneShot(clip);
+        this.sources[0].clip = clip;
+        if (!this.sources[0].isPlaying)
+            this.sources[0].Play();
     }
     public void PlayAmbient(AudioClip clip)
     {
