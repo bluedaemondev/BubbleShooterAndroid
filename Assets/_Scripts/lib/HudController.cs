@@ -13,12 +13,6 @@ public class HudController : MonoBehaviour
     public Text pointsText;
     public Slider pointsSlider;
 
-    [Header("Popup de pausa")]
-    public GameObject pauseMenu;
-
-    //[Header("Shuffle de musica")]
-    //public ShuffleMusicController shuffler;
-
 
     private void Awake()
     {
@@ -26,26 +20,14 @@ public class HudController : MonoBehaviour
             current = this;
         
     }
-    private void Start()
-    {
-    }
+    //private void Start()
+    //{
+    //}
 
     public void UpdatePointsUI(int newVal)
     {
         this.pointsText.text = newVal + " points";
         this.pointsSlider.value = newVal;
     }
-
-    public void ShowPauseMenu()
-    {
-        pauseMenu.SetActive(true);
-        Time.timeScale = 0.2f;
-    }
-    public void DisablePauseMenu()
-    {
-        pauseMenu.SetActive(false);
-        Time.timeScale = 1f;
-    }
-
 
 }

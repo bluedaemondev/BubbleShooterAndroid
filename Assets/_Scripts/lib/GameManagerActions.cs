@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManagerActions : MonoBehaviour
 {
-    public static GameManagerActions current;
+    public static GameManagerActions instance { get; private set; }
 
     [Header("Debugging, borrar")]
     public KeyCode Restart = KeyCode.R;
@@ -14,36 +14,52 @@ public class GameManagerActions : MonoBehaviour
 
     public UnityEvent defeatEvent;
     public UnityEvent winEvent;
+    public UnityEvent onPause;
+    public UnityEvent onResumeGame;
+
+
+    public bool isPaused = false;
 
 
     private void Awake()
     {
-        GameManagerActions.current = this;
+        if (!instance)
+            instance = this;
 
         if (defeatEvent == null)
             defeatEvent = new UnityEvent();
         if (winEvent == null)
             winEvent = new UnityEvent();
-
-        //LoadNewMapPage(int length)
+        if (onPause == null)
+            onPause = new UnityEvent();
     }
-#if UNITY_STANDALONE || UNITY_EDITOR
-
-    void Update()
+    private void Start()
     {
+        onPause.AddListener(PauseGame);
+        onResumeGame.AddListener(ResumeGame);
 
-        if (Input.GetKeyDown(Restart))
-        {
-            ReloadScene();
-        }
-
-        if (Input.GetKeyDown(Exit))
-        {
-            ExitGame();
-        }
 
     }
-#endif
+    public void PauseGame()
+    {
+        Debug.Log("paused game");
+        isPaused = true;
+        
+        //if (Time.timeScale == 0)
+        //{
+        //    Time.timeScale = 1;
+        //}
+        //else
+        //{
+        //    Time.timeScale = 0;
+        //}
+    }
+    public void ResumeGame()
+    {
+        Debug.Log("resuming game");
+        isPaused = false;
+
+    }
 
     public void ExitGame()
     {

@@ -22,7 +22,7 @@ public class BubbleShooter : MonoBehaviour
     {
         //for (int i = 0; i < throwableCount - currentThrowables.Count; i++) //0 - 2
         int i = 0;
-        while(throwableCount != currentThrowables.Count)
+        while (throwableCount != currentThrowables.Count)
         {
             Bubble bubble = Instantiate(ObjectPooler.instance.pools[0].prefab).GetComponent<Bubble>();
             bubble.GenerateThrowableBubble();
@@ -33,7 +33,7 @@ public class BubbleShooter : MonoBehaviour
             i++;
         }
     }
-    
+
     void SwitchBubblePriority()
     {
         var aux = spawnPrimaryBubble;
@@ -81,16 +81,34 @@ public class BubbleShooter : MonoBehaviour
         FeedBubbleShooter();
 
         CurrentBubbleSwitch.instance.onSwitchBubble.AddListener(SwitchBubblePriority);
+        GameManagerActions.instance.onPause.AddListener(DisableControl);
+        GameManagerActions.instance.onResumeGame.AddListener(EnableControl);
+
+
     }
 
+    public void DisableControl()
+    {
+        this.canShoot = false;
+    }
+    public void EnableControl()
+    {
+        StartCoroutine(ResumeAfterTime(1f));
+    }
+    private IEnumerator ResumeAfterTime(float t)
+    {
+        yield return new WaitForSecondsRealtime(t);
+        canShoot = true;
+    }
     // Update is called once per frame
     void Update()
     {
-        canShoot = Vector2.Distance(Utils.instance.MouseToWorldWithoutZ(), transform.position) >= 1.2f;
+        //canShoot = Vector2.Distance(Utils.instance.MouseToWorldWithoutZ(), transform.position) >= 1.2f;
 
-        if (Input.GetMouseButtonUp(0) && canShoot)
+        if (Input.GetMouseButtonUp(0) && canShoot && !GameManagerActions.instance.isPaused)
         {
             OnBubbleThrow();
         }
     }
+
 }
