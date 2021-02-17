@@ -1266,6 +1266,7 @@ MonoBehaviour:
   onResumeGame:
     m_PersistentCalls:
       m_Calls: []
+  isPaused: 0
 --- !u!1 &1806602663
 GameObject:
   m_ObjectHideFlags: 0
@@ -1585,6 +1586,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4397081533423239606, guid: bcae947fc64dece43a3f9066132693ea, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.014770508
+      objectReference: {fileID: 0}
+    - target: {fileID: 4397081533423239606, guid: bcae947fc64dece43a3f9066132693ea, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0.029663086
+      objectReference: {fileID: 0}
+    - target: {fileID: 4397081533423239606, guid: bcae947fc64dece43a3f9066132693ea, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -398.89996
+      objectReference: {fileID: 0}
     - target: {fileID: 5418949625729996141, guid: bcae947fc64dece43a3f9066132693ea, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1676,6 +1689,18 @@ PrefabInstance:
     - target: {fileID: 5418949626391937933, guid: bcae947fc64dece43a3f9066132693ea, type: 3}
       propertyPath: m_Name
       value: CanvasGUI_v2_cajonPause
+      objectReference: {fileID: 0}
+    - target: {fileID: 8401297655608613473, guid: bcae947fc64dece43a3f9066132693ea, type: 3}
+      propertyPath: m_Color.r
+      value: 0.9433962
+      objectReference: {fileID: 0}
+    - target: {fileID: 8401297655608613473, guid: bcae947fc64dece43a3f9066132693ea, type: 3}
+      propertyPath: m_Color.g
+      value: 0.29814878
+      objectReference: {fileID: 0}
+    - target: {fileID: 8401297655608613473, guid: bcae947fc64dece43a3f9066132693ea, type: 3}
+      propertyPath: m_Color.b
+      value: 0.3823836
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bcae947fc64dece43a3f9066132693ea, type: 3}
