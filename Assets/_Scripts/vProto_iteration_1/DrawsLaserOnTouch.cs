@@ -13,20 +13,26 @@ public class DrawsLaserOnTouch : MonoBehaviour
     bool hasChangedTouch;
 
     int currentBounceIndex = 0;
+    Vector3 laserStartPos;
 
 
 
     private void Start()
     {
         lineRend = GetComponent<LineRenderer>();
+        laserStartPos = transform.position;
         SetStartingLaserPoint();
     }
 
     void SetStartingLaserPoint()
     {
 
-        lineRend.positionCount = 1;
-        lineRend.SetPosition(0, transform.position);
+        lineRend.positionCount = 2;
+        lineRend.SetPosition(0, laserStartPos);
+        lineRend.SetPosition(1, laserStartPos);
+        currentBounceIndex = 1;
+
+
     }
 
 
@@ -35,24 +41,24 @@ public class DrawsLaserOnTouch : MonoBehaviour
     {
         if (Utils.instance.GetContinuousTouch())
         {
-            var dirMouse = (transform.position - Utils.instance.MouseToWorldWithoutZ()).normalized * maxDist;
-            
+            var dirMouse = (laserStartPos - Utils.instance.MouseToWorldWithoutZ()).normalized * maxDist;
 
 
-            DrawLaserReflection(transform.position, dirMouse, maxSplitCount);
+            lineRend.SetPosition(1, laserStartPos + dirMouse);
+            DrawLaserReflection(laserStartPos, dirMouse, maxSplitCount);
+            currentBounceIndex = 1;
         }
         else if (Utils.instance.GetTouchEnding())
         {
             SetStartingLaserPoint();
-            currentBounceIndex = 2;
 
         }
         else if (Utils.instance.GetInitialTouch())
         {
-            var dirMouse = (transform.position - Utils.instance.MouseToWorldWithoutZ()).normalized * maxDist;
-            currentBounceIndex = lineRend.positionCount = 2;
-            lineRend.SetPosition(1, transform.position + dirMouse);
-            print("chupame bien la verga unity de mierda");
+            var dirMouse = (laserStartPos - Utils.instance.MouseToWorldWithoutZ()).normalized * maxDist;
+            currentBounceIndex = 1;
+            lineRend.positionCount = 2;
+            lineRend.SetPosition(1, laserStartPos + dirMouse);
         }
     }
 
@@ -60,8 +66,16 @@ public class DrawsLaserOnTouch : MonoBehaviour
     {
         RaycastHit2D hit2D = Physics2D.Raycast(position, direction, maxDist);
 
-        if (hit2D && currentBounceIndex <= maxSplitCount)
+        if (hit2D)
         {
+            if (hit2D.collider.CompareTag("bubble"))
+            {
+                reflectRemaining = 0;
+                lineRend.positionCount = 2;
+                lineRend.SetPosition(1, hit2D.centroid);
+                return;
+            }
+
             lineRend.positionCount = currentBounceIndex + 1;
             Debug.Log(currentBounceIndex);
             lineRend.SetPosition(currentBounceIndex, hit2D.point);
@@ -70,15 +84,16 @@ public class DrawsLaserOnTouch : MonoBehaviour
             //direction = Vector2.Reflect(direction, hit2D.normal);
             //position = hit2D.point + direction * 0.01f;
 
-            if (reflectRemaining > 0)
+            if (reflectRemaining > 0 && currentBounceIndex <= maxSplitCount)
             {
                 direction = Vector2.Reflect(direction, hit2D.normal);
                 position = hit2D.point + direction * 0.01f;
                 DrawLaserReflection(position, direction, --reflectRemaining);
             }
-            
+
+
         }
-        
+
     }
 }
 

@@ -34,6 +34,10 @@ public class BubbleShooter : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// ACA TENGO QUE HACER QUE LA BURBUJA QUE SE GENERA SE QUEDE EN EL LUGAR
+    /// PORQUE ME ESTA CAGANDO LA MECANICA DEL LASER
+    /// </summary>
     void SwitchBubblePriority()
     {
         var aux = spawnPrimaryBubble;
@@ -46,6 +50,7 @@ public class BubbleShooter : MonoBehaviour
 
         currentThrowables.Enqueue(auxQ2);
         currentThrowables.Enqueue(auxQ);
+
 
     }
 

@@ -360,9 +360,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: 890208049
+  m_SortingLayer: -1
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 80fb8e8f72fc5824a90e26a192f92080, type: 3}
   m_Color: {r: 0.764151, g: 0.61636704, b: 0.61636704, a: 1}
   m_FlipX: 0
@@ -1096,8 +1096,8 @@ LineRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 0.6886792, g: 0.3349683, b: 0.08121216, a: 1}
-      key1: {r: 1, g: 1, b: 1, a: 1}
+      key0: {r: 0.9056604, g: 0.252047, b: 0.33155516, a: 1}
+      key1: {r: 0.5849056, g: 0, b: 0, a: 1}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -1159,8 +1159,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fc0cded6c1a52144806991f4f1121d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxReflectionCount: 5
-  maxSplitCount: 5
+  maxReflectionCount: 3
+  maxSplitCount: 3
   maxStepDistance: 100
 --- !u!1 &1295623251
 GameObject:
