@@ -43,15 +43,9 @@ public class BubbleShooter : MonoBehaviour
 
         var auxQ = currentThrowables.Dequeue();
         var auxQ2 = currentThrowables.Dequeue();
-        Debug.Log("first dequeue = " + auxQ.name);
-        Debug.Log("second dequeue = " + auxQ2.name);
-
 
         currentThrowables.Enqueue(auxQ2);
         currentThrowables.Enqueue(auxQ);
-
-        Debug.Log("first enqueue = " + auxQ2.name);
-        Debug.Log("second enqueue = " + auxQ.name);
 
     }
 

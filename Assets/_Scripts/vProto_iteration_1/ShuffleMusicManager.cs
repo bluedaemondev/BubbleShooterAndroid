@@ -6,6 +6,10 @@ using UnityEngine.Events;
 public class ShuffleMusicManager : MonoBehaviour
 {
     public static ShuffleMusicManager instance { get; private set; }
+    public float TotalLoopTime
+    {
+        get { return sceneLoops[currentIndexSelected].length; }
+    }
 
     public UnityEvent<ShuffleOptions> onShuffleMusic;
     public int availableLoopsInRun = 5;
@@ -66,7 +70,7 @@ public class ShuffleMusicManager : MonoBehaviour
             // pasa a la siguiente cancion
             case ShuffleOptions.Next:
                 currentIndexSelected = Mathf.Clamp(currentIndexSelected + 1, 0, sceneLoops.Count - 1);
-                if(currentIndexSelected == sceneLoops.Count - 1)
+                if (currentIndexSelected == sceneLoops.Count - 1)
                 {
                     Debug.Log("Terminados todos los loops, saliendo.");
                     break;
