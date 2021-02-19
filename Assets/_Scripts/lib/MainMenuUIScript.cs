@@ -9,6 +9,8 @@ public class MainMenuUIScript : MonoBehaviour
     public GameObject creditsPanel;
     public GameObject howToPlayPanel;
 
+    public string redSocialLink1 = "http://instagram.com/bluedaemonart";
+
 
     private void Awake()
     {
@@ -17,7 +19,7 @@ public class MainMenuUIScript : MonoBehaviour
 
     public void InstagramLink()
     {
-        Application.OpenURL("http://instagram.com/bluedaemonart");
+        Application.OpenURL(redSocialLink1);
     }
     public void YoutubeLink()
     {

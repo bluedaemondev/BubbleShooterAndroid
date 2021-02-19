@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(RectTransform))]
 
@@ -41,5 +42,10 @@ public class PauseDrawerUIController : MonoBehaviour
     {
         rectTransform.DOAnchorPosX(-rectTransform.rect.width * 3, 0.3f).SetDelay(delay);
         GameManagerActions.instance.onResumeGame.Invoke();
+    }
+
+    public void BackToMenu()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1); // hardcode 0
     }
 }

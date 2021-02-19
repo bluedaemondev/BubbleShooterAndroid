@@ -68,6 +68,7 @@ public class BubbleShooter : MonoBehaviour
         thrown.SetImpulseForce(force);
 
         FeedBubbleShooter();
+        SwitchBubblePriority();
     }
 
 
@@ -95,6 +96,7 @@ public class BubbleShooter : MonoBehaviour
     {
         StartCoroutine(ResumeAfterTime(1f));
     }
+
     private IEnumerator ResumeAfterTime(float t)
     {
         yield return new WaitForSecondsRealtime(t);

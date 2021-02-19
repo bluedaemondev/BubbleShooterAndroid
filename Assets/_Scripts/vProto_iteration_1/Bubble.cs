@@ -24,16 +24,20 @@ public class Bubble : MonoBehaviour, IPooleableObject
     public void GenerateNewCoords(int row, int col, float tileSize)
     {
         this.rowY = col * tileSize;
+        
+
         this.colX = row * -tileSize;
+        
+        if (row % 2 == 0)
+            rowY += 0.1f;
+        else
+            rowY -= 0.1f;
 
         this.transform.position = new Vector3(rowY, colX);
     }
 
 
-    public void GetHit()
-    {
-        Debug.Log(this.gameObject.name + " , got hit");
-    }
+    
 
     public void OnObjectSpawn(int row, int col, float tileSize)
     {
@@ -52,8 +56,6 @@ public class Bubble : MonoBehaviour, IPooleableObject
     public void SetImpulseForce(Vector3 force)
     {
         GetComponent<Rigidbody2D>().AddForce(force, ForceMode2D.Impulse);
-
-
     }
 
     
@@ -65,6 +67,12 @@ public class Bubble : MonoBehaviour, IPooleableObject
         rbAdded.gravityScale = 0;
         rbAdded.constraints = RigidbodyConstraints2D.FreezeRotation;
         // algo mas ?
+    }
+    public void ProcessHit(string tag)
+    {
+        //if()
+        Debug.Log(this.gameObject.name + " , bouncing");
+
     }
     #endregion
 }

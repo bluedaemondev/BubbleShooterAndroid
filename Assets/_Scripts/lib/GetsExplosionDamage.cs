@@ -14,8 +14,8 @@ public class GetsExplosionDamage : MonoBehaviour
 
     }
 
-    public void GetDamage()
-    {
-        bubbleScript.GetHit();
-    }
+    //public void GetDamage()
+    //{
+    //    bubbleScript.GetHit();
+    //}
 }
