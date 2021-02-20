@@ -77,7 +77,7 @@ public class DrawsLaserOnTouch : MonoBehaviour
             }
 
             lineRend.positionCount = currentBounceIndex + 1;
-            Debug.Log(currentBounceIndex);
+            //Debug.Log(currentBounceIndex);
             lineRend.SetPosition(currentBounceIndex, hit2D.point);
             currentBounceIndex++;
 

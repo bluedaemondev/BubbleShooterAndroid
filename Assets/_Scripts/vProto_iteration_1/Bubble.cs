@@ -15,29 +15,40 @@ public class Bubble : MonoBehaviour, IPooleableObject
         Color.yellow,
         Color.magenta
     };
-    
-    // guardo la posicion en fila y columna al generarla/impactar en una posicion
-    float colX;
-    float rowY;
+
+    // posicion en coordenadas reales.
+    float RowYPosition;
+    float ColXPosition;
+
+    // almacenamiento de las posiciones como las genera el mapa.
+    int colRaw;
+    int rowRaw;
+
     public SpriteRenderer sprRend;
+    Vector3 lastVelocity;
+    public Rigidbody2D rb;
+
+    bool throwableMutated;
+
 
     public void GenerateNewCoords(int row, int col, float tileSize)
     {
-        this.rowY = col * tileSize;
-        
+        this.colRaw = col;
+        this.rowRaw = row;
 
-        this.colX = row * -tileSize;
-        
+        this.ColXPosition = col * tileSize;
+        this.RowYPosition = row * -tileSize;
+
         if (row % 2 == 0)
-            rowY += 0.1f;
+            ColXPosition += 0.1f;
         else
-            rowY -= 0.1f;
+            ColXPosition -= 0.1f;
 
-        this.transform.position = new Vector3(rowY, colX);
+        this.transform.localPosition = new Vector3(ColXPosition, RowYPosition);
     }
 
 
-    
+
 
     public void OnObjectSpawn(int row, int col, float tileSize)
     {
@@ -53,12 +64,26 @@ public class Bubble : MonoBehaviour, IPooleableObject
     }
 
     #region ThrowableMutation
+
+    void Update()
+    {
+        if (!throwableMutated)
+            return;
+
+        lastVelocity = rb.velocity;
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player") || !throwableMutated)
+            return;
+
+        ProcessHit(collision);
+    }
+
     public void SetImpulseForce(Vector3 force)
     {
         GetComponent<Rigidbody2D>().AddForce(force, ForceMode2D.Impulse);
     }
-
-    
 
     public void GenerateThrowableBubble()
     {
@@ -66,12 +91,45 @@ public class Bubble : MonoBehaviour, IPooleableObject
         Rigidbody2D rbAdded = this.gameObject.AddComponent<Rigidbody2D>();
         rbAdded.gravityScale = 0;
         rbAdded.constraints = RigidbodyConstraints2D.FreezeRotation;
+        throwableMutated = true;
+        rb = rbAdded;
+        gameObject.layer = LayerMask.NameToLayer("Default");
         // algo mas ?
     }
-    public void ProcessHit(string tag)
+    public void ProcessHit(Collision2D collisionInfo)
     {
-        //if()
-        Debug.Log(this.gameObject.name + " , bouncing");
+        //void HandleBounceOnBound => puede rebotar
+        if (collisionInfo.gameObject.layer == LayerMask.NameToLayer("bounce"))
+        {
+            var speed = lastVelocity.magnitude;
+            var direction = Vector3.Reflect(lastVelocity.normalized, collisionInfo.contacts[0].normal);
+            rb.velocity = direction * Mathf.Max(speed, 0f);
+            Debug.Log(this.gameObject.name + " , bouncing");
+        }
+        else if (collisionInfo.gameObject.layer == LayerMask.NameToLayer("attachTo"))
+        {
+            var hitCollider = collisionInfo.collider;
+            HandleSnapIntoGrid(hitCollider.ClosestPoint(transform.position), hitCollider.GetComponent<Bubble>().colRaw, hitCollider.GetComponent<Bubble>().rowRaw);
+        }
+           
+
+    }
+
+    
+    void HandleSnapIntoGrid(Vector2 posHitAprox, int colHit, int rowHit)
+    {
+        throwableMutated = false;
+        Destroy(this.rb);
+        gameObject.layer = LayerMask.NameToLayer("attachTo");
+
+
+        var mapGrid = FindObjectOfType<TileGrid>();
+        transform.parent = mapGrid.transform;
+        GenerateNewCoords(rowHit , colHit, mapGrid.tileSize);
+
+        // hacer casos de uso desde izquierda abajo, derecha abajo etc ???
+
+
 
     }
     #endregion

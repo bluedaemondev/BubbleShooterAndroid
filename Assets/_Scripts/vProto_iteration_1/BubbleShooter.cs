@@ -9,7 +9,7 @@ public class BubbleShooter : MonoBehaviour
     [Header("Cantidad de burbujas disponibles")]
     public int throwableCount = 2;
 
-    Queue<Bubble> currentThrowables;
+    public Queue<Bubble> currentThrowables;
 
     [Space]
     [Header("Posiciones en donde aparecen las burbujas disparables")]
@@ -40,18 +40,31 @@ public class BubbleShooter : MonoBehaviour
     /// </summary>
     void SwitchBubblePriority()
     {
-        var aux = spawnPrimaryBubble;
-        spawnPrimaryBubble = spawnSecondaryBubble;
-        spawnSecondaryBubble = aux;
+        
 
 
         var auxQ = currentThrowables.Dequeue();
         var auxQ2 = currentThrowables.Dequeue();
 
-        currentThrowables.Enqueue(auxQ2);
         currentThrowables.Enqueue(auxQ);
+        currentThrowables.Enqueue(auxQ2);
 
 
+        auxQ2.transform.parent = spawnSecondaryBubble.transform;
+        auxQ2.transform.position = spawnSecondaryBubble.transform.position;
+
+
+
+        //auxQ.transform.parent = spawnPrimaryBubble.transform;
+        //auxQ.transform.position = spawnPrimaryBubble.transform.position;
+
+        var aux = spawnPrimaryBubble;
+        spawnPrimaryBubble = spawnSecondaryBubble;
+        spawnSecondaryBubble = aux;
+
+        //var auxpos = spawnPrimaryBubble.transform.position;
+        //spawnPrimaryBubble.transform.position = spawnSecondaryBubble.transform.position;
+        //spawnSecondaryBubble.transform.position = auxpos;
     }
 
 
@@ -67,7 +80,8 @@ public class BubbleShooter : MonoBehaviour
         thrown.SetImpulseForce(force);
 
         FeedBubbleShooter();
-        SwitchBubblePriority();
+        CurrentBubbleSwitch.instance.onSwitchBubble.Invoke();
+
     }
 
 
