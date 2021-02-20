@@ -32,6 +32,10 @@ public class Bubble : MonoBehaviour, IPooleableObject
 
     bool throwableMutated;
 
+    void Start()
+    {
+        this.sprRend = GetComponent<SpriteRenderer>();
+    }
 
     public void GenerateNewCoords(int row, int col, float tileSize)
     {
@@ -128,9 +132,11 @@ public class Bubble : MonoBehaviour, IPooleableObject
 
         var mapGrid = FindObjectOfType<TileGrid>();
         transform.parent = mapGrid.transform;
-        GenerateNewCoords(rowHit , colHit, mapGrid.tileSize);
-
+        
+        //GenerateNewCoords(rowHit , colHit, mapGrid.tileSize);
         // hacer casos de uso desde izquierda abajo, derecha abajo etc ???
+
+
 
 
 

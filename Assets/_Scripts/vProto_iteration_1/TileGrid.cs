@@ -6,6 +6,8 @@ using UnityEngine.Events;
 
 public class TileGrid : MonoBehaviour
 {
+    public static TileGrid instance { get; private set; }
+
     public int rows = 22;
     public int cols = 11;
     public float tileSize = 0.5f;
@@ -16,6 +18,12 @@ public class TileGrid : MonoBehaviour
     List<Bubble> floatingclusters;
 
     public UnityEvent onRemoveCluster;
+
+    private void Awake()
+    {
+        if (!instance)
+            instance = this;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -30,6 +38,8 @@ public class TileGrid : MonoBehaviour
 
     private void GenerateGrid()
     {
+        this.grid = new Bubble[rows, cols];
+
         for (int row = 0; row < rows; row++)
         {
             for (int col = 0; col < cols; col++)
