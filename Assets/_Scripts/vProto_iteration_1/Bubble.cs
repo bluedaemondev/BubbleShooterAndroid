@@ -15,14 +15,16 @@ public class Bubble : MonoBehaviour, IPooleableObject
         Color.yellow,
         Color.magenta
     };
+    public Color selectedColor;
+    //public bool processed;
 
     // posicion en coordenadas reales.
     float RowYPosition;
     float ColXPosition;
 
     // almacenamiento de las posiciones como las genera el mapa.
-    int colRaw;
-    int rowRaw;
+    public int colRaw;
+    public int rowRaw;
 
     public SpriteRenderer sprRend;
     Vector3 lastVelocity;
@@ -60,6 +62,7 @@ public class Bubble : MonoBehaviour, IPooleableObject
         int rndColor = Random.Range(0, colorBubbles.Count);
 
         this.sprRend.color = colorBubbles[rndColor];
+        this.selectedColor = this.sprRend.color;
 
     }
 

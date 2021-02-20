@@ -10,7 +10,7 @@ public class BubbleNeighbor
     {
         this.neighborOffsets = new Vector2[2,6] {
             {
-                    // Filas pares tile offset
+                    // Filas pares tile offsets
                 new Vector2(1, 0) ,
                 new Vector2(0, 1) ,
                 new Vector2(-1,1),
@@ -19,7 +19,7 @@ public class BubbleNeighbor
                 new Vector2(0,-1)
             },
             {
-                    // Filas impares tile offset
+                    // Filas impares tile offsets
                 new Vector2(1, 0) ,
                 new Vector2(1, 1) ,
                 new Vector2(0,1),
