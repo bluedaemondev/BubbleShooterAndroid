@@ -14,10 +14,12 @@ public class TileGrid : MonoBehaviour
 
     public BubbleNeighbor neighborOffsetArray;
     public Bubble[,] grid;
-    List<Bubble> cluster;
-    List<Bubble> floatingclusters;
+    public List<Bubble> cluster;
+    public List<Bubble> floatingclusters;
 
-    public UnityEvent onRemoveCluster;
+    public UnityEvent<int> onRemoveCluster;
+    public UnityEvent onResetProcessed;
+
 
     private void Awake()
     {
@@ -30,15 +32,19 @@ public class TileGrid : MonoBehaviour
     {
         GenerateGrid();
         neighborOffsetArray = new BubbleNeighbor();
-        onRemoveCluster = new UnityEvent();
+        onRemoveCluster = new UnityEvent<int>();
+        onResetProcessed = new UnityEvent();
 
         cluster = new List<Bubble>();
         floatingclusters = new List<Bubble>();
+
+        onRemoveCluster.AddListener(RemClusTest); // delete
+        //onRemoveCluster.AddListener()
     }
 
     private void GenerateGrid()
     {
-        this.grid = new Bubble[rows, cols];
+        this.grid = new Bubble[cols, rows];
 
         for (int row = 0; row < rows; row++)
         {
@@ -47,7 +53,7 @@ public class TileGrid : MonoBehaviour
                 GameObject refTile = (GameObject)ObjectPooler.instance.SpawnFromPool("bubble");
                 var bubble = refTile.GetComponent<Bubble>();
                 bubble.OnObjectSpawn(row, col, tileSize);
-                grid[row, col] = bubble;
+                grid[col, row] = bubble;
 
             }
         }
@@ -87,30 +93,32 @@ public class TileGrid : MonoBehaviour
     /// <param name="tileX"></param>
     /// <param name="tileY"></param>
     /// <returns></returns>
-    public List<Bubble> GetCluster(int tileX, int tileY, bool matchColor)
+    public List<Bubble> GetCluster(int tileX, int tileY, bool matchColor, bool reset)
     {
         List<Bubble> foundCluster = new List<Bubble>();
 
         Bubble targetTile = grid[tileX, tileY];
         Stack<Bubble> toProcess = new Stack<Bubble>();
-        
+
         toProcess.Push(targetTile);
 
-        while(toProcess.Count > 0)
+        while (toProcess.Count > 0)
         {
             var currentTile = toProcess.Pop();
             // si es del mismo el color o no hace falta que sea match por color
-            if(!matchColor || currentTile.selectedColor == targetTile.selectedColor)
+            if (!matchColor || currentTile.selectedColor == targetTile.selectedColor)
             {
                 foundCluster.Add(currentTile);
                 var neighbors = GetNeighbors(currentTile);
 
                 // reviso los colores vecinos
-                for (var i = 0; i< neighbors.Count; i++)
+                for (var i = 0; i < neighbors.Count; i++)
                 {
-                    //if(!nei)
-                    toProcess.Push(neighbors[i]);
-                    //neighbors[i].processed = true;
+                    if (!neighbors[i].processed)
+                    {
+                        toProcess.Push(neighbors[i]);
+                        neighbors[i].processed = true;
+                    }
                 }
             }
         }
@@ -125,40 +133,79 @@ public class TileGrid : MonoBehaviour
     public List<Bubble> GetFloatingClusters()
     {
         List<Bubble> foundFloatingClusters = new List<Bubble>();
+        onResetProcessed.Invoke();
 
         //reviso todas las burbujas
-        for (int i = 0; i<cols; i++)
+        for (int i = 0; i < cols; i++)
         {
             for (int j = 0; j < rows; j++)
             {
                 var tile = grid[i, j];
-                //if(!tile.processed)
-                //{
-                var foundCluster = GetCluster(i, j, false);
-
-                // tiene que haber al menos un tile en el cluster
-                if (foundCluster.Count <= 0)
-                    continue;
-
-                var floating = true;
-                for (var k = 0; k< foundCluster.Count; k++)
+                if (!tile.processed)
                 {
-                    if(foundCluster[k].rowRaw == 0)
+                    var foundCluster = GetCluster(i, j, false, false);
+
+                    // tiene que haber al menos un tile en el cluster
+                    if (foundCluster.Count <= 0)
+                        continue;
+
+                    var floating = true;
+                    for (var k = 0; k < foundCluster.Count; k++)
                     {
-                        // esta pegado al techo / ultima fila cargada
-                        floating = false;
-                        break;
+                        if (foundCluster[k].rowRaw == 0)
+                        {
+                            // esta pegado al techo / ultima fila cargada
+                            floating = false;
+                            break;
+                        }
+                    }
+                    if (floating)
+                    {
+                        foundFloatingClusters.AddRange(foundCluster);
                     }
                 }
-                if (floating)
-                {
-                    foundFloatingClusters.AddRange(foundCluster);
-                }
-                //}
             }
         }
 
         return foundFloatingClusters;
 
+    }
+
+    public void SetCurrentCluster(int colHit, int rowHit, bool matchColor, bool reset)
+    {
+        this.cluster = GetCluster(colHit, rowHit, matchColor, reset);
+        if (cluster.Count >= 3)
+        {
+            onRemoveCluster.Invoke(cluster.Count); // paso la cantidad de burbujas al contador de puntos
+        }
+        // contador por turnos? o seguir con el tiempo fijo?
+
+        /*
+         turncounter++;
+        if (turncounter >= 5) {
+            // Add a row of bubbles
+            addBubbles();
+            turncounter = 0;
+            rowoffset = (rowoffset + 1) % 2;
+            
+            if (checkGameOver()) {
+                return;
+            }
+        }
+        */
+    }
+    public void RemClusTest(int val)
+    {
+        Debug.Log(val + " burbujas explotadas");
+
+
+        while (cluster.Count > 0)
+        //foreach (var it in cluster)
+        {
+            Destroy(cluster[cluster.Count - 1].gameObject);
+            cluster.RemoveAt(cluster.Count - 1);
+            if (floatingclusters.Count > 0)
+                floatingclusters.Remove(floatingclusters[floatingclusters.Count-1]);
+        }
     }
 }

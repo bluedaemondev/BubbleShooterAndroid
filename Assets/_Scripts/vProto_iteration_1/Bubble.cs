@@ -16,7 +16,7 @@ public class Bubble : MonoBehaviour, IPooleableObject
         Color.magenta
     };
     public Color selectedColor;
-    //public bool processed;
+    public bool processed;
 
     // posicion en coordenadas reales.
     float RowYPosition;
@@ -35,6 +35,17 @@ public class Bubble : MonoBehaviour, IPooleableObject
     void Start()
     {
         this.sprRend = GetComponent<SpriteRenderer>();
+        TileGrid.instance.onResetProcessed.AddListener(this.ResetProcessed);
+        TileGrid.instance.onRemoveCluster.AddListener(this.RemoveFromGrid);
+    }
+
+    void ResetProcessed()
+    {
+        this.processed = false;
+    }
+    void RemoveFromGrid(int aux)
+    {
+        Destroy(this.gameObject);
     }
 
     public void GenerateNewCoords(int row, int col, float tileSize)
@@ -118,11 +129,11 @@ public class Bubble : MonoBehaviour, IPooleableObject
             var hitCollider = collisionInfo.collider;
             HandleSnapIntoGrid(hitCollider.ClosestPoint(transform.position), hitCollider.GetComponent<Bubble>().colRaw, hitCollider.GetComponent<Bubble>().rowRaw);
         }
-           
+
 
     }
 
-    
+
     void HandleSnapIntoGrid(Vector2 posHitAprox, int colHit, int rowHit)
     {
         throwableMutated = false;
@@ -130,12 +141,29 @@ public class Bubble : MonoBehaviour, IPooleableObject
         gameObject.layer = LayerMask.NameToLayer("attachTo");
 
 
-        var mapGrid = FindObjectOfType<TileGrid>();
-        transform.parent = mapGrid.transform;
-        
-        //GenerateNewCoords(rowHit , colHit, mapGrid.tileSize);
-        // hacer casos de uso desde izquierda abajo, derecha abajo etc ???
+        transform.parent = TileGrid.instance.transform;
 
+        if (colHit < 0)
+            colHit = 0;
+        else if (colHit >= TileGrid.instance.cols)
+            colHit = TileGrid.instance.cols - 1;
+
+        if (rowHit < 0)
+            rowHit = 0;
+        else if (rowHit >= TileGrid.instance.rows)
+            rowHit = TileGrid.instance.rows - 1;
+
+        //for (int newRow = rowHit + 1; newRow < TileGrid.instance.rows; newRow++)
+        //{
+        //if (TileGrid.instance.grid[colHit, newRow])
+        TileGrid.instance.grid[colHit, rowHit] = this;
+        if (GameManagerActions.instance.CheckGameOver())
+            return;
+
+        //TileGrid.instance.cluster = TileGrid.instance.GetCluster(colHit, rowHit, true);
+        TileGrid.instance.SetCurrentCluster(colHit, rowHit, true, true);
+
+        //}
 
 
 

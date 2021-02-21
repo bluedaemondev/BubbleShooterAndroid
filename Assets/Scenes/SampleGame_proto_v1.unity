@@ -169,7 +169,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeMax: 6.66
-  speedMov: 0.666
+  speedMov: 0.15
   transformMoveTowards: {fileID: 0}
   direction: {x: 0, y: -1}
 --- !u!114 &142630256
@@ -1226,6 +1226,11 @@ MonoBehaviour:
   rows: 20
   cols: 11
   tileSize: 0.5
+  cluster: []
+  floatingclusters: []
+  onRemoveCluster:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1662944092
 GameObject:
   m_ObjectHideFlags: 0
