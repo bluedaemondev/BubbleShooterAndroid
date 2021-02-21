@@ -43,11 +43,11 @@ public class BubbleShooter : MonoBehaviour
         
 
 
-        var auxQ = currentThrowables.Dequeue();
-        var auxQ2 = currentThrowables.Dequeue();
+        var auxQ = currentThrowables.Dequeue(); // first in
+        var auxQ2 = currentThrowables.Dequeue(); // second in
 
-        currentThrowables.Enqueue(auxQ);
         currentThrowables.Enqueue(auxQ2);
+        currentThrowables.Enqueue(auxQ);
 
 
         auxQ2.transform.parent = spawnSecondaryBubble.transform;

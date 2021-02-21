@@ -83,7 +83,10 @@ public class TileGrid : MonoBehaviour
                 neighbors.Add(grid[nXpos, nYpos]);
             }
         }
-
+        Debug.Log("neighbors found: " );
+        foreach (var n in neighbors)
+            Debug.Log(n.ToString());
+        Debug.Log("end");
         return neighbors;
     }
 
@@ -204,8 +207,13 @@ public class TileGrid : MonoBehaviour
         {
             Destroy(cluster[cluster.Count - 1].gameObject);
             cluster.RemoveAt(cluster.Count - 1);
-            if (floatingclusters.Count > 0)
-                floatingclusters.Remove(floatingclusters[floatingclusters.Count-1]);
+
         }
+        //while (floatingclusters.Count > 0)
+        //{
+        //    Destroy(floatingclusters[floatingclusters.Count - 1]);
+        //    floatingclusters.Remove(floatingclusters[floatingclusters.Count - 1]);
+            
+        //}
     }
 }
