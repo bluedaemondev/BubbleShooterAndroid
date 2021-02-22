@@ -39,13 +39,21 @@ public class Bubble : MonoBehaviour, IPooleableObject
         TileGrid.instance.onRemoveCluster.AddListener(this.RemoveFromGrid);
     }
 
+    #region Debugging
+    void OnMouseDown()
+    {
+        Debug.Log("CLICK EN ROW: " + this.rowRaw + " , COL: " + this.colRaw);
+    }
+    #endregion
+
     void ResetProcessed()
     {
         this.processed = false;
     }
-    void RemoveFromGrid(int aux)
+    void RemoveFromGrid(int col, int row, int countAux)
     {
-        Destroy(this.gameObject);
+        if (this.colRaw == col && this.rowRaw == row)
+            Destroy(this.gameObject);
     }
 
     public void GenerateNewCoords(int row, int col, float tileSize)
@@ -155,13 +163,48 @@ public class Bubble : MonoBehaviour, IPooleableObject
 
         //for (int newRow = rowHit + 1; newRow < TileGrid.instance.rows; newRow++)
         //{
-        //if (TileGrid.instance.grid[colHit, newRow])
-        TileGrid.instance.grid[colHit, rowHit] = this;
-        if (GameManagerActions.instance.CheckGameOver())
-            return;
+        bool addTile = false;
 
-        //TileGrid.instance.cluster = TileGrid.instance.GetCluster(colHit, rowHit, true);
-        TileGrid.instance.SetCurrentCluster(colHit, rowHit, true, true);
+        if (TileGrid.instance.grid[colHit, rowHit] != null)
+        {
+            for (int newRow = rowHit + 1; newRow < TileGrid.instance.grid.GetLength(1); newRow++)
+            {
+                if (TileGrid.instance.grid[colHit, newRow] != null)
+                {
+                    rowHit = newRow;
+                    addTile = true;
+                    break;
+                }
+            }
+        }
+        else
+        {
+            addTile = true;
+        }
+
+        if (addTile)
+        {
+            this.colRaw = colHit;
+            this.rowRaw = rowHit;
+
+            //TileGrid.instance.cluster = TileGrid.instance.GetCluster(colHit, rowHit, true);
+            TileGrid.instance.grid[colHit, rowHit] = this;
+            if (GameManagerActions.instance.CheckGameOver())
+                return;
+            TileGrid.instance.SetCurrentCluster(colHit, rowHit, true, true);
+
+        }
+
+
+        //TileGrid.instance.grid[colHit, rowHit] = this;
+
+
+
+        //this.colRaw = colHit;
+        //this.rowRaw = rowHit;
+
+        ////TileGrid.instance.cluster = TileGrid.instance.GetCluster(colHit, rowHit, true);
+        //TileGrid.instance.SetCurrentCluster(colHit, rowHit, true, true);
 
         //}
 

@@ -8,7 +8,7 @@ public class TileGrid : MonoBehaviour
 {
     public static TileGrid instance { get; private set; }
 
-    public int rows = 22;
+    public int rows = 20;
     public int cols = 11;
     public float tileSize = 0.5f;
 
@@ -17,7 +17,7 @@ public class TileGrid : MonoBehaviour
     public List<Bubble> cluster;
     public List<Bubble> floatingclusters;
 
-    public UnityEvent<int> onRemoveCluster;
+    public UnityEvent<int, int, int> onRemoveCluster;
     public UnityEvent onResetProcessed;
 
 
@@ -32,7 +32,7 @@ public class TileGrid : MonoBehaviour
     {
         GenerateGrid();
         neighborOffsetArray = new BubbleNeighbor();
-        onRemoveCluster = new UnityEvent<int>();
+        onRemoveCluster = new UnityEvent<int, int ,int>();
         onResetProcessed = new UnityEvent();
 
         cluster = new List<Bubble>();
@@ -44,7 +44,7 @@ public class TileGrid : MonoBehaviour
 
     private void GenerateGrid()
     {
-        this.grid = new Bubble[cols, rows];
+        this.grid = new Bubble[cols, rows+10];
 
         for (int row = 0; row < rows; row++)
         {
@@ -83,10 +83,11 @@ public class TileGrid : MonoBehaviour
                 neighbors.Add(grid[nXpos, nYpos]);
             }
         }
-        Debug.Log("neighbors found: " );
-        foreach (var n in neighbors)
-            Debug.Log(n.ToString());
-        Debug.Log("end");
+        //Debug.Log("neighbors found: ");
+        //foreach (var n in neighbors)
+        //    Debug.Log(n.ToString() + ", row " + n.rowRaw + ", col " + n.colRaw + " , color = " + n.selectedColor.ToString());
+        //Debug.Log("end");
+
         return neighbors;
     }
 
@@ -179,7 +180,7 @@ public class TileGrid : MonoBehaviour
         this.cluster = GetCluster(colHit, rowHit, matchColor, reset);
         if (cluster.Count >= 3)
         {
-            onRemoveCluster.Invoke(cluster.Count); // paso la cantidad de burbujas al contador de puntos
+            onRemoveCluster.Invoke(colHit, rowHit, cluster.Count); // paso la cantidad de burbujas al contador de puntos
         }
         // contador por turnos? o seguir con el tiempo fijo?
 
@@ -197,23 +198,23 @@ public class TileGrid : MonoBehaviour
         }
         */
     }
-    public void RemClusTest(int val)
+    public void RemClusTest(int column, int row, int count)
     {
-        Debug.Log(val + " burbujas explotadas");
+        //Debug.Log(val + " burbujas explotadas");
 
 
-        while (cluster.Count > 0)
+        while (cluster.Count > 0 && column == cluster[cluster.Count-1].colRaw && row == cluster[cluster.Count - 1].rowRaw)
         //foreach (var it in cluster)
         {
             Destroy(cluster[cluster.Count - 1].gameObject);
+            Debug.Log("removing row: " + (cluster[cluster.Count - 1].rowRaw + " col: " + (cluster[cluster.Count - 1].colRaw)));
             cluster.RemoveAt(cluster.Count - 1);
-
         }
         //while (floatingclusters.Count > 0)
         //{
         //    Destroy(floatingclusters[floatingclusters.Count - 1]);
         //    floatingclusters.Remove(floatingclusters[floatingclusters.Count - 1]);
-            
+
         //}
     }
 }
