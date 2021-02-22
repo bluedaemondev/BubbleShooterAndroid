@@ -20,10 +20,7 @@ public class HudController : MonoBehaviour
             current = this;
         
     }
-    //private void Start()
-    //{
-    //}
-
+    
     public void UpdatePointsUI(int newVal)
     {
         this.pointsText.text = newVal + " points";

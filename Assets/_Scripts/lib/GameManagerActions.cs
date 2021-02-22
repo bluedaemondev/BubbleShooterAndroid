@@ -18,6 +18,8 @@ public class GameManagerActions : MonoBehaviour
     public UnityEvent onPause;
     public UnityEvent onResumeGame;
 
+    public float gametime;
+
 
     public bool isPaused = false;
 
@@ -39,13 +41,18 @@ public class GameManagerActions : MonoBehaviour
         onPause.AddListener(PauseGame);
         onResumeGame.AddListener(ResumeGame);
 
-
+        gametime = 0;
+    }
+    private void Update()
+    {
+        if (!isPaused)
+            this.gametime += Time.deltaTime;
     }
     public void PauseGame()
     {
         Debug.Log("paused game");
         isPaused = true;
-        
+
         //if (Time.timeScale == 0)
         //{
         //    Time.timeScale = 1;
@@ -75,6 +82,11 @@ public class GameManagerActions : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
+    public string GetTotalGametime()
+    {
+        var ts = TimeSpan.FromSeconds(gametime);
+        return string.Format("{0:00}:{1:00}", ts.Minutes, ts.Seconds);
+    }
     public bool CheckGameOver()
     {
         return false;

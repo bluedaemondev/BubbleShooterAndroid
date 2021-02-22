@@ -25,7 +25,7 @@ public class PauseDrawerUIController : MonoBehaviour
     }
     #endregion Getter
 
-    void Start()
+    void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
         rectTransform.DOAnchorPosX(rectTransform.rect.width, 0f);
