@@ -5,7 +5,12 @@ using UnityEngine;
 
 public class BubbleShooter : MonoBehaviour
 {
+    [Header("Propiedades")]
+    [InspectorName("Fuerza de tiro")]
     public float forceMagnitudeShoot = 10f;
+    [InspectorName("Cooldown entre disparos")]
+    public float cooldownBubbleShoot = 0.3f;
+
     [Header("Cantidad de burbujas disponibles")]
     public int throwableCount = 2;
 
@@ -15,6 +20,8 @@ public class BubbleShooter : MonoBehaviour
     [Header("Posiciones en donde aparecen las burbujas disparables")]
     public GameObject spawnPrimaryBubble;
     public GameObject spawnSecondaryBubble;
+
+    
 
     private bool canShoot = true;
 
@@ -68,6 +75,7 @@ public class BubbleShooter : MonoBehaviour
 
 
         CurrentBubbleSwitch.instance.onSwitchBubble.Invoke();
+        StartCoroutine(ResumeAfterTime(cooldownBubbleShoot));
     }
 
 

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 51387951}
   m_Layer: 9
   m_Name: bubble
-  m_TagString: Untagged
+  m_TagString: bubble
   m_Icon: {fileID: 2488908585195742037, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -118,5 +118,9 @@ MonoBehaviour:
   - {r: 0, g: 0, b: 1, a: 1}
   - {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   - {r: 1, g: 0, b: 1, a: 1}
+  selectedColor: {r: 0, g: 0, b: 0, a: 0}
+  processed: 0
+  colRaw: 0
+  rowRaw: 0
   sprRend: {fileID: 111218648079613884}
   rb: {fileID: 0}
