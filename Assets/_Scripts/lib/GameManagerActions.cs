@@ -18,6 +18,9 @@ public class GameManagerActions : MonoBehaviour
     public UnityEvent onPause;
     public UnityEvent onResumeGame;
 
+    // transition = timeTransition:float , sceneNameToLoad:string
+    //public UnityEvent<float, string> onTransition;
+
     public float gametime;
 
 
@@ -35,6 +38,9 @@ public class GameManagerActions : MonoBehaviour
             winEvent = new UnityEvent();
         if (onPause == null)
             onPause = new UnityEvent();
+        //if (onTransition == null)
+        //    onTransition = new UnityEvent<float, string>();
+
     }
     private void Start()
     {
@@ -52,15 +58,6 @@ public class GameManagerActions : MonoBehaviour
     {
         Debug.Log("paused game");
         isPaused = true;
-
-        //if (Time.timeScale == 0)
-        //{
-        //    Time.timeScale = 1;
-        //}
-        //else
-        //{
-        //    Time.timeScale = 0;
-        //}
     }
     public void ResumeGame()
     {
@@ -80,6 +77,10 @@ public class GameManagerActions : MonoBehaviour
     public void LoadNextScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
+    public void LoadSceneByName(string name)
+    {
+        SceneManager.LoadScene(SceneManager.GetSceneByName(name).buildIndex);
     }
 
     public string GetTotalGametime()
