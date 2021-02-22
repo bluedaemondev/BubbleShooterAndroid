@@ -52,8 +52,9 @@ public class Bubble : MonoBehaviour, IPooleableObject
     }
     void RemoveFromGrid(int col, int row, int countAux)
     {
-        if (this.colRaw == col && this.rowRaw == row)
-            Destroy(this.gameObject);
+        //if (this.colRaw == col && this.rowRaw == row)
+        //    Destroy(this.gameObject);
+        Debug.Log("call rfg = " + col + " , " + row + " ; cnt = " + countAux);
     }
 
     public void GenerateNewCoords(int row, int col, float tileSize)
@@ -136,6 +137,7 @@ public class Bubble : MonoBehaviour, IPooleableObject
         {
             var hitCollider = collisionInfo.collider;
             HandleSnapIntoGrid(hitCollider.ClosestPoint(transform.position), hitCollider.GetComponent<Bubble>().colRaw, hitCollider.GetComponent<Bubble>().rowRaw);
+            this.processed = true;
         }
 
 
@@ -169,7 +171,7 @@ public class Bubble : MonoBehaviour, IPooleableObject
         {
             for (int newRow = rowHit + 1; newRow < TileGrid.instance.grid.GetLength(1); newRow++)
             {
-                if (TileGrid.instance.grid[colHit, newRow] != null)
+                if (TileGrid.instance.grid[colHit, newRow] == null) // esto estaba con != 22/2 2:07
                 {
                     rowHit = newRow;
                     addTile = true;
@@ -186,6 +188,8 @@ public class Bubble : MonoBehaviour, IPooleableObject
         {
             this.colRaw = colHit;
             this.rowRaw = rowHit;
+
+            GenerateNewCoords(rowRaw, colRaw, TileGrid.instance.tileSize);
 
             //TileGrid.instance.cluster = TileGrid.instance.GetCluster(colHit, rowHit, true);
             TileGrid.instance.grid[colHit, rowHit] = this;

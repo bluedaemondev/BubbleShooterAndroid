@@ -20,8 +20,8 @@ public class BubbleNeighbor
             },
             {
                     // Filas impares tile offsets
-                new Vector2(1, 0) ,
-                new Vector2(1, 1) ,
+                new Vector2(1, 0),
+                new Vector2(1, 1),
                 new Vector2(0,1),
                 new Vector2(-1,0),
                 new Vector2(0,-1),

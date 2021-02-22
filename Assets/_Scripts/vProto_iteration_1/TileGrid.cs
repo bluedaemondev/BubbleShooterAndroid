@@ -32,7 +32,7 @@ public class TileGrid : MonoBehaviour
     {
         GenerateGrid();
         neighborOffsetArray = new BubbleNeighbor();
-        onRemoveCluster = new UnityEvent<int, int ,int>();
+        onRemoveCluster = new UnityEvent<int, int, int>();
         onResetProcessed = new UnityEvent();
 
         cluster = new List<Bubble>();
@@ -44,7 +44,7 @@ public class TileGrid : MonoBehaviour
 
     private void GenerateGrid()
     {
-        this.grid = new Bubble[cols, rows+10];
+        this.grid = new Bubble[cols, rows + 10];
 
         for (int row = 0; row < rows; row++)
         {
@@ -181,6 +181,11 @@ public class TileGrid : MonoBehaviour
         if (cluster.Count >= 3)
         {
             onRemoveCluster.Invoke(colHit, rowHit, cluster.Count); // paso la cantidad de burbujas al contador de puntos
+            foreach (var i in GetFloatingClusters())
+            {
+                Destroy(i);
+            }
+            return;
         }
         // contador por turnos? o seguir con el tiempo fijo?
 
@@ -203,9 +208,10 @@ public class TileGrid : MonoBehaviour
         //Debug.Log(val + " burbujas explotadas");
 
 
-        while (cluster.Count > 0 && column == cluster[cluster.Count-1].colRaw && row == cluster[cluster.Count - 1].rowRaw)
+        while (cluster.Count > 0 && column == cluster[cluster.Count - 1].colRaw && row == cluster[cluster.Count - 1].rowRaw)
         //foreach (var it in cluster)
         {
+            Debug.Log("call RemClusTest ev. = " + cluster[cluster.Count - 1].colRaw + " , " + cluster[cluster.Count - 1].rowRaw + " ; cnt = " + count);
             Destroy(cluster[cluster.Count - 1].gameObject);
             Debug.Log("removing row: " + (cluster[cluster.Count - 1].rowRaw + " col: " + (cluster[cluster.Count - 1].colRaw)));
             cluster.RemoveAt(cluster.Count - 1);
