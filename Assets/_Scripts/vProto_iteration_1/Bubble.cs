@@ -169,8 +169,9 @@ public class Bubble : MonoBehaviour, IPooleableObject
 
         if (TileGrid.instance.grid[colHit, rowHit] != null)
         {
-            for (int newRow = rowHit + 1; newRow < TileGrid.instance.grid.GetLength(1); newRow++)
+            for (int newRow = rowHit + 1; newRow < TileGrid.instance.grid.GetLength(1); newRow++) // esto 
             {
+                //buscar offset vecino
                 if (TileGrid.instance.grid[colHit, newRow] == null) // esto estaba con != 22/2 2:07
                 {
                     rowHit = newRow;

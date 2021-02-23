@@ -5,7 +5,7 @@ using UnityEngine;
 public class DrawsLaserOnTouch : MonoBehaviour
 {
     public LineRenderer lineRend;
-    public string bounceTag = "bouncer";//tag it can reflect off.
+    public string bounceTag = "bouncer"; //tag it can reflect off.
     public float maxDist = 100;//max distance for beam to travel.
     public int maxSplitCount = 5;
 
@@ -31,8 +31,6 @@ public class DrawsLaserOnTouch : MonoBehaviour
         lineRend.SetPosition(0, laserStartPos);
         lineRend.SetPosition(1, laserStartPos);
         currentBounceIndex = 1;
-
-
     }
 
 
