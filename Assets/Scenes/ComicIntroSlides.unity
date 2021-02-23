@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 365682565}
   - component: {fileID: 365682567}
   - component: {fileID: 365682566}
+  - component: {fileID: 365682568}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -180,7 +181,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Button
+  m_text: Saltar
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -257,6 +258,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 365682564}
   m_CullTransparentMesh: 0
+--- !u!114 &365682568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 365682564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c110fc582957e04d94292e9345600b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeEnableBtn: 4
 --- !u!1 &731897133
 GameObject:
   m_ObjectHideFlags: 0
@@ -285,7 +299,7 @@ RectTransform:
   m_GameObject: {fileID: 731897133}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.9197, y: 1.9197, z: 1.9197}
   m_Children:
   - {fileID: 2015071209}
   m_Father: {fileID: 1442150912}
@@ -293,7 +307,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -15, y: 16}
+  m_AnchoredPosition: {x: -13.713104, y: 26.000023}
   m_SizeDelta: {x: 113.634125, y: 30}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &731897135
@@ -489,7 +503,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1139348055}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!20 &1139348057
 Camera:
   m_ObjectHideFlags: 0
@@ -588,6 +602,7 @@ MonoBehaviour:
   onSkipSequence:
     m_PersistentCalls:
       m_Calls: []
+  sceneLoadAfter: SampleGame_proto_v1
 --- !u!114 &1433894522
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -694,10 +709,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1080, y: 1920}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -870,7 +885,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Button
+  m_text: Siguiente
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -959,6 +974,7 @@ GameObject:
   - component: {fileID: 2088829490}
   - component: {fileID: 2088829489}
   - component: {fileID: 2088829488}
+  - component: {fileID: 2088829491}
   m_Layer: 5
   m_Name: Button_Skip
   m_TagString: Untagged
@@ -975,7 +991,7 @@ RectTransform:
   m_GameObject: {fileID: 2088829486}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.9197, y: 1.9197, z: 1.9197}
   m_Children:
   - {fileID: 365682565}
   m_Father: {fileID: 1442150912}
@@ -983,7 +999,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -136, y: 16}
+  m_AnchoredPosition: {x: -826, y: 26}
   m_SizeDelta: {x: 113.634125, y: 30}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &2088829488
@@ -1024,7 +1040,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 2088829489}
   m_OnClick:
     m_PersistentCalls:
@@ -1079,3 +1095,16 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2088829486}
   m_CullTransparentMesh: 0
+--- !u!114 &2088829491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2088829486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c110fc582957e04d94292e9345600b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeEnableBtn: 4

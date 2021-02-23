@@ -25,11 +25,8 @@ public class TileGrid : MonoBehaviour
     {
         if (!instance)
             instance = this;
-    }
 
-    // Start is called before the first frame update
-    void Start()
-    {
+        Debug.Log("Generando mapa...");
         GenerateGrid();
         neighborOffsetArray = new BubbleNeighbor();
         onRemoveCluster = new UnityEvent<int, int, int>();
@@ -40,6 +37,21 @@ public class TileGrid : MonoBehaviour
 
         onRemoveCluster.AddListener(RemClusTest); // delete
         //onRemoveCluster.AddListener()
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        //GenerateGrid();
+        //neighborOffsetArray = new BubbleNeighbor();
+        //onRemoveCluster = new UnityEvent<int, int, int>();
+        //onResetProcessed = new UnityEvent();
+
+        //cluster = new List<Bubble>();
+        //floatingclusters = new List<Bubble>();
+
+        //onRemoveCluster.AddListener(RemClusTest); // delete
+        ////onRemoveCluster.AddListener()
     }
 
     private void GenerateGrid()

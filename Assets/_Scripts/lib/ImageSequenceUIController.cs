@@ -19,6 +19,8 @@ public class ImageSequenceUIController : MonoBehaviour
     [Header("Configuracion de eventos disparados en skip de cinematica")]
     public UnityEvent onSkipSequence;
 
+    public string sceneLoadAfter = "SampleGame_proto_v1";
+
     private void Awake()
     {
         if (!instance)
@@ -63,7 +65,8 @@ public class ImageSequenceUIController : MonoBehaviour
     public void Skip()
     {
         this.SetImage(comicSlides.Count - 1);
-        //GameManagerActions.instance.LoadByName("");
+        FindObjectOfType<ProgressSceneLoader>().LoadScene(sceneLoadAfter);
+        SceneManager.UnloadSceneAsync("ComicIntroSlides");
 
     }
 }

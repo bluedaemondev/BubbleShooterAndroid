@@ -9,7 +9,9 @@ public class MainMenuUIScript : MonoBehaviour
     public GameObject creditsPanel;
     public GameObject howToPlayPanel;
 
+    public string sceneLoadOnPlay = "ComicIntroSlides";
     public string redSocialLink1 = "http://instagram.com/bluedaemonart";
+
 
 
     private void Awake()
@@ -35,12 +37,9 @@ public class MainMenuUIScript : MonoBehaviour
     }
     public void PlayNextScene()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-
-        //ManagerIntroduccion.instance.startIntroductionEvent.Invoke();
-        //ManagerIntroduccion.instance.DisableChildren();
-
-        Debug.Log("playing ");
+        FindObjectOfType<ProgressSceneLoader>().LoadScene(sceneLoadOnPlay);
+        SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("MainMenu"));
+        
         //this.mainPanel.SetActive(false);
         //this.howToPlayPanel.SetActive(false);
         //this.creditsPanel.SetActive(false);

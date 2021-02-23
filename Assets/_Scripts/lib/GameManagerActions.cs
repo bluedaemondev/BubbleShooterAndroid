@@ -42,6 +42,9 @@ public class GameManagerActions : MonoBehaviour
         //    onTransition = new UnityEvent<float, string>();
 
     }
+
+    
+
     private void Start()
     {
         onPause.AddListener(PauseGame);
@@ -70,19 +73,25 @@ public class GameManagerActions : MonoBehaviour
     {
         Application.Quit();
     }
-    public void ReloadScene()
+    public AsyncOperation LoadSceneByNameAsync(string sceneName)
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-    }
-    public void LoadNextScene()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-    }
-    public void LoadSceneByName(string name)
-    {
-        SceneManager.LoadScene(SceneManager.GetSceneByName(name).buildIndex);
+        return SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
     }
 
+    #region Deprecated
+    //public void ReloadScene()
+    //{
+    //    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    //}
+    //public void LoadNextScene()
+    //{
+    //    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    //}
+    //public void LoadSceneByName(string name)
+    //{
+    //    SceneManager.LoadScene(SceneManager.GetSceneByName(name).buildIndex);
+    //}
+    #endregion
     public string GetTotalGametime()
     {
         var ts = TimeSpan.FromSeconds(gametime);
@@ -91,6 +100,5 @@ public class GameManagerActions : MonoBehaviour
     public bool CheckGameOver()
     {
         return false;
-        //throw new NotImplementedException();
     }
 }
