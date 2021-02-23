@@ -41,6 +41,8 @@ public class ProgressSceneLoader : MonoBehaviour
 
     private IEnumerator BeginLoad(string sceneName)
     {
+        var cameraToDisable = FindObjectOfType<Camera>().gameObject;
+
         operation = GameManagerActions.instance.LoadSceneByNameAsync(sceneName);
         while (!operation.isDone)
         {
@@ -50,6 +52,17 @@ public class ProgressSceneLoader : MonoBehaviour
         UpdateProgressUI(operation.progress);
         operation = null;
         canvas.gameObject.SetActive(false);
+        //cameraToDisable.SetActive(false);
+
+
+        var tanda = FindObjectOfType<AdmobInterstitialScript>();
+
+        tanda.RequestAd();
+        if (tanda.interstitial.IsLoaded())
+        {
+            tanda.interstitial.Show();
+        }
+
     }
     private void UpdateProgressUI(float progress)
     {

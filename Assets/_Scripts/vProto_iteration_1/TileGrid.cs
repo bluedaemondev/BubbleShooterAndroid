@@ -42,6 +42,7 @@ public class TileGrid : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        AdmobComponentsManager.instance.onSendToBackAds.Invoke();
         //GenerateGrid();
         //neighborOffsetArray = new BubbleNeighbor();
         //onRemoveCluster = new UnityEvent<int, int, int>();

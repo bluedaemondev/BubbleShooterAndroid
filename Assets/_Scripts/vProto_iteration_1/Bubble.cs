@@ -54,7 +54,7 @@ public class Bubble : MonoBehaviour, IPooleableObject
     {
         //if (this.colRaw == col && this.rowRaw == row)
         //    Destroy(this.gameObject);
-        Debug.Log("call rfg = " + col + " , " + row + " ; cnt = " + countAux);
+        //Debug.Log("call rfg = " + col + " , " + row + " ; cnt = " + countAux);
     }
 
     public void GenerateNewCoords(int row, int col, float tileSize)

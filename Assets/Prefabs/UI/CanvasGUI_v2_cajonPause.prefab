@@ -863,6 +863,7 @@ GameObject:
   - component: {fileID: 8929273045340870349}
   - component: {fileID: 90774435766318164}
   - component: {fileID: 1072966309172552758}
+  - component: {fileID: 6793844723763857494}
   m_Layer: 5
   m_Name: ButtonShuffle
   m_TagString: Untagged
@@ -998,6 +999,18 @@ MonoBehaviour:
   holderImg: {fileID: 0}
   timeCooldown: 10
   btnEnabled: 1
+--- !u!114 &6793844723763857494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5385705452578276333}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc63f6ad5fd637645b8c9f4a44a3fd2b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5418949624574918955
 GameObject:
   m_ObjectHideFlags: 0
@@ -1788,7 +1801,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_TargetDisplay: 0
 --- !u!114 &5418949626391937935
 MonoBehaviour:

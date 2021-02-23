@@ -13,6 +13,11 @@ public class GoogleAdmobAd : MonoBehaviour
         MobileAds.Initialize(initStatus => { });
     }
 
+    public virtual void RequestAd()
+    {
+        Debug.Log("Loading ad...");
+    }
+
     public virtual void HandleOnAdLoaded(object sender, EventArgs args)
     {
         MonoBehaviour.print("HandleAdLoaded event received");
