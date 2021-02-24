@@ -1,5 +1,54 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1888708847
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1888708848}
+  - component: {fileID: 1888708849}
+  m_Layer: 0
+  m_Name: AdmobComponentsManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1888708848
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1888708847}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6815096919121427558}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1888708849
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1888708847}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80d19527e3757e24bb85ffffeda1b8d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onSendToBackAds:
+    m_PersistentCalls:
+      m_Calls: []
+  onSendToTopAds:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &6815096918762300361
 GameObject:
   m_ObjectHideFlags: 0
@@ -103,8 +152,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   comboMultiplier: 1
-  timeToResetComboMultiplier: 4.5
-  currentTimeInCombo: 0
+  comboMultiplierMax: 4
+  timeToResetMultiplier: 4.5
+  onPointsUpdate:
+    m_PersistentCalls:
+      m_Calls: []
+  onMultiplierUpdate:
+    m_PersistentCalls:
+      m_Calls: []
+  onSetMultiplier:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &6815096919121427561
 GameObject:
   m_ObjectHideFlags: 0
@@ -137,6 +195,7 @@ Transform:
   - {fileID: 6815096919542105092}
   - {fileID: 6815096919446696273}
   - {fileID: 6815096918762300358}
+  - {fileID: 1888708848}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -522,6 +581,7 @@ MonoBehaviour:
       m_Calls: []
   availableLoopsInRun: 6
   timeRepeatLoop: 30
+  timeAddAfterLoopEnd: 15
   listAllAvailableLoops:
   - {fileID: 8300000, guid: e03a20b9e7b5dcc4fa84ed85d19e0c26, type: 3}
   - {fileID: 8300000, guid: d26c58fa3130ea34d9279184e63d50d8, type: 3}
