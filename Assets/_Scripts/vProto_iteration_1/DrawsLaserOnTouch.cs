@@ -20,7 +20,7 @@ public class DrawsLaserOnTouch : MonoBehaviour
     private void Start()
     {
         lineRend = GetComponent<LineRenderer>();
-        laserStartPos = transform.position;
+        laserStartPos = FindObjectOfType<BubbleShooter>().spawnPrimaryBubble.transform.position;
         SetStartingLaserPoint();
     }
 
@@ -66,16 +66,17 @@ public class DrawsLaserOnTouch : MonoBehaviour
 
         if (hit2D)
         {
-            if (hit2D.collider.CompareTag("bubble"))
-            {
-                reflectRemaining = 0;
-                lineRend.positionCount = 2;
-                lineRend.SetPosition(1, hit2D.centroid);
-                return;
-            }
+            //if (hit2D.collider.CompareTag("bubble"))
+            //{
+            //    reflectRemaining = 0;
+            //    lineRend.positionCount = 2;
+            //    lineRend.SetPosition(1, hit2D.transform.position);
+            //    return;
+            //}
 
             lineRend.positionCount = currentBounceIndex + 1;
-            //Debug.Log(currentBounceIndex);
+            
+            //Debug.Log("Punto de colision laser " + hit2D.collider.name + " , " + hit2D.collider.transform.position);
             lineRend.SetPosition(currentBounceIndex, hit2D.point);
             currentBounceIndex++;
 
