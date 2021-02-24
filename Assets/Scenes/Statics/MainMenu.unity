@@ -174,7 +174,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -258,8 +258,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Play
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8150c23546f3c20459d74063cdad7a3f, type: 2}
+  m_sharedMaterial: {fileID: -4504880711330928586, guid: 8150c23546f3c20459d74063cdad7a3f, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -283,8 +283,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 62
-  m_fontSizeBase: 62
+  m_fontSize: 167.29
+  m_fontSizeBase: 167.29
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 0
@@ -572,6 +572,7 @@ GameObject:
   - component: {fileID: 1100163801}
   - component: {fileID: 1100163800}
   - component: {fileID: 1100163799}
+  - component: {fileID: 1100163802}
   m_Layer: 5
   m_Name: ButtonRedes1
   m_TagString: Untagged
@@ -667,7 +668,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.6039216, g: 0.7372549, b: 0.31764707, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -692,6 +693,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1100163797}
   m_CullTransparentMesh: 0
+--- !u!114 &1100163802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1100163797}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11db06d915647974482c2c2db0471661, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clipToPlay: {fileID: 8300000, guid: a55983a3749f43149aaaa0e25be6d47d, type: 3}
 --- !u!1 &1176501102
 GameObject:
   m_ObjectHideFlags: 0
@@ -751,8 +765,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Comprar musica
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8150c23546f3c20459d74063cdad7a3f, type: 2}
+  m_sharedMaterial: {fileID: -4504880711330928586, guid: 8150c23546f3c20459d74063cdad7a3f, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -776,8 +790,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 72
-  m_fontSizeBase: 72
+  m_fontSize: 89
+  m_fontSizeBase: 89
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 0
@@ -937,6 +951,7 @@ GameObject:
   - component: {fileID: 1422461701}
   - component: {fileID: 1422461700}
   - component: {fileID: 1422461699}
+  - component: {fileID: 1422461702}
   m_Layer: 5
   m_Name: ButtonPlay
   m_TagString: Untagged
@@ -1032,7 +1047,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.91372555, g: 1, b: 0.7490196, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1057,6 +1072,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1422461697}
   m_CullTransparentMesh: 0
+--- !u!114 &1422461702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1422461697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11db06d915647974482c2c2db0471661, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clipToPlay: {fileID: 8300000, guid: a55983a3749f43149aaaa0e25be6d47d, type: 3}
 --- !u!1 &1518368113
 GameObject:
   m_ObjectHideFlags: 0
@@ -1146,6 +1174,7 @@ GameObject:
   - component: {fileID: 1599831714}
   - component: {fileID: 1599831713}
   - component: {fileID: 1599831712}
+  - component: {fileID: 1599831715}
   m_Layer: 5
   m_Name: ButtonCompras1
   m_TagString: Untagged
@@ -1241,7 +1270,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.6039216, g: 0.7372549, b: 0.31764707, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1266,6 +1295,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1599831710}
   m_CullTransparentMesh: 0
+--- !u!114 &1599831715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1599831710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11db06d915647974482c2c2db0471661, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clipToPlay: {fileID: 8300000, guid: a55983a3749f43149aaaa0e25be6d47d, type: 3}
 --- !u!1 &1620881741
 GameObject:
   m_ObjectHideFlags: 0
@@ -1325,8 +1367,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Red social 1
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8150c23546f3c20459d74063cdad7a3f, type: 2}
+  m_sharedMaterial: {fileID: -4504880711330928586, guid: 8150c23546f3c20459d74063cdad7a3f, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1350,8 +1392,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 72
-  m_fontSizeBase: 72
+  m_fontSize: 90.9
+  m_fontSizeBase: 90.9
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 0
@@ -1410,6 +1452,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1957568129}
   - component: {fileID: 1957568130}
+  - component: {fileID: 1957568131}
   m_Layer: 0
   m_Name: MenuController
   m_TagString: Untagged
@@ -1446,7 +1489,21 @@ MonoBehaviour:
   mainPanel: {fileID: 1518368113}
   creditsPanel: {fileID: 0}
   howToPlayPanel: {fileID: 0}
+  sceneLoadOnPlay: ComicIntroSlides
   redSocialLink1: http://instagram.com/bluedaemonart
+--- !u!114 &1957568131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1957568128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b3ac22279fea0b4e80352e8d07f12a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  musicOnStart: {fileID: 8300000, guid: 023579589bcb3e54d9572e87f682dc68, type: 3}
 --- !u!1 &1977590388
 GameObject:
   m_ObjectHideFlags: 0
@@ -1503,17 +1560,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2096540845}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 184662916}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -5.200012, y: -1.4000244}
-  m_SizeDelta: {x: -149.93665, y: -210.2959}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 1, y: 4}
+  m_SizeDelta: {x: 872.89404, y: 996.1343}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2096540847
 MonoBehaviour:
@@ -1535,7 +1592,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 80fb8e8f72fc5824a90e26a192f92080, type: 3}
+  m_Sprite: {fileID: -4010686679515299420, guid: a9aaec6d678d353408a6bb1686b49d5b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
