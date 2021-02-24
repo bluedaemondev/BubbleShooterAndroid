@@ -5,9 +5,12 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 using Text = TMPro.TextMeshProUGUI;
 
+/// <summary>
+/// Probablemente deprecado
+/// </summary>
 public class HudController : MonoBehaviour
 {
-    public static HudController current { get; private set; }
+    public static HudController instance { get; private set; }
 
     [Header("Control de puntos")]
     public Text pointsText;
@@ -16,15 +19,11 @@ public class HudController : MonoBehaviour
 
     private void Awake()
     {
-        if (current == null)
-            current = this;
+        if (instance == null)
+            instance = this;
         
     }
     
-    public void UpdatePointsUI(int newVal)
-    {
-        this.pointsText.text = newVal + " points";
-        this.pointsSlider.value = newVal;
-    }
+    
 
 }

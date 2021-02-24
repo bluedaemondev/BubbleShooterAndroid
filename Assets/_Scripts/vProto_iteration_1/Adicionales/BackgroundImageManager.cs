@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class BackgroundImage : MonoBehaviour
+public class BackgroundImageManager : MonoBehaviour
 {
+    public static BackgroundImageManager instance { get; private set; }
+
     [Header("Todos los backgrounds disponibles")]
     public List<Sprite> listAllAvailableBackgrounds;
 
@@ -16,8 +18,13 @@ public class BackgroundImage : MonoBehaviour
     public int currentIndexSelected = 0;
     private SpriteRenderer sprRendBg;
 
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
+    {
+        if (!instance)
+            instance = this;
+    }
+
+    public void StartShuffleMechanic()
     {
         sprRendBg = GetComponent<SpriteRenderer>();
         LoadSceneBackgroundList();
@@ -49,7 +56,7 @@ public class BackgroundImage : MonoBehaviour
         {
             // pasa a la siguiente cancion
             case ShuffleOptions.Next:
-                currentIndexSelected = Mathf.Clamp(currentIndexSelected + 1, 0, sceneBackgrounds.Count-1);
+                currentIndexSelected = Mathf.Clamp(currentIndexSelected + 1, 0, sceneBackgrounds.Count - 1);
                 this.sprRendBg.sprite = sceneBackgrounds[currentIndexSelected];
                 break;
 

@@ -12,9 +12,16 @@ public class ShuffleMusicManager : MonoBehaviour
     }
 
     public UnityEvent<ShuffleOptions> onShuffleMusic;
+
     public int availableLoopsInRun = 5;
     [Header("Tiempo de repeticion por loop")]
     public float timeRepeatLoop = 10f;
+
+    // para la mecanica de agregar tiempo despues de pasado un loop
+    private float timeRepeatLoopInvoker = 10f;
+
+    [Header("Tiempo a agregar despues de un loop")]
+    public float timeAddAfterLoopEnd = 15f;
 
     [Header("Todos los loops de audio disponibles")]
     public List<AudioClip> listAllAvailableLoops;
@@ -31,16 +38,40 @@ public class ShuffleMusicManager : MonoBehaviour
 
         onShuffleMusic = new UnityEvent<ShuffleOptions>();
     }
-
-    void Start()
+    /// <summary>
+    /// Inicio de mecanica de shuffle / recalculo de lista de musica disponible
+    /// </summary>
+    public void StartShuffleMechanic()
     {
         LoadSceneLoopList();
-        ShuffleMusicManager.instance.onShuffleMusic.AddListener(ChangeLoops);
-        InvokeRepeating("ChangeMusicLoop", timeRepeatLoop, timeRepeatLoop);
+
+        timeRepeatLoopInvoker = CalculateInvokerTime();
+
+        onShuffleMusic.AddListener(ChangeLoops);
+        //InvokeRepeating("ChangeMusicLoop", timeRepeatLoopInvoker, timeRepeatLoopInvoker);
+        StartCoroutine(ChangeBasedOnInvokeTime());
+
     }
+
+    private IEnumerator ChangeBasedOnInvokeTime()
+    {
+        while (currentIndexSelected < sceneLoops.Count)
+        {
+            ChangeMusicLoop();
+            yield return new WaitForSeconds(timeRepeatLoopInvoker);
+        }
+
+    }
+
     private void ChangeMusicLoop()
     {
+        Debug.Log("I control time : " + timeRepeatLoopInvoker);
+        timeRepeatLoopInvoker = CalculateInvokerTime();
         onShuffleMusic.Invoke(ShuffleOptions.Next);
+    }
+    private float CalculateInvokerTime()
+    {
+        return timeRepeatLoop + timeAddAfterLoopEnd * currentIndexSelected;
     }
 
     private void LoadSceneLoopList()

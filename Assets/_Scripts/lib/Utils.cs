@@ -1,10 +1,14 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Utils : MonoBehaviour
 {
     public static Utils instance { get; private set; }
+
+    Camera MainCam;
+
 
     private void Awake()
     {
@@ -23,6 +27,12 @@ public class Utils : MonoBehaviour
 #endif
         return res;
     }
+
+    public void SetMainCamera(Camera mainCamScene)
+    {
+        MainCam = mainCamScene;
+    }
+
     public bool GetContinuousTouch()
     {
         bool res = false;
@@ -33,6 +43,7 @@ public class Utils : MonoBehaviour
 #if UNITY_EDITOR || UNITY_STANDALONE
         res = Input.GetMouseButton(0);
 #endif
+        //Debug.Log("se llama " + res);
         return res;
     }
     public bool GetInitialTouch()
@@ -55,7 +66,7 @@ public class Utils : MonoBehaviour
     }
     public Vector3 MouseToWorldWithoutZ()
     {
-        Vector3 result = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector3 result = MainCam.ScreenToWorldPoint(Input.mousePosition);
         result.z = 0;
         return result;
     }
