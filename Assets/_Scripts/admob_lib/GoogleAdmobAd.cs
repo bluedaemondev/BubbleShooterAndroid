@@ -10,7 +10,7 @@ public class GoogleAdmobAd : MonoBehaviour
 
     public virtual void Start()
     {
-        MobileAds.Initialize(initStatus => { });
+        MobileAds.Initialize(initStatus => {  });
     }
 
     public virtual IEnumerator DelayedResume()

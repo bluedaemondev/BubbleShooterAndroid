@@ -12,7 +12,16 @@ public class AdmobInterstitialScript : GoogleAdmobAd
     // Start is called before the first frame update
     public override void Start()
     {
-        base.Start();
+        //base.Start();
+
+        /// To do : 
+        /// implementar un ad manager para controlar la inicializacion y tener las referencias
+        /// a estos objetos.
+        /// Sacar el inicializador de la clase base y pasarlo al manager
+        /// Implementar una interfaz para tener llamados posibles a la api de google admobs, usando estas llamadas
+        /// propias de tipo de anuncio.
+        /// 
+
 
 
     }
