@@ -9,6 +9,8 @@ public class BubbleShooterSceneActions : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        GameManagerActions.instance.onPause.Invoke();
+
         SetUpRequiredMechanics();
         Utils.instance.SetMainCamera(mainCamScene);
     }
