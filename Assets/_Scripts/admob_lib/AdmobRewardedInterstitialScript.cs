@@ -41,6 +41,11 @@ public class AdmobRewardedInterstitialScript : GoogleAdmobAd
         if (rewardedInterstitial != null)
         {
             rewardedInterstitial.Show(UserEarnedRewardCallback);
+
+            if (!GameManagerActions.instance.isPaused)
+            {
+                GameManagerActions.instance.onPause.Invoke();
+            }
         }
     }
     private void UserEarnedRewardCallback(Reward reward)
@@ -49,32 +54,63 @@ public class AdmobRewardedInterstitialScript : GoogleAdmobAd
         onRewardAfterAd.Invoke(reward);
     }
 
-    private void AdLoadCallback(RewardedInterstitialAd ad, string error) {
-        if(error == null)
+    private void AdLoadCallback(RewardedInterstitialAd ad, string error)
+    {
+        if (error == null)
         {
             rewardedInterstitial = ad;
+
+            rewardedInterstitial.OnAdFailedToPresentFullScreenContent += HandleAdFailedToPresent;
+            rewardedInterstitial.OnAdDidPresentFullScreenContent += HandleAdDidPresent;
+            rewardedInterstitial.OnAdDidDismissFullScreenContent += HandleAdDidDismiss;
+            rewardedInterstitial.OnPaidEvent += HandlePaidEvent;
+
             Debug.Log("Rewarded interstitial finalizado");
             onAdLoadedCallback.Invoke();
         }
     }
-    public override void HandleOnAdOpened(object sender, EventArgs args)
+    public void HandlePaidEvent(object sender, AdValueEventArgs args)
     {
-        base.HandleOnAdOpened(sender, args);
+        print("Rewarded interstitial ad has received a paid event.");
+        this.rewardedInterstitial.OnPaidEvent -= HandlePaidEvent;
+
+        //to do: representacion visual de recompensa
+
+        if (GameManagerActions.instance.isPaused)
+        {
+            StartCoroutine(DelayedResume());
+        }
+        //base.HandleOnAdOpened(sender, args);
     }
-    public override void HandleOnAdLoaded(object sender, EventArgs args)
+    public void HandleAdDidDismiss(object sender, EventArgs args)
     {
-        base.HandleOnAdLoaded(sender, args);
+        print("Rewarded interstitial ad has dismissed presentation.");
+        this.rewardedInterstitial.OnAdDidDismissFullScreenContent -= HandleAdDidDismiss;
+        if (GameManagerActions.instance.isPaused)
+        {
+            StartCoroutine(DelayedResume());
+        }
+
+
+        //base.HandleOnAdLoaded(sender, args);
     }
-    public override void HandleOnAdFailedToLoad(object sender, AdFailedToLoadEventArgs args)
+    public void HandleAdDidPresent(object sender, EventArgs args)
     {
-        base.HandleOnAdFailedToLoad(sender, args);
+        print("Rewarded interstitial ad has presented.");
+        //base.HandleOnAdFailedToLoad(sender, args);
+        this.rewardedInterstitial.OnAdDidPresentFullScreenContent -= HandleAdDidPresent;
+
     }
-    public override void HandleOnAdClosed(object sender, EventArgs args)
+
+    private void HandleAdFailedToPresent(object sender, AdErrorEventArgs args)
     {
-        base.HandleOnAdClosed(sender, args);
+        Debug.Log("Rewarded interstitial ad has failed to present.");
+        this.rewardedInterstitial.OnAdFailedToPresentFullScreenContent -= HandleAdFailedToPresent;
+        if (GameManagerActions.instance.isPaused)
+        {
+            StartCoroutine(DelayedResume());
+        }
     }
-    public override void HandleOnAdLeavingApplication(object sender, EventArgs args)
-    {
-        base.HandleOnAdLeavingApplication(sender, args);
-    }
+
+
 }

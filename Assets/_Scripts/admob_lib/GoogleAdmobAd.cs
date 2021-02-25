@@ -13,6 +13,13 @@ public class GoogleAdmobAd : MonoBehaviour
         MobileAds.Initialize(initStatus => { });
     }
 
+    public virtual IEnumerator DelayedResume()
+    {
+        yield return new WaitForSeconds(1f);
+        GameManagerActions.instance.onResumeGame.Invoke();
+
+    }
+
     public virtual void RequestAd()
     {
         Debug.Log("Loading ad...");

@@ -14,6 +14,7 @@ public class AdmobInterstitialScript : GoogleAdmobAd
     {
         base.Start();
 
+
     }
     public override void RequestAd()
     {
@@ -28,6 +29,18 @@ public class AdmobInterstitialScript : GoogleAdmobAd
 
         // Initialize an InterstitialAd.
         this.interstitial = new InterstitialAd(adUnitId);
+
+        // Called when an ad request has successfully loaded.
+        this.interstitial.OnAdLoaded += HandleOnAdLoaded;
+        // Called when an ad request failed to load.
+        this.interstitial.OnAdFailedToLoad += HandleOnAdFailedToLoad;
+        // Called when an ad is shown.
+        this.interstitial.OnAdOpening += HandleOnAdOpened;
+        // Called when the ad is closed.
+        this.interstitial.OnAdClosed += HandleOnAdClosed;
+        // Called when the ad click caused the user to leave the application.
+        this.interstitial.OnAdLeavingApplication += HandleOnAdLeavingApplication;
+
         // Create an empty ad request.
         AdRequest request = new AdRequest.Builder().Build();
         // Load the interstitial with the request.
@@ -42,28 +55,40 @@ public class AdmobInterstitialScript : GoogleAdmobAd
         {
             GameManagerActions.instance.onPause.Invoke();
         }
+        this.interstitial.OnAdOpening -= HandleOnAdOpened;
+
     }
     public override void HandleOnAdLoaded(object sender, EventArgs args)
     {
         base.HandleOnAdLoaded(sender, args);
         Debug.Log("Sender obj : " + sender.ToString());
+        this.interstitial.OnAdLoaded -= HandleOnAdLoaded;
+
 
     }
     public override void HandleOnAdClosed(object sender, EventArgs args)
     {
         base.HandleOnAdClosed(sender, args);
 
-        GameManagerActions.instance.onResumeGame.Invoke();
+        StartCoroutine(DelayedResume());
+        this.interstitial.OnAdClosed -= HandleOnAdClosed;
+
 
     }
     public override void HandleOnAdFailedToLoad(object sender, AdFailedToLoadEventArgs args)
     {
         base.HandleOnAdFailedToLoad(sender, args);
-        GameManagerActions.instance.onResumeGame.Invoke();
+        StartCoroutine(DelayedResume());
+
+        this.interstitial.OnAdFailedToLoad -= HandleOnAdFailedToLoad;
+
     }
     public override void HandleOnAdLeavingApplication(object sender, EventArgs args)
     {
         base.HandleOnAdLeavingApplication(sender, args);
+        this.interstitial.OnAdLeavingApplication -= HandleOnAdLeavingApplication;
+
     }
 
+    
 }

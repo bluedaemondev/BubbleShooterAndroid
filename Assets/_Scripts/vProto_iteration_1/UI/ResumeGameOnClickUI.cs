@@ -18,7 +18,12 @@ public class ResumeGameOnClickUI : MonoBehaviour
 
     void ResumeGame()
     {
+        StartCoroutine(DelayedResume());
+    }
+    IEnumerator DelayedResume()
+    {
+        yield return new WaitForSeconds(1f);
         GameManagerActions.instance.onResumeGame.Invoke();
-        
+
     }
 }

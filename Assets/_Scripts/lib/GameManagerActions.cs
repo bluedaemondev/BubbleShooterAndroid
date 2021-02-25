@@ -38,6 +38,8 @@ public class GameManagerActions : MonoBehaviour
             winEvent = new UnityEvent();
         if (onPause == null)
             onPause = new UnityEvent();
+        if (onResumeGame == null)
+            onResumeGame = new UnityEvent();
         //if (onTransition == null)
         //    onTransition = new UnityEvent<float, string>();
 
