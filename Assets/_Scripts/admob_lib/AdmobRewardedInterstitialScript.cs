@@ -8,7 +8,7 @@ using System;
 public class AdmobRewardedInterstitialScript : GoogleAdmobAd
 {
     public RewardedInterstitialAd rewardedInterstitial;
-    public string adUnitId = "ca-app-pub-3940256099942544/5224354917";
+    public new string componentTypeStringAdmob = "ca-app-pub-3940256099942544/1033173712";
 
     public UnityEvent onAdLoadedCallback;
     public UnityEvent<Reward> onRewardAfterAd;
@@ -23,16 +23,15 @@ public class AdmobRewardedInterstitialScript : GoogleAdmobAd
     {
         base.Start();
     }
-    /// <summary>
-    /// Llamar para requerir un anuncio, y despues llamar a ShowRewardedInterstitialAd
-    /// </summary>
+
+   
     public override void RequestAd()
     {
         base.RequestAd();
-        // Create an empty ad request.
+
         AdRequest request = new AdRequest.Builder().Build();
-        // Load the rewarded ad with the request.
-        RewardedInterstitialAd.LoadAd(adUnitId, request, AdLoadCallback);
+        RewardedInterstitialAd.LoadAd(componentTypeStringAdmob, request, AdLoadCallback);
+        ShowRewardedInterstitialAd();
 
     }
 
@@ -48,6 +47,7 @@ public class AdmobRewardedInterstitialScript : GoogleAdmobAd
             }
         }
     }
+
     private void UserEarnedRewardCallback(Reward reward)
     {
         Debug.Log("ver que devuelve esto.  T:" + reward.Type + " , Amt: " + reward.Amount);

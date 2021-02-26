@@ -6,11 +6,11 @@ using UnityEngine;
 
 public class GoogleAdmobAd : MonoBehaviour
 {
-    public string appId = "ca-app-pub-3940256099942544/6300978111"; // str dangelo - Banners
+    public string componentTypeStringAdmob = ""; // strs de prueba en branch develop, strs produccion en main.
 
     public virtual void Start()
     {
-        MobileAds.Initialize(initStatus => {  });
+        Debug.Log("Starting ad service");
     }
 
     public virtual IEnumerator DelayedResume()
@@ -20,9 +20,17 @@ public class GoogleAdmobAd : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Llamar para mostrar un anuncio
+    /// </summary>
     public virtual void RequestAd()
     {
         Debug.Log("Loading ad...");
+    }
+
+    public virtual void RequestAd(AdPosition position)
+    {
+        Debug.Log("Loading ad... at " + position.ToString());
     }
 
     public virtual void HandleOnAdLoaded(object sender, EventArgs args)

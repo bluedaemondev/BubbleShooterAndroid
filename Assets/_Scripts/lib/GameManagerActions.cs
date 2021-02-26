@@ -9,9 +9,9 @@ public class GameManagerActions : MonoBehaviour
 {
     public static GameManagerActions instance { get; private set; }
 
-    [Header("Debugging, borrar")]
-    public KeyCode Restart = KeyCode.R;
-    public KeyCode Exit = KeyCode.Escape;
+    //[Header("Debugging, borrar")]
+    //public KeyCode Restart = KeyCode.R;
+    //public KeyCode Exit = KeyCode.Escape;
 
     public UnityEvent defeatEvent;
     public UnityEvent winEvent;

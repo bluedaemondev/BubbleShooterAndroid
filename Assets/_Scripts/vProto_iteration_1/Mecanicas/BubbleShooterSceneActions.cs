@@ -13,6 +13,8 @@ public class BubbleShooterSceneActions : MonoBehaviour
 
         SetUpRequiredMechanics();
         Utils.instance.SetMainCamera(mainCamScene);
+
+        AdmobComponentsManager.instance.RequestBannerAd();
     }
 
     void SetUpRequiredMechanics()

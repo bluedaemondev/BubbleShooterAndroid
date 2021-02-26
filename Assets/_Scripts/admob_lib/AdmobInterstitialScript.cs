@@ -6,38 +6,20 @@ using UnityEngine;
 
 public class AdmobInterstitialScript : GoogleAdmobAd
 {
-    public string appIdInterstitial = "a-app-pub-3940256099942544/1033173712"; // string instertitial
+    public new string appIdInterstitial = "a-app-pub-3940256099942544/1033173712"; // string instertitial
     public InterstitialAd interstitial;
 
     // Start is called before the first frame update
     public override void Start()
     {
-        //base.Start();
-
-        /// To do : 
-        /// implementar un ad manager para controlar la inicializacion y tener las referencias
-        /// a estos objetos.
-        /// Sacar el inicializador de la clase base y pasarlo al manager
-        /// Implementar una interfaz para tener llamados posibles a la api de google admobs, usando estas llamadas
-        /// propias de tipo de anuncio.
-        /// 
-
-
-
+        base.Start();    
     }
     public override void RequestAd()
     {
         base.RequestAd();
-#if UNITY_ANDROID
-        string adUnitId = "ca-app-pub-3940256099942544/1033173712";
-#elif UNITY_IPHONE
-        string adUnitId = "ca-app-pub-3940256099942544/4411468910";
-#else
-        string adUnitId = "unexpected_platform";
-#endif
 
         // Initialize an InterstitialAd.
-        this.interstitial = new InterstitialAd(adUnitId);
+        this.interstitial = new InterstitialAd(componentTypeStringAdmob);
 
         // Called when an ad request has successfully loaded.
         this.interstitial.OnAdLoaded += HandleOnAdLoaded;

@@ -1453,6 +1453,7 @@ GameObject:
   - component: {fileID: 1957568129}
   - component: {fileID: 1957568130}
   - component: {fileID: 1957568131}
+  - component: {fileID: 1957568132}
   m_Layer: 0
   m_Name: MenuController
   m_TagString: Untagged
@@ -1504,6 +1505,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   musicOnStart: {fileID: 8300000, guid: 023579589bcb3e54d9572e87f682dc68, type: 3}
+--- !u!114 &1957568132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1957568128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cbceeb5c34982641815b528d98388f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  toLoad: 0
 --- !u!1 &1977590388
 GameObject:
   m_ObjectHideFlags: 0
