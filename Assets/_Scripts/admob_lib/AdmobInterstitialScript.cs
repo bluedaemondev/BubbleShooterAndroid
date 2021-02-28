@@ -9,14 +9,14 @@ public class AdmobInterstitialScript : GoogleAdmobAd
     public new string appIdInterstitial = "a-app-pub-3940256099942544/1033173712"; // string instertitial
     public InterstitialAd interstitial;
 
+
     // Start is called before the first frame update
     public override void Start()
     {
-        base.Start();    
+        base.Start();
     }
     public override void RequestAd()
     {
-        base.RequestAd();
 
         // Initialize an InterstitialAd.
         this.interstitial = new InterstitialAd(componentTypeStringAdmob);
@@ -36,6 +36,9 @@ public class AdmobInterstitialScript : GoogleAdmobAd
         AdRequest request = new AdRequest.Builder().Build();
         // Load the interstitial with the request.
         this.interstitial.LoadAd(request);
+        this.interstitial.Show();
+
+        base.RequestAd();
 
 
     }
@@ -45,7 +48,9 @@ public class AdmobInterstitialScript : GoogleAdmobAd
         if (!GameManagerActions.instance.isPaused)
         {
             GameManagerActions.instance.onPause.Invoke();
+            //AdmobComponentsManager.instance.onSendToTopAds.Invoke();
         }
+
         this.interstitial.OnAdOpening -= HandleOnAdOpened;
 
     }
@@ -53,6 +58,8 @@ public class AdmobInterstitialScript : GoogleAdmobAd
     {
         base.HandleOnAdLoaded(sender, args);
         Debug.Log("Sender obj : " + sender.ToString());
+
+
         this.interstitial.OnAdLoaded -= HandleOnAdLoaded;
 
 
@@ -64,6 +71,7 @@ public class AdmobInterstitialScript : GoogleAdmobAd
         StartCoroutine(DelayedResume());
         this.interstitial.OnAdClosed -= HandleOnAdClosed;
 
+        AdmobComponentsManager.instance.onSendToBackAds.Invoke();
 
     }
     public override void HandleOnAdFailedToLoad(object sender, AdFailedToLoadEventArgs args)
@@ -81,5 +89,5 @@ public class AdmobInterstitialScript : GoogleAdmobAd
 
     }
 
-    
+
 }

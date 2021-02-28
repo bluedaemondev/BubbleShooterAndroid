@@ -4,17 +4,13 @@ using UnityEngine;
 
 public class BubbleShooterSceneActions : MonoBehaviour
 {
-    public Camera mainCamScene;
+    //public ShooterSceneResources sceneResources;
 
-    // Start is called before the first frame update
     void Start()
     {
-        GameManagerActions.instance.onPause.Invoke();
 
         SetUpRequiredMechanics();
-        Utils.instance.SetMainCamera(mainCamScene);
 
-        AdmobComponentsManager.instance.RequestBannerAd();
     }
 
     void SetUpRequiredMechanics()

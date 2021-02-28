@@ -13,26 +13,27 @@ public class AdmobRewardedInterstitialScript : GoogleAdmobAd
     public UnityEvent onAdLoadedCallback;
     public UnityEvent<Reward> onRewardAfterAd;
 
-    private void Awake()
-    {
-        this.onAdLoadedCallback = new UnityEvent();
-        this.onRewardAfterAd = new UnityEvent<Reward>();
-    }
+    //private void Awake()
+    //{
+    //}
 
     public override void Start()
     {
         base.Start();
+        this.onAdLoadedCallback = new UnityEvent();
+        this.onRewardAfterAd = new UnityEvent<Reward>();
+
     }
 
-   
+
     public override void RequestAd()
     {
-        base.RequestAd();
 
         AdRequest request = new AdRequest.Builder().Build();
         RewardedInterstitialAd.LoadAd(componentTypeStringAdmob, request, AdLoadCallback);
         ShowRewardedInterstitialAd();
 
+        base.RequestAd();
     }
 
     public void ShowRewardedInterstitialAd()

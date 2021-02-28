@@ -19,8 +19,6 @@ public class AdmobBannerScript : GoogleAdmobAd
 
     public override void RequestAd(AdPosition positionOnScreen = AdPosition.Bottom)
     {
-        base.RequestAd(positionOnScreen);
-
         // Create a 320x50 banner at the top of the screen.
         this.bannerView = new BannerView(componentTypeStringAdmob, AdSize.Banner, positionOnScreen);
         
@@ -29,6 +27,8 @@ public class AdmobBannerScript : GoogleAdmobAd
 
         // Load the banner with the request.
         this.bannerView.LoadAd(request);
+
+        base.RequestAd(positionOnScreen);
     }
 
     

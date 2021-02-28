@@ -6,16 +6,17 @@ using Random = UnityEngine.Random;
 
 public class Bubble : MonoBehaviour, IPooleableObject
 {
-    [Header("Colores disponibles")]
-    public List<Color> colorBubbles = new List<Color>
-    {
-        Color.red,
-        Color.green,
-        Color.blue,
-        Color.yellow,
-        Color.magenta
-    };
-    public Color selectedColor;
+    //[Header("Colores disponibles")]
+    //public List<Color> colorBubbles = new List<Color>
+    //{
+    //    Color.red,
+    //    Color.green,
+    //    Color.blue,
+    //    Color.yellow,
+    //    Color.magenta
+    //};
+    [Header("Tipo de burbuja cargado")]
+    public BubbleType selectedColor;
     public bool processed;
 
     // posicion en coordenadas reales.
@@ -30,22 +31,29 @@ public class Bubble : MonoBehaviour, IPooleableObject
     Vector3 lastVelocity;
     public Rigidbody2D rb;
 
-    bool throwableMutated;
+    public bool throwableMutated;
 
     void Start()
     {
         this.sprRend = GetComponent<SpriteRenderer>();
         TileGrid.instance.onResetProcessed.AddListener(this.ResetProcessed);
         TileGrid.instance.onRemoveCluster.AddListener(this.RemoveFromGrid);
+        GameManagerActions.instance.defeatEvent.AddListener(this.DisableCollider);
+        GameManagerActions.instance.winEvent.AddListener(this.DisableCollider);
+
     }
 
     #region Debugging
     void OnMouseDown()
     {
-        Debug.Log("CLICK EN ROW: " + this.rowRaw + " , COL: " + this.colRaw);
+        //Debug.Log("CLICK EN ROW: " + this.rowRaw + " , COL: " + this.colRaw);
     }
     #endregion
 
+    void DisableCollider()
+    {
+        GetComponent<Collider2D>().enabled = false;
+    }
     void ResetProcessed()
     {
         this.processed = false;
@@ -78,15 +86,17 @@ public class Bubble : MonoBehaviour, IPooleableObject
 
     public void OnObjectSpawn(int row, int col, float tileSize)
     {
+        gameObject.SetActive(true);
         GenerateColor();
         GenerateNewCoords(row, col, tileSize);
     }
     private void GenerateColor()
     {
-        int rndColor = Random.Range(0, colorBubbles.Count);
+        int rndColor = Random.Range(0, BubbleResources.instance.bubbleResources.Count);
 
-        this.sprRend.color = colorBubbles[rndColor];
-        this.selectedColor = this.sprRend.color;
+        //this.sprRend.color = colorBubbles[rndColor];
+        this.selectedColor = BubbleResources.instance.bubbleResources[rndColor];
+        this.sprRend.sprite = selectedColor.sprite;
 
     }
 
@@ -169,16 +179,46 @@ public class Bubble : MonoBehaviour, IPooleableObject
 
         if (TileGrid.instance.grid[colHit, rowHit] != null)
         {
-            for (int newRow = rowHit + 1; newRow < TileGrid.instance.grid.GetLength(1); newRow++) // esto 
+            var hitBubble = TileGrid.instance.grid[colHit, rowHit];
+
+            //Debug.Log("Hit handling at x:" + hitBubble.colRaw + ", y: " + hitBubble.rowRaw);
+            //Debug.Log("Pos hit nearest = " + posHitAprox);
+
+            BubbleNeighbor neighborComparer = new BubbleNeighbor();
+            var listNeighborOffset = neighborComparer.GetTileOffsetsBasedOnParity(rowHit % 2);
+
+            // mayor que el punto mas izquierdo de la burbuja?
+            if(hitBubble.ColXPosition - TileGrid.instance.tileSize/2 >= transform.position.x)
             {
-                //buscar offset vecino
-                if (TileGrid.instance.grid[colHit, newRow] == null) // esto estaba con != 22/2 2:07
-                {
-                    rowHit = newRow;
-                    addTile = true;
-                    break;
-                }
+                ///todo:
+                ///implementar algoritmo de cercania
             }
+
+            //// right neighbor null?
+            //if (TileGrid.instance.grid[colHit + 1, rowHit] == null)
+            //{
+            //    colHit = colHit + 1;
+            //    addTile = true;
+
+            //}
+            //else if (TileGrid.instance.grid[colHit - 1, rowHit] == null)
+            //{
+            //    colHit = colHit - 1;
+            //    addTile = true;
+            //}
+
+            //// default search
+            //if (!addTile)
+            //    for (int newRow = rowHit + 1; newRow < TileGrid.instance.grid.GetLength(1); newRow++) // esto 
+            //    {
+            //        //buscar offset vecino
+            //        if (TileGrid.instance.grid[colHit, newRow] == null) // esto estaba con != 22/2 2:07
+            //        {
+            //            rowHit = newRow;
+            //            addTile = true;
+            //            break;
+            //        }
+            //    }
         }
         else
         {
@@ -193,7 +233,7 @@ public class Bubble : MonoBehaviour, IPooleableObject
             GenerateNewCoords(rowRaw, colRaw, TileGrid.instance.tileSize);
 
             //TileGrid.instance.cluster = TileGrid.instance.GetCluster(colHit, rowHit, true);
-            TileGrid.instance.grid[colHit, rowHit] = this;
+            TileGrid.instance.grid[colRaw, rowRaw] = this;
             if (GameManagerActions.instance.CheckGameOver())
                 return;
             TileGrid.instance.SetCurrentCluster(colHit, rowHit, true, true);

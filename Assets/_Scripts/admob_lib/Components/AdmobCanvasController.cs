@@ -6,7 +6,9 @@ public class AdmobCanvasController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        this.canvas = GetComponent<Canvas>();
+        if (!canvas)
+            this.canvas = GetComponent<Canvas>();
+
         AdmobComponentsManager.instance.onSendToTopAds.AddListener(this.SendFront);
         AdmobComponentsManager.instance.onSendToBackAds.AddListener(this.SendBack);
 

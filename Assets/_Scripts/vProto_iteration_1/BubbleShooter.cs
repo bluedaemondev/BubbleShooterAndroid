@@ -73,7 +73,7 @@ public class BubbleShooter : MonoBehaviour
 
         thrown.SetImpulseForce(force);
 
-
+        TickSystem.instance.Tick();
         CurrentBubbleSwitch.instance.onSwitchBubble.Invoke();
         StartCoroutine(ResumeAfterTime(cooldownBubbleShoot));
     }

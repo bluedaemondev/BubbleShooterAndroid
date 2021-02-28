@@ -26,11 +26,15 @@ public class GoogleAdmobAd : MonoBehaviour
     public virtual void RequestAd()
     {
         Debug.Log("Loading ad...");
+        AdmobComponentsManager.instance.onSendToTopAds.Invoke();
+
     }
 
     public virtual void RequestAd(AdPosition position)
     {
         Debug.Log("Loading ad... at " + position.ToString());
+        AdmobComponentsManager.instance.onSendToTopAds.Invoke();
+
     }
 
     public virtual void HandleOnAdLoaded(object sender, EventArgs args)
@@ -47,6 +51,7 @@ public class GoogleAdmobAd : MonoBehaviour
     public virtual void HandleOnAdOpened(object sender, EventArgs args)
     {
         MonoBehaviour.print("HandleAdOpened event received");
+
     }
 
     public virtual void HandleOnAdClosed(object sender, EventArgs args)

@@ -4,10 +4,12 @@ using UnityEngine;
 
 using Text = TMPro.TextMeshProUGUI;
 using Slider = UnityEngine.UI.Slider;
-
+using UnityEngine.SceneManagement;
 
 public class ProgressSceneLoader : MonoBehaviour
 {
+    public static ProgressSceneLoader instance { get; private set; }
+
     [SerializeField]
     private Text progressText;
     [SerializeField]
@@ -19,14 +21,24 @@ public class ProgressSceneLoader : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        canvas = GetComponentInChildren<Canvas>(true);
-        var loaders = FindObjectsOfType<ProgressSceneLoader>();
-
-        if (loaders.Length < 2)
+        if (!instance)
+        {
+            instance = this;
             DontDestroyOnLoad(gameObject);
+        }
         else
-            for (int extra = 1; extra < loaders.Length; extra++)
-                Destroy(loaders[extra].gameObject);
+        {
+            Destroy(this);
+        }
+
+        canvas = GetComponentInChildren<Canvas>(true);
+        //var loaders = FindObjectsOfType<ProgressSceneLoader>();
+
+        //if (loaders.Length < 2)
+        //    DontDestroyOnLoad(gameObject);
+        //else
+        //    for (int extra = 1; extra < loaders.Length; extra++)
+        //        Destroy(loaders[extra].gameObject);
     }
 
     // Update is called once per frame
@@ -50,18 +62,24 @@ public class ProgressSceneLoader : MonoBehaviour
             yield return null;
         }
         UpdateProgressUI(operation.progress);
+
+        // pongo activa la nueva escena cargada
+        SceneManager.SetActiveScene(SceneManager.GetSceneAt(SceneManager.sceneCount - 1));
+        // saco la vieja
+        SceneManager.UnloadSceneAsync(SceneManager.GetSceneAt(SceneManager.sceneCount - 2));
+
         operation = null;
         canvas.gameObject.SetActive(false);
         //cameraToDisable.SetActive(false);
 
 
-        var tanda = FindObjectOfType<AdmobInterstitialScript>();
+        //var tanda = FindObjectOfType<AdmobInterstitialScript>();
 
-        tanda.RequestAd();
-        if (tanda.interstitial.IsLoaded())
-        {
-            tanda.interstitial.Show();
-        }
+        //tanda.RequestAd();
+        //if (tanda.interstitial.IsLoaded())
+        //{
+        //    tanda.interstitial.Show();
+        //}
 
     }
     private void UpdateProgressUI(float progress)

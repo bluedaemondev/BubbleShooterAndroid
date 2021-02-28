@@ -65,7 +65,8 @@ public class ImageSequenceUIController : MonoBehaviour
     public void Skip()
     {
         this.SetImage(comicSlides.Count - 1);
-        FindObjectOfType<ProgressSceneLoader>().LoadScene(sceneLoadAfter);
+        //FindObjectOfType<ProgressSceneLoader>().LoadScene(sceneLoadAfter);
+        ProgressSceneLoader.instance.LoadScene(sceneLoadAfter);
         SceneManager.UnloadSceneAsync("ComicIntroSlides");
 
     }

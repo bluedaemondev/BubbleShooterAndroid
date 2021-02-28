@@ -23,8 +23,12 @@ public class TileGrid : MonoBehaviour
 
     private void Awake()
     {
-        if (!instance)
+        //if (instance)
+        //    Destroy(instance);
+
+        //if (!instance)
             instance = this;
+        
 
         Debug.Log("Generando mapa...");
         GenerateGrid();
@@ -57,7 +61,7 @@ public class TileGrid : MonoBehaviour
 
     private void GenerateGrid()
     {
-        this.grid = new Bubble[cols, rows + 10];
+        instance.grid = new Bubble[cols, rows + 10];
 
         for (int row = 0; row < rows; row++)
         {
@@ -66,7 +70,8 @@ public class TileGrid : MonoBehaviour
                 GameObject refTile = (GameObject)ObjectPooler.instance.SpawnFromPool("bubble");
                 var bubble = refTile.GetComponent<Bubble>();
                 bubble.OnObjectSpawn(row, col, tileSize);
-                grid[col, row] = bubble;
+                instance.grid[col, row] = bubble;
+                instance.grid[col, row].gameObject.SetActive(true);
 
             }
         }
@@ -91,7 +96,7 @@ public class TileGrid : MonoBehaviour
             var nYpos = (int)(tile.rowRaw + nArr[pos].y);
 
             // validacion de datos
-            if (nXpos >= 0 && nXpos < this.cols && nYpos >= 0 && nYpos < this.rows)
+            if (nXpos >= 0 && nXpos < instance.cols && nYpos >= 0 && nYpos < instance.rows)
             {
                 neighbors.Add(grid[nXpos, nYpos]);
             }
@@ -123,7 +128,7 @@ public class TileGrid : MonoBehaviour
         {
             var currentTile = toProcess.Pop();
             // si es del mismo el color o no hace falta que sea match por color
-            if (!matchColor || currentTile.selectedColor == targetTile.selectedColor)
+            if (!matchColor || currentTile.selectedColor.type == targetTile.selectedColor.type)
             {
                 foundCluster.Add(currentTile);
                 var neighbors = GetNeighbors(currentTile);
@@ -190,7 +195,7 @@ public class TileGrid : MonoBehaviour
 
     public void SetCurrentCluster(int colHit, int rowHit, bool matchColor, bool reset)
     {
-        this.cluster = GetCluster(colHit, rowHit, matchColor, reset);
+        instance.cluster = GetCluster(colHit, rowHit, matchColor, reset);
         if (cluster.Count >= 3)
         {
             onRemoveCluster.Invoke(colHit, rowHit, cluster.Count); // paso la cantidad de burbujas al contador de puntos
@@ -235,5 +240,31 @@ public class TileGrid : MonoBehaviour
         //    floatingclusters.Remove(floatingclusters[floatingclusters.Count - 1]);
 
         //}
+    }
+
+    /// <summary>
+    /// Trasnforma una coordenada aproximada del mundo a una coordenada local de grilla
+    /// </summary>
+    /// <param name="posToParse">Posicion a transformar</param>
+    /// <returns>(X,Y)</returns>
+    public Tuple<int, int> WorldToGridPosition(Vector2 posToParse, int colKnown, int rowKnown)
+    {
+        
+
+        bool isEvenRow = rowKnown % 2 == 0;
+        if (isEvenRow)
+            posToParse.x += 0.1f;
+        else
+            posToParse.x -= 0.1f;
+
+        int Item1 = (int)(posToParse.x / tileSize);
+        int Item2 = (int)(posToParse.y / -tileSize);
+        
+        //if (isEvenRow)
+        //    res.x += 0.1f;
+
+
+        return new Tuple<int, int>(Item1,Item2);
+
     }
 }

@@ -5,13 +5,17 @@ using UnityEngine;
 public class PopupCanvasUIController : MonoBehaviour
 {
     public CanvasGroup cgPopup;
-    bool shown = false;
+    public Canvas canvasOrigin;
+    public bool shown = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        this.cgPopup = GetComponentInChildren<CanvasGroup>();
+        if (!cgPopup)
+            this.cgPopup = GetComponentInChildren<CanvasGroup>();
+        
         this.cgPopup.alpha = 0;
+        SubscribeToCorrespondingEvent();
     }
 
     public virtual void SubscribeToCorrespondingEvent()
@@ -27,6 +31,7 @@ public class PopupCanvasUIController : MonoBehaviour
             GameManagerActions.instance.onPause.Invoke();
             StartCoroutine(TransitionPopupShow());
             shown = true;
+            this.canvasOrigin.sortingOrder = 10;
         }
     }
 

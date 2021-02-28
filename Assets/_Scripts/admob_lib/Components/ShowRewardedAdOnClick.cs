@@ -16,12 +16,8 @@ public class ShowRewardedAdOnClick : MonoBehaviour
 
     public void ShowRewardedAd()
     {
-        var rewardedIntstInstance = FindObjectOfType<AdmobRewardedInterstitialScript>();
-        rewardedIntstInstance.RequestAd();
-
-        rewardedIntstInstance.ShowRewardedInterstitialAd();
-
-        AdmobComponentsManager.instance.onSendToTopAds.Invoke();
+        AdmobComponentsManager.instance.RequestRewardedAd();
+        //AdmobComponentsManager.instance.onSendToTopAds.Invoke();
     }
 
 }

@@ -37,7 +37,8 @@ public class MainMenuUIScript : MonoBehaviour
     }
     public void PlayNextScene()
     {
-        FindObjectOfType<ProgressSceneLoader>().LoadScene(sceneLoadOnPlay);
+        //FindObjectOfType<ProgressSceneLoader>().LoadScene(sceneLoadOnPlay);
+        ProgressSceneLoader.instance.LoadScene(sceneLoadOnPlay);
         SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("MainMenu"));
         
         //this.mainPanel.SetActive(false);

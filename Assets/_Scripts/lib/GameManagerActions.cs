@@ -17,6 +17,7 @@ public class GameManagerActions : MonoBehaviour
     public UnityEvent winEvent;
     public UnityEvent onPause;
     public UnityEvent onResumeGame;
+    public UnityEvent onLoadGameScene;
 
     // transition = timeTransition:float , sceneNameToLoad:string
     //public UnityEvent<float, string> onTransition;
@@ -77,7 +78,8 @@ public class GameManagerActions : MonoBehaviour
     }
     public AsyncOperation LoadSceneByNameAsync(string sceneName)
     {
-        return SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+        var operation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+        return operation;
     }
 
     #region Deprecated
