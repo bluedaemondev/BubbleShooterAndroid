@@ -4,17 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
+[System.Serializable]
 public class Bubble : MonoBehaviour, IPooleableObject
 {
-    //[Header("Colores disponibles")]
-    //public List<Color> colorBubbles = new List<Color>
-    //{
-    //    Color.red,
-    //    Color.green,
-    //    Color.blue,
-    //    Color.yellow,
-    //    Color.magenta
-    //};
     [Header("Tipo de burbuja cargado")]
     public BubbleType selectedColor;
     public bool processed;
@@ -32,9 +24,11 @@ public class Bubble : MonoBehaviour, IPooleableObject
     public Rigidbody2D rb;
 
     public bool throwableMutated;
+    public Transform myTransform;
 
     void Start()
     {
+        myTransform = GetComponent<Transform>();
         this.sprRend = GetComponent<SpriteRenderer>();
         TileGrid.instance.onResetProcessed.AddListener(this.ResetProcessed);
         TileGrid.instance.onRemoveCluster.AddListener(this.RemoveFromGrid);
@@ -148,6 +142,7 @@ public class Bubble : MonoBehaviour, IPooleableObject
             var hitCollider = collisionInfo.collider;
             HandleSnapIntoGrid(hitCollider.ClosestPoint(transform.position), hitCollider.GetComponent<Bubble>().colRaw, hitCollider.GetComponent<Bubble>().rowRaw);
             this.processed = true;
+
         }
 
 
@@ -157,8 +152,7 @@ public class Bubble : MonoBehaviour, IPooleableObject
     void HandleSnapIntoGrid(Vector2 posHitAprox, int colHit, int rowHit)
     {
         throwableMutated = false;
-        Destroy(this.rb);
-        gameObject.layer = LayerMask.NameToLayer("attachTo");
+        
 
 
         transform.parent = TileGrid.instance.transform;
@@ -173,89 +167,146 @@ public class Bubble : MonoBehaviour, IPooleableObject
         else if (rowHit >= TileGrid.instance.rows)
             rowHit = TileGrid.instance.rows - 1;
 
-        //for (int newRow = rowHit + 1; newRow < TileGrid.instance.rows; newRow++)
-        //{
-        bool addTile = false;
+        //bool addTile = false;
+        var radius = TileGrid.instance.tileSize / 2;
 
         if (TileGrid.instance.grid[colHit, rowHit] != null)
         {
             var hitBubble = TileGrid.instance.grid[colHit, rowHit];
 
-            //Debug.Log("Hit handling at x:" + hitBubble.colRaw + ", y: " + hitBubble.rowRaw);
-            //Debug.Log("Pos hit nearest = " + posHitAprox);
+            Debug.Log("Hit handling at x:" + hitBubble.colRaw + ", y: " + hitBubble.rowRaw);
 
             BubbleNeighbor neighborComparer = new BubbleNeighbor();
             var listNeighborOffset = neighborComparer.GetTileOffsetsBasedOnParity(rowHit % 2);
 
-            // mayor que el punto mas izquierdo de la burbuja?
-            if(hitBubble.ColXPosition - TileGrid.instance.tileSize/2 >= transform.position.x)
-            {
-                ///todo:
-                ///implementar algoritmo de cercania
-            }
-
-            //// right neighbor null?
-            //if (TileGrid.instance.grid[colHit + 1, rowHit] == null)
+            #region por posicion (no anda)
+            //// Cuadrante A y D
+            //// presente.x - radio >= entrante.x
+            //if (hitBubble.transform.position.x - radius >= transform.position.x)
             //{
-            //    colHit = colHit + 1;
-            //    addTile = true;
+            //    //LADO IZQUIERDO
 
-            //}
-            //else if (TileGrid.instance.grid[colHit - 1, rowHit] == null)
-            //{
-            //    colHit = colHit - 1;
-            //    addTile = true;
-            //}
-
-            //// default search
-            //if (!addTile)
-            //    for (int newRow = rowHit + 1; newRow < TileGrid.instance.grid.GetLength(1); newRow++) // esto 
+            //    // Camino cuadrante D
+            //    if (hitBubble.transform.position.x - radius >= transform.position.y)
             //    {
-            //        //buscar offset vecino
-            //        if (TileGrid.instance.grid[colHit, newRow] == null) // esto estaba con != 22/2 2:07
+            //        Debug.Log("About to snap to Quadrant D : (" + colHit + ", " + rowHit + ")");
+
+            //        // Desplazamiento abajo / abajo a la izquierda
+            //        colHit = colHit + (int)listNeighborOffset[4].x;
+            //        rowHit = rowHit + (int)listNeighborOffset[4].y;
+
+            //        Debug.Log("Snap to Quadrant D : (" + colHit + ", " + rowHit + ")");
+            //    }
+            //    // Camino cuadrante A
+            //    else if(hitBubble.transform.position.x + radius <= transform.position.y)
+            //    {
+            //        Debug.Log("About to snap to Quadrant A : (" + colHit + ", " + rowHit + ")");
+            //        // Desplazamiento arriba / arriba a la izquierda
+            //        colHit = colHit + (int)listNeighborOffset[2].x;
+            //        rowHit = rowHit + (int)listNeighborOffset[2].y;
+
+            //        Debug.Log("Snap to Quadrant A : (" + colHit + ", " + rowHit + ")");
+            //    }
+            //    else
+            //    {
+            //        Debug.Log("Algo que no tendria que pasar : (" + colHit + ", " + rowHit + ")");
+
+            //    }
+            //}
+            //// Cuadrante B y C, e intermedios indefinidos
+            //else
+            //{
+            //    // Camino cuadrante B
+            //    if (hitBubble.transform.position.x + TileGrid.instance.tileSize / 2 <= transform.position.y)//<= transform.position.y)
+            //    {
+            //        Debug.Log("About to snap to Quadrant B : (" + colHit + ", " + rowHit + ")");
+
+            //        // Desplazamiento arriba a la derecha
+            //        colHit = colHit + (int)listNeighborOffset[1].x;
+            //        rowHit = rowHit + (int)listNeighborOffset[1].y;
+
+            //        Debug.Log("Snap to Quadrant B : (" + colHit + ", " + rowHit + ")");
+            //    }
+            //    // Camino cuadrante D
+            //    else if (hitBubble.transform.position.x - TileGrid.instance.tileSize / 2 >= transform.position.y)
+            //    {
+            //        Debug.Log("About to snap to Quadrant D : (" + colHit + ", " + rowHit + ")");
+
+            //        // Desplazamiento abajo a la derecha
+            //        colHit = colHit + (int)listNeighborOffset[5].x;
+            //        rowHit = rowHit + (int)listNeighborOffset[5].y;
+            //        Debug.Log("About to snap to Quadrant D : (" + colHit + ", " + rowHit + ")");
+
+            //    }
+            //    // Medios a la derecha e izquierda
+            //    else
+            //    {
+            //        if (hitBubble.transform.position.x + TileGrid.instance.tileSize / 2 <= transform.position.x)
             //        {
-            //            rowHit = newRow;
-            //            addTile = true;
-            //            break;
+            //            Debug.Log("About to snap to MED-R : (" + colHit + ", " + rowHit + ")");
+
+            //            // Desplazamiento derecha
+            //            colHit = colHit + (int)listNeighborOffset[0].x;
+            //            rowHit = rowHit + (int)listNeighborOffset[0].y;
+            //            Debug.Log("Snap to MED-R : (" + colHit + ", " + rowHit + ")");
+
+            //        }
+            //        else
+            //        {
+            //            Debug.Log("About to snap to MED-L : (" + colHit + ", " + rowHit + ")");
+
+            //            // Desplazamiento izquierda
+            //            colHit = colHit + (int)listNeighborOffset[3].x;
+            //            rowHit = rowHit + (int)listNeighborOffset[3].y;
+            //            Debug.Log("Snap to MED-L : (" + colHit + ", " + rowHit + ")");
+
             //        }
             //    }
+
+            //}
+            #endregion
+            bool foundPos = false;
+            for (int neighbor = 0; neighbor < listNeighborOffset.Length; neighbor++)
+            {
+                var cast = Physics2D.CircleCastAll(hitBubble.transform.position, radius, listNeighborOffset[neighbor]);
+                //List<Bubble> bjkl = new List<Bubble>();
+
+                //foreach (var found in cast)
+                //    bjkl.Add(found.collider.GetComponent<Bubble>());
+
+                //Debug.Log(cast.Length);
+
+                foreach (var found in cast)
+                    if (found.collider.gameObject != gameObject)
+                    {
+                        Debug.Log("found bubble at neighbor offset " + listNeighborOffset[neighbor].ToString());
+
+                        colHit = hitBubble.GetComponent<Bubble>().colRaw + (int)listNeighborOffset[neighbor].x;
+                        rowHit = hitBubble.GetComponent<Bubble>().rowRaw + (int)listNeighborOffset[neighbor].y; //hitbubble
+                        foundPos = true;
+                        break;
+                    }
+
+                if (foundPos)
+                    break;
+            }
+            Destroy(this.rb);
+            gameObject.layer = LayerMask.NameToLayer("attachTo");
         }
-        else
-        {
-            addTile = true;
-        }
 
-        if (addTile)
-        {
-            this.colRaw = colHit;
-            this.rowRaw = rowHit;
+        this.colRaw = colHit;
+        this.rowRaw = rowHit;
 
-            GenerateNewCoords(rowRaw, colRaw, TileGrid.instance.tileSize);
+        GenerateNewCoords(rowRaw, colRaw, TileGrid.instance.tileSize);
 
-            //TileGrid.instance.cluster = TileGrid.instance.GetCluster(colHit, rowHit, true);
-            TileGrid.instance.grid[colRaw, rowRaw] = this;
-            if (GameManagerActions.instance.CheckGameOver())
-                return;
-            TileGrid.instance.SetCurrentCluster(colHit, rowHit, true, true);
+        //TileGrid.instance.cluster = TileGrid.instance.GetCluster(colHit, rowHit, true);
 
-        }
+        TileGrid.instance.grid[colRaw, rowRaw] = this;
 
+        if (GameManagerActions.instance.CheckGameOver())
+            return;
 
-        //TileGrid.instance.grid[colHit, rowHit] = this;
-
-
-
-        //this.colRaw = colHit;
-        //this.rowRaw = rowHit;
-
-        ////TileGrid.instance.cluster = TileGrid.instance.GetCluster(colHit, rowHit, true);
         //TileGrid.instance.SetCurrentCluster(colHit, rowHit, true, true);
-
-        //}
-
-
-
-
     }
     #endregion
 }

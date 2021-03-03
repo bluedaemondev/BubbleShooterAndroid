@@ -13,7 +13,9 @@ public class TileGrid : MonoBehaviour
     public float tileSize = 0.5f;
 
     public BubbleNeighbor neighborOffsetArray;
+    
     public Bubble[,] grid;
+    
     public List<Bubble> cluster;
     public List<Bubble> floatingclusters;
 
@@ -188,6 +190,8 @@ public class TileGrid : MonoBehaviour
                 }
             }
         }
+
+        Debug.Log(foundFloatingClusters);
 
         return foundFloatingClusters;
 

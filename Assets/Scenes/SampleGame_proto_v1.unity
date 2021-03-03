@@ -1485,6 +1485,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5418949626391937934, guid: bcae947fc64dece43a3f9066132693ea, type: 3}
+      propertyPath: m_TargetDisplay
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5418949626489349558, guid: bcae947fc64dece43a3f9066132693ea, type: 3}
       propertyPath: m_fontAsset
       value: 
@@ -1496,6 +1500,14 @@ PrefabInstance:
     - target: {fileID: 5418949626489349558, guid: bcae947fc64dece43a3f9066132693ea, type: 3}
       propertyPath: m_fontSize
       value: 72
+      objectReference: {fileID: 0}
+    - target: {fileID: 5857322927226686190, guid: bcae947fc64dece43a3f9066132693ea, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0.00018310547
+      objectReference: {fileID: 0}
+    - target: {fileID: 5857322927226686190, guid: bcae947fc64dece43a3f9066132693ea, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0.00036621094
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bcae947fc64dece43a3f9066132693ea, type: 3}
