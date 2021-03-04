@@ -8,8 +8,11 @@ public class TileGrid : MonoBehaviour
 {
     public static TileGrid instance { get; private set; }
 
-    public int rows = 20;
-    public int cols = 11;
+    [SerializeField]
+    int rows = 20;
+    [SerializeField]
+    int cols = 11;
+
     public float tileSize = 0.5f;
 
     public BubbleNeighbor neighborOffsetArray;
@@ -47,7 +50,9 @@ public class TileGrid : MonoBehaviour
 
     private void GenerateGrid()
     {
-        instance.grid = new Bubble[cols, rows + 10];
+        rows = rows + 10; // Posible problema en reinicio de mapa
+        instance.grid = new Bubble[cols,rows];
+
 
         for (int row = 0; row < rows; row++)
         {
@@ -79,10 +84,33 @@ public class TileGrid : MonoBehaviour
             var nXpos = (int)(tile.colRaw + nArr[pos].x);
             var nYpos = (int)(tile.rowRaw + nArr[pos].y);
 
+            if (nXpos < 0)
+                nXpos = 0;
+            else if (nXpos > instance.grid.GetLength(0))
+                nXpos = instance.grid.GetLength(0);
+
+            if (nYpos < 0)
+                nYpos = 0;
+            else if (nXpos > instance.grid.GetLength(1))
+                nXpos = instance.grid.GetLength(1);
+
+            Debug.Log(instance.grid.GetLength(0) + " " + instance.grid.GetLength(1) + " ==? " + instance.cols + " " + instance.rows);
+
             // validacion de datos
-            if (nXpos >= 0 && nXpos < instance.cols && nYpos >= 0 && nYpos < instance.rows)
+            if (nXpos >= 0 && nXpos <= instance.cols && nYpos >= 0 && nYpos <= instance.rows)
             {
-                neighbors.Add(grid[nXpos, nYpos]);
+                Debug.Log("neighbors ,  row " + nYpos + ", col " + nXpos);
+                try
+                {
+                    if (instance.grid[nXpos, nYpos] != null)
+                    {
+                        neighbors.Add(instance.grid[nXpos, nYpos]);
+                    }
+                }
+                catch (IndexOutOfRangeException ex)
+                {
+                    Debug.LogError(ex.Message);
+                }
             }
         }
         //Debug.Log("neighbors found: ");
@@ -147,6 +175,9 @@ public class TileGrid : MonoBehaviour
             for (int j = 0; j < rows; j++)
             {
                 var tile = grid[i, j];
+                if (tile == null)
+                    continue;
+
                 if (!tile.processed)
                 {
                     var foundCluster = GetCluster(i, j, false, false);
@@ -185,47 +216,32 @@ public class TileGrid : MonoBehaviour
         if (cluster.Count >= 3)
         {
             onRemoveCluster.Invoke(colHit, rowHit, cluster.Count); // paso la cantidad de burbujas al contador de puntos
-            foreach (var i in GetFloatingClusters())
-            {
-                Destroy(i);
-            }
+
             return;
         }
-        // contador por turnos? o seguir con el tiempo fijo?
-
-        /*
-         turncounter++;
-        if (turncounter >= 5) {
-            // Add a row of bubbles
-            addBubbles();
-            turncounter = 0;
-            rowoffset = (rowoffset + 1) % 2;
-            
-            if (checkGameOver()) {
-                return;
-            }
-        }
-        */
     }
     public void RemClusTest(int column, int row, int count)
     {
         while (cluster.Count > 0)
-        //foreach (var it in cluster)
         {
-            if (column == cluster[cluster.Count - 1].colRaw && row == cluster[cluster.Count - 1].rowRaw)
-            {
-                Debug.Log("call RemClusTest ev. = " + cluster[cluster.Count - 1].colRaw + " , " + cluster[cluster.Count - 1].rowRaw + " ; cnt = " + count);
-                Destroy(cluster[cluster.Count - 1].gameObject);
-                Debug.Log("removing row: " + (cluster[cluster.Count - 1].rowRaw + " col: " + (cluster[cluster.Count - 1].colRaw)));
-                cluster.RemoveAt(cluster.Count - 1);
-            }
-        }
-        //while (floatingclusters.Count > 0)
-        //{
-        //    Destroy(floatingclusters[floatingclusters.Count - 1]);
-        //    floatingclusters.Remove(floatingclusters[floatingclusters.Count - 1]);
+            //if (column == cluster[cluster.Count - 1].colRaw && row == cluster[cluster.Count - 1].rowRaw)
+            //{
+            Debug.Log("call RemClusTest ev. = " + cluster[cluster.Count - 1].colRaw + " , " + cluster[cluster.Count - 1].rowRaw + " ; cnt = " + count);
+            //cluster[cluster.Count - 1].gameObject.SetActive(false);
+            Debug.Log("removing row: " + (cluster[cluster.Count - 1].rowRaw + " col: " + (cluster[cluster.Count - 1].colRaw)));
+            cluster.RemoveAt(cluster.Count - 1);
+            //}
 
-        //}
+        }
+        var floatingClusters = GetFloatingClusters();
+        while (floatingClusters.Count > 0)
+        {
+            //Destroy(i);
+            //Debug.Log("Floating cluster content " + i.type.type);
+            floatingClusters[floatingClusters.Count - 1].gameObject.SetActive(false);
+            cluster.RemoveAt(cluster.Count - 1);
+        }
+
     }
 
     /// <summary>

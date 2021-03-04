@@ -43,10 +43,11 @@ public class Bubble : MonoBehaviour, IPooleableObject
     }
     void RemoveFromGrid(int col, int row, int countAux)
     {
-        if (this.colRaw == col && this.rowRaw == row && countAux >= 3)
+        if (this.colRaw == col && this.rowRaw == row)
         {
             Debug.Log("call rfg = " + col + " , " + row + " ; cnt = " + countAux);
             //Destroy(this.gameObject);
+            this.gameObject.SetActive(false);
         }
     }
 

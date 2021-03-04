@@ -6,6 +6,7 @@ public class ThrownBubble : MonoBehaviour
 {
     Vector2 lastVelocity;
     Rigidbody2D rbBubble;
+    [SerializeField]
     BubbleType type;
 
     private void Start()
@@ -34,9 +35,14 @@ public class ThrownBubble : MonoBehaviour
     {
         rbBubble.gravityScale = 0;
         rbBubble.constraints = RigidbodyConstraints2D.FreezeRotation;
+        rbBubble.velocity = Vector2.zero;
+        rbBubble.angularVelocity = 0;
+
         gameObject.layer = LayerMask.NameToLayer("Default");
 
+
         this.type = BubbleResources.GenerateRandomBubbleType();
+        this.GetComponent<SpriteRenderer>().sprite = type.sprite;
     }
 
     public void ProcessHit(Collision2D collisionInfo)
@@ -73,13 +79,13 @@ public class ThrownBubble : MonoBehaviour
 
         if (colHit < 0)
             colHit = 0;
-        else if (colHit >= TileGrid.instance.cols)
-            colHit = TileGrid.instance.cols - 1;
+        else if (colHit >= TileGrid.instance.grid.GetLength(0))
+            colHit = TileGrid.instance.grid.GetLength(0);
 
         if (rowHit < 0)
             rowHit = 0;
-        else if (rowHit >= TileGrid.instance.rows)
-            rowHit = TileGrid.instance.rows - 1;
+        else if (rowHit >= TileGrid.instance.grid.GetLength(1))
+            rowHit = TileGrid.instance.grid.GetLength(1) - 1;
 
         var radius = TileGrid.instance.tileSize / 2;
 
@@ -103,19 +109,15 @@ public class ThrownBubble : MonoBehaviour
                     SetNearestPositionOnGrid(listNeighborOffset, hitBubble.transform, transform);
                     break;
                 }
-
-            //Destroy(this.gameObject);
-           
         }
 
-
-
-        //TileGrid.instance.cluster = TileGrid.instance.GetCluster(colHit, rowHit, true);
+        //TileGrid.instance.cluster = TileGrid.instance.GetCluster(colHit, rowHit, true,false);
 
         if (GameManagerActions.instance.CheckGameOver())
             return;
 
-        //TileGrid.instance.SetCurrentCluster(colHit, rowHit, true, true);
+        TileGrid.instance.SetCurrentCluster(colHit, rowHit, true, false);
+
         this.gameObject.SetActive(false);
     }
 
@@ -136,8 +138,6 @@ public class ThrownBubble : MonoBehaviour
 
         var swapObject = ObjectPooler.instance.SpawnFromPool("bubble");
 
-        swapObject.GetComponent<Bubble>().type = this.type;
-
         swapObject.transform.position = (Vector2)origin.transform.position + offsets[minDistIdx] * TileGrid.instance.tileSize;
         swapObject.GetComponent<Bubble>().colRaw = (int)offsets[minDistIdx].x + origin.GetComponent<Bubble>().colRaw;
         swapObject.GetComponent<Bubble>().rowRaw = (int)offsets[minDistIdx].y + origin.GetComponent<Bubble>().rowRaw;
@@ -146,6 +146,9 @@ public class ThrownBubble : MonoBehaviour
         
         TileGrid.instance.grid[swapObject.GetComponent<Bubble>().colRaw, swapObject.GetComponent<Bubble>().rowRaw] =
             swapObject.GetComponent<Bubble>();
+        
+        swapObject.GetComponent<Bubble>().type = this.type;
+        swapObject.GetComponent<SpriteRenderer>().sprite = this.type.sprite;
 
     }
 

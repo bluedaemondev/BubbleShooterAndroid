@@ -43,18 +43,7 @@ public class PopBubble : MonoBehaviour
         return neighbors;
     }
      */
-    public void SearchForNeighborBubbles()
-    {
-        // raycast hacia 4 direcciones
-        var grid = FindObjectOfType<TileGrid>();
-        for (int y = 0; y < grid.rows; y++)
-        {
-            for (int x = 0; x < grid.cols; x++)
-            {
-
-            }
-        }
-    }
+    
 
 
     //// Start is called before the first frame update
