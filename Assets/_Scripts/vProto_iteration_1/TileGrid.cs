@@ -13,9 +13,9 @@ public class TileGrid : MonoBehaviour
     public float tileSize = 0.5f;
 
     public BubbleNeighbor neighborOffsetArray;
-    
+
     public Bubble[,] grid;
-    
+
     public List<Bubble> cluster;
     public List<Bubble> floatingclusters;
 
@@ -25,12 +25,7 @@ public class TileGrid : MonoBehaviour
 
     private void Awake()
     {
-        //if (instance)
-        //    Destroy(instance);
-
-        //if (!instance)
-            instance = this;
-        
+        instance = this;
 
         Debug.Log("Generando mapa...");
         GenerateGrid();
@@ -42,23 +37,12 @@ public class TileGrid : MonoBehaviour
         floatingclusters = new List<Bubble>();
 
         onRemoveCluster.AddListener(RemClusTest); // delete
-        //onRemoveCluster.AddListener()
     }
 
     // Start is called before the first frame update
     void Start()
     {
         AdmobComponentsManager.instance.onSendToBackAds.Invoke();
-        //GenerateGrid();
-        //neighborOffsetArray = new BubbleNeighbor();
-        //onRemoveCluster = new UnityEvent<int, int, int>();
-        //onResetProcessed = new UnityEvent();
-
-        //cluster = new List<Bubble>();
-        //floatingclusters = new List<Bubble>();
-
-        //onRemoveCluster.AddListener(RemClusTest); // delete
-        ////onRemoveCluster.AddListener()
     }
 
     private void GenerateGrid()
@@ -70,6 +54,7 @@ public class TileGrid : MonoBehaviour
             for (int col = 0; col < cols; col++)
             {
                 GameObject refTile = (GameObject)ObjectPooler.instance.SpawnFromPool("bubble");
+                refTile.name = "bubble_" + col.ToString() + row.ToString();
                 var bubble = refTile.GetComponent<Bubble>();
                 bubble.OnObjectSpawn(row, col, tileSize);
                 instance.grid[col, row] = bubble;
@@ -81,10 +66,7 @@ public class TileGrid : MonoBehaviour
         float gridWidth = cols * tileSize;
         float gridHeight = rows * tileSize;
 
-        // divido por 2 por el pivot point (que esta en el centro)
-        //transform.position = new Vector3(-gridWidth * tileSize + tileSize/2, tileSize * gridHeight * 2);//* tileSize / 2);
         transform.position = new Vector3(-2.5f, gridHeight * tileSize * 2.75f);
-        //-gridWidth * tileSize * 5
     }
     public List<Bubble> GetNeighbors(Bubble tile)
     {
@@ -130,7 +112,7 @@ public class TileGrid : MonoBehaviour
         {
             var currentTile = toProcess.Pop();
             // si es del mismo el color o no hace falta que sea match por color
-            if (!matchColor || currentTile.selectedColor.type == targetTile.selectedColor.type)
+            if (!matchColor || currentTile.type.type == targetTile.type.type)
             {
                 foundCluster.Add(currentTile);
                 var neighbors = GetNeighbors(currentTile);
@@ -227,16 +209,16 @@ public class TileGrid : MonoBehaviour
     }
     public void RemClusTest(int column, int row, int count)
     {
-        //Debug.Log(val + " burbujas explotadas");
-
-
-        while (cluster.Count > 0 && column == cluster[cluster.Count - 1].colRaw && row == cluster[cluster.Count - 1].rowRaw)
+        while (cluster.Count > 0)
         //foreach (var it in cluster)
         {
-            Debug.Log("call RemClusTest ev. = " + cluster[cluster.Count - 1].colRaw + " , " + cluster[cluster.Count - 1].rowRaw + " ; cnt = " + count);
-            Destroy(cluster[cluster.Count - 1].gameObject);
-            Debug.Log("removing row: " + (cluster[cluster.Count - 1].rowRaw + " col: " + (cluster[cluster.Count - 1].colRaw)));
-            cluster.RemoveAt(cluster.Count - 1);
+            if (column == cluster[cluster.Count - 1].colRaw && row == cluster[cluster.Count - 1].rowRaw)
+            {
+                Debug.Log("call RemClusTest ev. = " + cluster[cluster.Count - 1].colRaw + " , " + cluster[cluster.Count - 1].rowRaw + " ; cnt = " + count);
+                Destroy(cluster[cluster.Count - 1].gameObject);
+                Debug.Log("removing row: " + (cluster[cluster.Count - 1].rowRaw + " col: " + (cluster[cluster.Count - 1].colRaw)));
+                cluster.RemoveAt(cluster.Count - 1);
+            }
         }
         //while (floatingclusters.Count > 0)
         //{
@@ -253,7 +235,7 @@ public class TileGrid : MonoBehaviour
     /// <returns>(X,Y)</returns>
     public Tuple<int, int> WorldToGridPosition(Vector2 posToParse, int colKnown, int rowKnown)
     {
-        
+
 
         bool isEvenRow = rowKnown % 2 == 0;
         if (isEvenRow)
@@ -263,12 +245,12 @@ public class TileGrid : MonoBehaviour
 
         int Item1 = (int)(posToParse.x / tileSize);
         int Item2 = (int)(posToParse.y / -tileSize);
-        
+
         //if (isEvenRow)
         //    res.x += 0.1f;
 
 
-        return new Tuple<int, int>(Item1,Item2);
+        return new Tuple<int, int>(Item1, Item2);
 
     }
 }

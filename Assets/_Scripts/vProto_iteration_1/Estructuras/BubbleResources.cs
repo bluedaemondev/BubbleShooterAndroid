@@ -19,5 +19,17 @@ public class BubbleResources : MonoBehaviour
         if (!instance)
             instance = this;
     }
-    
+
+
+    public static BubbleType GenerateRandomBubbleType(bool useSpecials = false)
+    {
+        var sourceList = BubbleResources.instance.bubbleResources;
+        if (useSpecials)
+        {
+            sourceList.AddRange(BubbleResources.instance.specialBubbleResources);
+        }
+        int randSelection = Random.Range(0, sourceList.Count);
+
+        return sourceList[randSelection];
+    }
 }

@@ -13,7 +13,7 @@ public class FInishGameOnTrigger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag(bubbleTag) && !collision.GetComponent<Bubble>().throwableMutated)
+        if (collision.gameObject.CompareTag(bubbleTag) && !collision.GetComponent<ThrownBubble>())
         {
             this.GetComponent<BoxCollider2D>().enabled = false;
             GameManagerActions.instance.defeatEvent.Invoke();

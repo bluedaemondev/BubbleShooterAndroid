@@ -14,7 +14,7 @@ public class BubbleShooter : MonoBehaviour
     [Header("Cantidad de burbujas disponibles")]
     public int throwableCount = 2;
 
-    public Queue<Bubble> currentThrowables;
+    public Queue<ThrownBubble> currentThrowables;
 
     [Space]
     [Header("Posiciones en donde aparecen las burbujas disparables")]
@@ -31,8 +31,8 @@ public class BubbleShooter : MonoBehaviour
         int i = 0;
         while (throwableCount > currentThrowables.Count)
         {
-            Bubble bubble = Instantiate(ObjectPooler.instance.pools[0].prefab).GetComponent<Bubble>();
-            bubble.GenerateThrowableBubble();
+            ThrownBubble bubble = ObjectPooler.instance.SpawnFromPool("thrownBubble").GetComponent<ThrownBubble>();//Instantiate(ObjectPooler.instance.pools[1].prefab).GetComponent<ThrownBubble>();
+            
             currentThrowables.Enqueue(bubble);
 
             bubble.transform.parent = spawnPrimaryBubble.transform.childCount == 0 ? spawnPrimaryBubble.transform : spawnSecondaryBubble.transform;
@@ -84,8 +84,9 @@ public class BubbleShooter : MonoBehaviour
     {
         if (currentThrowables == null)
         {
-            currentThrowables = new Queue<Bubble>();
+            currentThrowables = new Queue<ThrownBubble>();
         }
+
         FeedBubbleShooter();
 
         CurrentBubbleSwitch.instance.onSwitchBubble.AddListener(SwitchBubblePriority);
@@ -109,11 +110,9 @@ public class BubbleShooter : MonoBehaviour
         yield return new WaitForSecondsRealtime(t);
         canShoot = true;
     }
-    // Update is called once per frame
+
     void Update()
     {
-        //canShoot = Vector2.Distance(Utils.instance.MouseToWorldWithoutZ(), transform.position) >= 1.2f;
-
         if (Input.GetMouseButtonUp(0) && canShoot && !GameManagerActions.instance.isPaused)
         {
             OnBubbleThrow();

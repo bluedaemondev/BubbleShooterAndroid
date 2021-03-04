@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class MoveByTick : MonoBehaviour
 {
-    public bool useTileGridTilesize = true;
+    [SerializeField]
+    bool useTileGridTilesize = true;
 
     void Start()
     {
@@ -15,6 +16,11 @@ public class MoveByTick : MonoBehaviour
         if (useTileGridTilesize)
         {
             transform.position += new Vector3(0f, -TileGrid.instance.tileSize, 0f);
+        }
+        else
+        {
+            transform.position += new Vector3(0f, -0.009f, 0f);
+
         }
     }
 }
