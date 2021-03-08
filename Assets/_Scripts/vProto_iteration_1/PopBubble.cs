@@ -5,34 +5,78 @@ using UnityEngine;
 [RequireComponent(typeof(Bubble))]
 public class PopBubble : MonoBehaviour
 {
-    Bubble compoBubble;
+    [HideInInspector]
     public bool processed = false;
+    Bubble compoBubble;
+
+    [Header("Puntos que da la burbuja al explotar")]
+    public int pointsOnPop = 100;
 
     //// Start is called before the first frame update
     void Start()
     {
         this.compoBubble = GetComponent<Bubble>();
     }
-
+    private void OnDisable()
+    {
+        if (!processed)
+        {
+            gameObject.SetActive(false);
+        }
+    }
+    /// <summary>
+    /// resetear el estado de procesado para reutilizar el recurso
+    /// mostrar particulas
+    /// mandar al pool
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator Pop()
     {
-        // destruir y mandar al pool
-        // mostrar particulas
-
         processed = false;
         PointsManager.instance.InstantiatePointAddEffect(transform.position);
+        PointsManager.instance.AddToTotal(pointsOnPop);
+        //yield return null;
         yield return null;
-
         gameObject.SetActive(false);
+        
     }
 
 
-    public void StartNeighborScan(BubbleType matchType, bool matchByType = true)
+    public IEnumerator StartNeighborScan(BubbleType matchType, bool matchByType = true)
     {
         Debug.Log("Starting scan at " + this.compoBubble.name);
         TileGrid.instance.cluster = new List<Bubble>();
 
-        StartCoroutine(SearchAnidado(matchType, matchByType));
+        processed = false;
+        TileGrid.instance.cluster.Add(this.compoBubble);
+
+        yield return StartCoroutine(SearchAnidado(matchType, matchByType));
+
+        yield return null;
+        Debug.Log(TileGrid.instance.cluster.Count);
+
+        if (TileGrid.instance.cluster.Count >= 3)
+        {
+
+            //exploto la burbuja y hago los cambios visuales necesarios.
+            foreach (var bb in TileGrid.instance.cluster)
+                //for (var i = TileGrid.instance.cluster.Count - 1; i >= 0; i--)
+                //{
+                //    //if()
+                //TileGrid.instance.cluster[i]
+                if (bb.gameObject.activeSelf)
+                    bb.GetComponent<PopBubble>().StartCoroutine(Pop());
+            //}
+        }
+        else
+        {
+
+            //reseteo los estados de procesado para poder hacer combo de vuelta cuando haya suficientes.
+            foreach (var bb in TileGrid.instance.cluster)
+            {
+                bb.GetComponent<PopBubble>().processed = false;
+            }
+        }
 
     }
 
@@ -66,15 +110,18 @@ public class PopBubble : MonoBehaviour
                         if (target != null)
                             yield return StartCoroutine(target.GetComponent<PopBubble>().SearchAnidado(matchType, matchByType));
 
+                        //// espero que termine el frame para resolver
+                        //yield return null;
+                        //Debug.Log(TileGrid.instance.cluster.Count + " en cluster");
+
                     }
                 }
             }
         }
 
-        yield return null;
 
-        StartCoroutine(Pop());
-        Debug.Log(TileGrid.instance.cluster.Count + " en cluster");
+
+
 
 
     }
