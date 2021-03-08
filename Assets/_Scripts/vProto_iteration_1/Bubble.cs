@@ -20,8 +20,6 @@ public class Bubble : MonoBehaviour, IPooleableObject
     public int rowRaw;
 
     SpriteRenderer sprRend;
-    Vector3 lastVelocity;
-
 
     void Start()
     {

@@ -9,6 +9,10 @@ public class PointsManager : MonoBehaviour
 
     int total = 0;
 
+    [Header("Prefab de puntos")]
+    public GameObject ptsPrefab;
+
+
     [Header("Multiplicador de combo actual")]
     public float comboMultiplier = 1;
     [Header("Maximo del multiplicador de combo")]
@@ -130,5 +134,16 @@ public class PointsManager : MonoBehaviour
     public void ResetComboMultiplier()
     {
         this.comboMultiplier = 1;
+    }
+
+    /// <summary>
+    /// Instancia una particula de efecto para dar feedback cuando se explotan las burbujas
+    /// </summary>
+    /// <param name="atPosition"></param>
+    /// <param name="duration"></param>
+    public void InstantiatePointAddEffect(Vector2 atPosition, float duration = 0.5f)
+    {
+        var goPts = Instantiate(ptsPrefab, atPosition, Quaternion.identity);
+        Destroy(goPts, duration);
     }
 }

@@ -51,7 +51,7 @@ public class TileGrid : MonoBehaviour
     private void GenerateGrid()
     {
         rows = rows + 10; // Posible problema en reinicio de mapa
-        instance.grid = new Bubble[cols,rows];
+        instance.grid = new Bubble[cols, rows];
 
 
         for (int row = 0; row < rows; row++)
@@ -68,58 +68,49 @@ public class TileGrid : MonoBehaviour
             }
         }
 
-        float gridWidth = cols * tileSize;
-        float gridHeight = rows * tileSize;
+        float gridWidth = instance.grid.GetLength(0) * tileSize;
+        float gridHeight = instance.grid.GetLength(1) * tileSize;
 
         transform.position = new Vector3(-2.5f, gridHeight * tileSize * 2.75f);
     }
-    public List<Bubble> GetNeighbors(Bubble tile)
-    {
-        var nArr = neighborOffsetArray.GetTileOffsetsBasedOnParity(tile.rowRaw % 2);
-        List<Bubble> neighbors = new List<Bubble>();
+    //public List<Bubble> GetNeighbors(Bubble tile)
+    //{
+    //    var nArr = neighborOffsetArray.GetTileOffsetsBasedOnParity(tile.rowRaw % 2);
+    //    List<Bubble> neighbors = new List<Bubble>();
 
-        for (int pos = 0; pos < nArr.Length; pos++)
-        {
-            // coordenada del vecino
-            var nXpos = (int)(tile.colRaw + nArr[pos].x);
-            var nYpos = (int)(tile.rowRaw + nArr[pos].y);
+    //    for (int pos = 0; pos < nArr.Length; pos++)
+    //    {
+    //        // coordenada del vecino
+    //        var nXpos = (int)(tile.colRaw + nArr[pos].x);
+    //        var nYpos = (int)(tile.rowRaw + nArr[pos].y);
 
-            if (nXpos < 0)
-                nXpos = 0;
-            else if (nXpos > instance.grid.GetLength(0))
-                nXpos = instance.grid.GetLength(0);
+    //        if (nXpos < 0)
+    //            nXpos = 0;
+    //        else if (nXpos > instance.grid.GetLength(0))
+    //            nXpos = instance.grid.GetLength(0);
 
-            if (nYpos < 0)
-                nYpos = 0;
-            else if (nXpos > instance.grid.GetLength(1))
-                nXpos = instance.grid.GetLength(1);
+    //        if (nYpos < 0)
+    //            nYpos = 0;
+    //        else if (nXpos > instance.grid.GetLength(1))
+    //            nXpos = instance.grid.GetLength(1);
 
-            Debug.Log(instance.grid.GetLength(0) + " " + instance.grid.GetLength(1) + " ==? " + instance.cols + " " + instance.rows);
+    //        // validacion de datos
+    //        if (nXpos >= 0 && nXpos < instance.grid.GetLength(0) && nYpos >= 0 && nYpos < instance.grid.GetLength(1))
+    //        {
+    //            //Debug.Log("neighbors ,  row " + nYpos + ", col " + nXpos);
+    //            if (instance.grid[nXpos, nYpos] != null)
+    //            {
+    //                neighbors.Add(instance.grid[nXpos, nYpos]);
+    //            }
+    //        }
+    //    }
+    //    Debug.Log("neighbors found: ");
+    //    foreach (var n in neighbors)
+    //        Debug.Log(n.ToString() + ", row " + n.rowRaw + ", col " + n.colRaw + " , color = " + n.type.type.ToString());
+    //    Debug.Log("end");
 
-            // validacion de datos
-            if (nXpos >= 0 && nXpos <= instance.cols && nYpos >= 0 && nYpos <= instance.rows)
-            {
-                Debug.Log("neighbors ,  row " + nYpos + ", col " + nXpos);
-                try
-                {
-                    if (instance.grid[nXpos, nYpos] != null)
-                    {
-                        neighbors.Add(instance.grid[nXpos, nYpos]);
-                    }
-                }
-                catch (IndexOutOfRangeException ex)
-                {
-                    Debug.LogError(ex.Message);
-                }
-            }
-        }
-        //Debug.Log("neighbors found: ");
-        //foreach (var n in neighbors)
-        //    Debug.Log(n.ToString() + ", row " + n.rowRaw + ", col " + n.colRaw + " , color = " + n.selectedColor.ToString());
-        //Debug.Log("end");
-
-        return neighbors;
-    }
+    //    return neighbors;
+    //}
 
     /// <summary>
     /// Devuelve un cluster de burbujas en la posicion indicada
@@ -127,120 +118,128 @@ public class TileGrid : MonoBehaviour
     /// <param name="tileX"></param>
     /// <param name="tileY"></param>
     /// <returns></returns>
-    public List<Bubble> GetCluster(int tileX, int tileY, bool matchColor, bool reset)
-    {
-        List<Bubble> foundCluster = new List<Bubble>();
+    //public List<Bubble> GetCluster(int tileX, int tileY, bool matchColor, bool reset)
+    //{
+    //    List<Bubble> foundCluster = new List<Bubble>();
 
-        Bubble targetTile = grid[tileX, tileY];
-        Stack<Bubble> toProcess = new Stack<Bubble>();
+    //    Bubble targetTile = grid[tileX, tileY];
+    //    Stack<Bubble> toProcess = new Stack<Bubble>();
 
-        toProcess.Push(targetTile);
+    //    toProcess.Push(targetTile);
 
-        while (toProcess.Count > 0)
-        {
-            var currentTile = toProcess.Pop();
-            // si es del mismo el color o no hace falta que sea match por color
-            if (!matchColor || currentTile.type.type == targetTile.type.type)
-            {
-                foundCluster.Add(currentTile);
-                var neighbors = GetNeighbors(currentTile);
+    //    while (toProcess.Count > 0)
+    //    {
+    //        var currentTile = toProcess.Pop();
+    //        // si es del mismo el color o no hace falta que sea match por color
+    //        if (!matchColor || currentTile.type.type == targetTile.type.type)
+    //        {
+    //            foundCluster.Add(currentTile);
+    //            var neighbors = GetNeighbors(currentTile);
 
-                // reviso los colores vecinos
-                for (var i = 0; i < neighbors.Count; i++)
-                {
-                    if (!neighbors[i].processed)
-                    {
-                        toProcess.Push(neighbors[i]);
-                        neighbors[i].processed = true;
-                    }
-                }
-            }
-        }
+    //            // reviso los colores vecinos
+    //            for (var i = 0; i < neighbors.Count; i++)
+    //            {
+    //                if (!neighbors[i].processed)
+    //                {
+    //                    toProcess.Push(neighbors[i]);
+    //                    neighbors[i].processed = true;
+    //                }
+    //            }
+    //        }
+    //    }
 
-        return foundCluster;
-    }
+    //    return foundCluster;
+    //}
 
     /// <summary>
     /// Clusters que pueden caer en un impacto y explosion
     /// </summary>
     /// <returns></returns>
-    public List<Bubble> GetFloatingClusters()
-    {
-        List<Bubble> foundFloatingClusters = new List<Bubble>();
-        onResetProcessed.Invoke();
+    //public List<Bubble> GetFloatingClusters()
+    //{
+    //    List<Bubble> foundFloatingClusters = new List<Bubble>();
+    //    //onResetProcessed.Invoke();
 
-        //reviso todas las burbujas
-        for (int i = 0; i < cols; i++)
-        {
-            for (int j = 0; j < rows; j++)
-            {
-                var tile = grid[i, j];
-                if (tile == null)
-                    continue;
+    //    //reviso todas las burbujas
+    //    for (int i = 0; i < instance.grid.GetLength(0); i++)
+    //    {
+    //        for (int j = 0; j < instance.grid.GetLength(1); j++)
+    //        {
+    //            var tile = grid[i, j];
+    //            if (tile == null)
+    //                continue;
 
-                if (!tile.processed)
-                {
-                    var foundCluster = GetCluster(i, j, false, false);
+    //            if (!tile.processed)
+    //            {
+    //                var foundCluster = GetCluster(i, j, false, false);
 
-                    // tiene que haber al menos un tile en el cluster
-                    if (foundCluster.Count <= 0)
-                        continue;
+    //                // tiene que haber al menos un tile en el cluster
+    //                if (foundCluster.Count <= 0)
+    //                    continue;
 
-                    var floating = true;
-                    for (var k = 0; k < foundCluster.Count; k++)
-                    {
-                        if (foundCluster[k].rowRaw == 0)
-                        {
-                            // esta pegado al techo / ultima fila cargada
-                            floating = false;
-                            break;
-                        }
-                    }
-                    if (floating)
-                    {
-                        foundFloatingClusters.AddRange(foundCluster);
-                    }
-                }
-            }
-        }
+    //                var floating = true;
+    //                for (var k = 0; k < foundCluster.Count; k++)
+    //                {
+    //                    if (foundCluster[k].rowRaw == 0)
+    //                    {
+    //                        // esta pegado al techo / ultima fila cargada
+    //                        floating = false;
+    //                        break;
+    //                    }
+    //                }
+    //                if (floating)
+    //                {
+    //                    foundFloatingClusters.AddRange(foundCluster);
+    //                }
+    //            }
+    //        }
+    //    }
 
-        Debug.Log(foundFloatingClusters);
+    //    Debug.Log(foundFloatingClusters);
 
-        return foundFloatingClusters;
+    //    return foundFloatingClusters;
 
-    }
+    //}
 
     public void SetCurrentCluster(int colHit, int rowHit, bool matchColor, bool reset)
     {
-        instance.cluster = GetCluster(colHit, rowHit, matchColor, reset);
-        if (cluster.Count >= 3)
-        {
-            onRemoveCluster.Invoke(colHit, rowHit, cluster.Count); // paso la cantidad de burbujas al contador de puntos
+        //instance.cluster = GetCluster(colHit, rowHit, matchColor, reset);
+        //if (cluster.Count >= 3)
+        //{
+        //    onRemoveCluster.Invoke(colHit, rowHit, cluster.Count); // paso la cantidad de burbujas al contador de puntos
 
-            return;
-        }
+        //    return;
+        //}
     }
     public void RemClusTest(int column, int row, int count)
     {
-        while (cluster.Count > 0)
-        {
-            //if (column == cluster[cluster.Count - 1].colRaw && row == cluster[cluster.Count - 1].rowRaw)
-            //{
-            Debug.Log("call RemClusTest ev. = " + cluster[cluster.Count - 1].colRaw + " , " + cluster[cluster.Count - 1].rowRaw + " ; cnt = " + count);
-            //cluster[cluster.Count - 1].gameObject.SetActive(false);
-            Debug.Log("removing row: " + (cluster[cluster.Count - 1].rowRaw + " col: " + (cluster[cluster.Count - 1].colRaw)));
-            cluster.RemoveAt(cluster.Count - 1);
-            //}
 
-        }
-        var floatingClusters = GetFloatingClusters();
-        while (floatingClusters.Count > 0)
-        {
-            //Destroy(i);
-            //Debug.Log("Floating cluster content " + i.type.type);
-            floatingClusters[floatingClusters.Count - 1].gameObject.SetActive(false);
-            cluster.RemoveAt(cluster.Count - 1);
-        }
+        //Debug.Log(count);
+        //if (count < 3)
+        //    return;
+
+        //while (cluster.Count > 0)
+        //{
+        //    //if (column == cluster[cluster.Count - 1].colRaw && row == cluster[cluster.Count - 1].rowRaw)
+        //    //{
+        //    Debug.Log("call RemClusTest ev. = " + cluster[cluster.Count - 1].colRaw + " , " + cluster[cluster.Count - 1].rowRaw + " ; cnt = " + count);
+        //    //cluster[cluster.Count - 1].gameObject.SetActive(false);
+        //    Debug.Log("removing row: " + (cluster[cluster.Count - 1].rowRaw + " col: " + (cluster[cluster.Count - 1].colRaw)));
+        //    cluster.RemoveAt(cluster.Count - 1);
+        //    //}
+
+        //}
+
+        //var floatingClusters = GetFloatingClusters();
+
+        //while (floatingClusters.Count > 0)
+        //{
+        //    //Destroy(i);
+        //    //Debug.Log("Floating cluster content " + i.type.type);
+        //    floatingClusters[floatingClusters.Count - 1].gameObject.SetActive(false);
+        //    //Debug.Log("Cluster cagado " + (cluster.Count - 1).ToString());
+        //    floatingClusters.RemoveAt(floatingClusters.Count - 1);
+        //}
 
     }
 

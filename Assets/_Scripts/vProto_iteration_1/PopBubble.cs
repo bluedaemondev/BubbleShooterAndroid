@@ -6,55 +6,77 @@ using UnityEngine;
 public class PopBubble : MonoBehaviour
 {
     Bubble compoBubble;
+    public bool processed = false;
 
-    public void Pop()
+    //// Start is called before the first frame update
+    void Start()
+    {
+        this.compoBubble = GetComponent<Bubble>();
+    }
+
+    private IEnumerator Pop()
     {
         // destruir y mandar al pool
         // mostrar particulas
+
+        processed = false;
+        PointsManager.instance.InstantiatePointAddEffect(transform.position);
+        yield return null;
+
+        gameObject.SetActive(false);
     }
 
-    List<Bubble> FindBubbleCluster(int tileX, int tileY, Color matchColor)
+
+    public void StartNeighborScan(BubbleType matchType, bool matchByType = true)
     {
-        List<Bubble> result = new List<Bubble>();
+        Debug.Log("Starting scan at " + this.compoBubble.name);
+        TileGrid.instance.cluster = new List<Bubble>();
 
-        return result;
+        StartCoroutine(SearchAnidado(matchType, matchByType));
+
     }
 
-    /*
-     function getNeighbors(tile) {
-        var tilerow = (tile.y + rowoffset) % 2; // Even or odd row
-        var neighbors = [];
-        
-        // Get the neighbor offsets for the specified tile
-        var n = neighborsoffsets[tilerow];
-        
-        // Get the neighbors
-        for (var i=0; i<n.length; i++) {
-            // Neighbor coordinate
-            var nx = tile.x + n[i][0];
-            var ny = tile.y + n[i][1];
-            
-            // Make sure the tile is valid
-            if (nx >= 0 && nx < level.columns && ny >= 0 && ny < level.rows) {
-                neighbors.push(level.tiles[nx][ny]);
+    public IEnumerator SearchAnidado(BubbleType matchType, bool matchByType = true)
+    {
+        // me fijo si :
+        // - el tipo es igual
+        // - es un especial que no matchea por color
+        // - ya procese este vecino
+        if ((matchType.Equals(compoBubble.type) || !matchByType) && !processed)
+        {
+            processed = true;
+            TileGrid.instance.cluster.Add(this.compoBubble);
+
+            BubbleNeighbor myNeighbors = new BubbleNeighbor();
+            foreach (var neighbor in myNeighbors.GetTileOffsetsBasedOnParity(compoBubble.rowRaw % 2))
+            {
+                // lista de vectores de offset para agregar a la posicion de
+                // composite bubble.
+
+                // reviso estar en rango y que tenga sentido hacer la comparacion
+                if (compoBubble.rowRaw - (int)neighbor.y >= 0 &&
+                    compoBubble.rowRaw - (int)neighbor.y < TileGrid.instance.grid.GetLength(1))
+                {
+                    if (compoBubble.colRaw + (int)neighbor.x >= 0 &&
+                    compoBubble.colRaw + (int)neighbor.x < TileGrid.instance.grid.GetLength(0))
+                    {
+                        // estando en la grilla, reviso el tipo
+                        var target = TileGrid.instance.grid[compoBubble.colRaw + (int)neighbor.x, compoBubble.rowRaw - (int)neighbor.y];
+                        // su es valido y es una burbuja, hago otro search anidado a sus vecinos
+                        if (target != null)
+                            yield return StartCoroutine(target.GetComponent<PopBubble>().SearchAnidado(matchType, matchByType));
+
+                    }
+                }
             }
         }
-        
-        return neighbors;
+
+        yield return null;
+
+        StartCoroutine(Pop());
+        Debug.Log(TileGrid.instance.cluster.Count + " en cluster");
+
+
     }
-     */
-    
 
-
-    //// Start is called before the first frame update
-    //void Start()
-    //{
-
-    //}
-
-    //// Update is called once per frame
-    //void Update()
-    //{
-
-    //}
 }

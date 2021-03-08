@@ -111,12 +111,10 @@ public class ThrownBubble : MonoBehaviour
                 }
         }
 
-        //TileGrid.instance.cluster = TileGrid.instance.GetCluster(colHit, rowHit, true,false);
-
         if (GameManagerActions.instance.CheckGameOver())
             return;
 
-        TileGrid.instance.SetCurrentCluster(colHit, rowHit, true, false);
+        //TileGrid.instance.SetCurrentCluster(colHit, rowHit, true, false);
 
         this.gameObject.SetActive(false);
     }
@@ -140,16 +138,17 @@ public class ThrownBubble : MonoBehaviour
 
         swapObject.transform.position = (Vector2)origin.transform.position + offsets[minDistIdx] * TileGrid.instance.tileSize;
         swapObject.GetComponent<Bubble>().colRaw = (int)offsets[minDistIdx].x + origin.GetComponent<Bubble>().colRaw;
-        swapObject.GetComponent<Bubble>().rowRaw = (int)offsets[minDistIdx].y + origin.GetComponent<Bubble>().rowRaw;
+        swapObject.GetComponent<Bubble>().rowRaw = -(int)offsets[minDistIdx].y + origin.GetComponent<Bubble>().rowRaw;
 
         swapObject.layer = LayerMask.NameToLayer("attachTo");
-        
+
         TileGrid.instance.grid[swapObject.GetComponent<Bubble>().colRaw, swapObject.GetComponent<Bubble>().rowRaw] =
             swapObject.GetComponent<Bubble>();
-        
+
         swapObject.GetComponent<Bubble>().type = this.type;
         swapObject.GetComponent<SpriteRenderer>().sprite = this.type.sprite;
 
+        swapObject.GetComponent<PopBubble>().StartNeighborScan(this.type, !BubbleResources.instance.specialBubbleResources.Contains(this.type));
     }
 
 }
