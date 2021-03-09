@@ -50,11 +50,12 @@ public class TileGrid : MonoBehaviour
 
     private void GenerateGrid()
     {
-        rows = rows + 10; // Posible problema en reinicio de mapa
-        instance.grid = new Bubble[cols, rows];
+        int rowsForPlayer = 10;
+        //rows = rows; // Posible problema en reinicio de mapa
+        instance.grid = new Bubble[cols, rows + rowsForPlayer];
 
 
-        for (int row = 0; row < rows; row++)
+        for (int row = 0; row < rows - rowsForPlayer; row++)
         {
             for (int col = 0; col < cols; col++)
             {
@@ -71,8 +72,40 @@ public class TileGrid : MonoBehaviour
         float gridWidth = instance.grid.GetLength(0) * tileSize;
         float gridHeight = instance.grid.GetLength(1) * tileSize;
 
-        transform.position = new Vector3(-2.5f, gridHeight * tileSize * 2.75f);
+        transform.position = new Vector3(-2.5f, gridHeight * tileSize * 2.75f - rowsForPlayer);
     }
+
+    public void SetCluster()
+    {
+        StartCoroutine(ClusterPopOrReset());
+    }
+
+    IEnumerator ClusterPopOrReset()
+    {
+        yield return null;
+
+        if (instance.cluster.Count >= 3)
+        {
+            //exploto la burbuja y hago los cambios visuales necesarios.
+            foreach (var bb in instance.cluster)
+            {
+                var target = bb.GetComponent<PopBubble>();
+                yield return target.StartCoroutine(target.Pop());
+            }
+        }
+        else
+        {
+
+            //reseteo los estados de procesado para poder hacer combo de vuelta cuando haya suficientes.
+            foreach (var bb in instance.cluster)
+            {
+                bb.GetComponent<PopBubble>().processed = false;
+            }
+        }
+
+    }
+
+
     //public List<Bubble> GetNeighbors(Bubble tile)
     //{
     //    var nArr = neighborOffsetArray.GetTileOffsetsBasedOnParity(tile.rowRaw % 2);

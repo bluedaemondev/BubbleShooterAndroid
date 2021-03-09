@@ -30,24 +30,7 @@ public class ObjectPooler : MonoBehaviour
         }
     }
 
-    // Start is called before the first frame update
-    //void Start()
-    //{
-    //    poolDict = new Dictionary<string, Queue<GameObject>>();
-    //    foreach (Pool pool in pools)
-    //    {
-    //        Queue<GameObject> objectPool = new Queue<GameObject>();
-    //        for (int i = 0; i < pool.poolSize; i++)
-    //        {
-    //            GameObject obj = Instantiate(pool.prefab, transform);
-    //            obj.SetActive(false);
-    //            objectPool.Enqueue(obj);
-    //        }
-    //        poolDict.Add(pool.tag, objectPool);
-    //    }
-    //}
-
-    public GameObject SpawnFromPool(string tag)//Vector3 position
+    public GameObject SpawnFromPool(string tag) //Vector3 position
     {
         if (!instance.poolDict.ContainsKey(tag))
         {

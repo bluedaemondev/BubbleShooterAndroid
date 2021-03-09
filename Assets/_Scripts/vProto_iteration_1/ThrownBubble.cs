@@ -175,8 +175,9 @@ public class ThrownBubble : MonoBehaviour
         swapObject.GetComponent<SpriteRenderer>().sprite = this.type.sprite;
 
         var auxPop = swapObject.GetComponent<PopBubble>();
-
-        auxPop.StartCoroutine(auxPop.StartNeighborScan(this.type));
+        auxPop.StartCoroutine(auxPop.StartNeighborScan(type));
     }
+
+    
 
 }
