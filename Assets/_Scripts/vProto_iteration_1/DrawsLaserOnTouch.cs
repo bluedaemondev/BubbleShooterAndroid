@@ -4,81 +4,95 @@ using UnityEngine;
 
 public class DrawsLaserOnTouch : MonoBehaviour
 {
-    public int vertexIdx = 1;
-    bool iactive = true;
-    Vector3 currentRot;
-    Vector3 currentPos;
-
     public LineRenderer lineRend;
-    public float maxDist = 10;//max distance for beam to travel.
-    public string bounceTag = "bouncer";//tag it can reflect off.
-    public int maxReflections = 3;
+    public string bounceTag = "bouncer"; //tag it can reflect off.
+    public float maxDist = 100;//max distance for beam to travel.
+    public int maxSplitCount = 5;
 
-    // Start is called before the first frame update
-    void Start()
+    Vector2 lastMousePos;
+    bool hasChangedTouch;
+
+    int currentBounceIndex = 0;
+    Vector3 laserStartPos;
+
+
+
+    private void Start()
+    {
+        lineRend = GetComponent<LineRenderer>();
+        laserStartPos = FindObjectOfType<BubbleShooter>().spawnPrimaryBubble.transform.position;
+        SetStartingLaserPoint();
+    }
+
+    void SetStartingLaserPoint()
     {
 
+        lineRend.positionCount = 2;
+        lineRend.SetPosition(0, laserStartPos);
+        lineRend.SetPosition(1, laserStartPos);
+        currentBounceIndex = 1;
     }
+
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButton(0))
+        if (Utils.instance.GetContinuousTouch())
         {
-            DrawLaser();
+            var dirMouse = (laserStartPos - Utils.instance.MouseToWorldWithoutZ()).normalized * maxDist;
+
+
+            lineRend.SetPosition(1, laserStartPos + dirMouse);
+            DrawLaserReflection(laserStartPos, dirMouse, maxSplitCount);
+            currentBounceIndex = 1;
         }
-        else
+        else if (Utils.instance.GetTouchEnding())
         {
-            lineRend.positionCount = 1;
-            vertexIdx = 1;
+            SetStartingLaserPoint();
 
-
+        }
+        else if (Utils.instance.GetInitialTouch())
+        {
+            var dirMouse = (laserStartPos - Utils.instance.MouseToWorldWithoutZ()).normalized * maxDist;
+            currentBounceIndex = 1;
+            lineRend.positionCount = 2;
+            lineRend.SetPosition(1, laserStartPos + dirMouse);
         }
     }
 
-    void DrawLaser()
+    void DrawLaserReflection(Vector2 position, Vector2 direction, int reflectRemaining)
     {
-        vertexIdx = 2;
-        iactive = true;
-        currentRot = transform.up;
-        currentPos = transform.localPosition;
-        lineRend.positionCount = 2;
-        lineRend.SetPosition(0, transform.localPosition);
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        mousePos.z = 0;
+        RaycastHit2D hit2D = Physics2D.Raycast(position, direction, maxDist);
 
-        lineRend.SetPosition(1, mousePos - transform.position);
-
-        while (iactive)
+        if (hit2D)
         {
-            vertexIdx++;
-            RaycastHit rHit = new RaycastHit();
-            lineRend.positionCount = vertexIdx;
-            if (Physics.Raycast(currentPos, currentRot, out rHit)) //rHit, maxDist))
-            {
-                //verti++;
-                currentPos = rHit.point;
-                currentRot = Vector3.Reflect(currentRot, rHit.normal);
-                lineRend.SetPosition(vertexIdx - 1, rHit.point);
-                if (rHit.transform.gameObject.tag != bounceTag)
-                {
-                    iactive = false;
-                }
-            }
-            else
-            {
-                //verti++;
-                iactive = false;
-                lineRend.SetPosition(vertexIdx - 1, currentPos + 100 * currentRot);
+            //if (hit2D.collider.CompareTag("bubble"))
+            //{
+            //    reflectRemaining = 0;
+            //    lineRend.positionCount = 2;
+            //    lineRend.SetPosition(1, hit2D.transform.position);
+            //    return;
+            //}
 
-            }
-            if (vertexIdx > maxReflections)
+            lineRend.positionCount = currentBounceIndex + 1;
+            
+            //Debug.Log("Punto de colision laser " + hit2D.collider.name + " , " + hit2D.collider.transform.position);
+            lineRend.SetPosition(currentBounceIndex, hit2D.point);
+            currentBounceIndex++;
+
+            //direction = Vector2.Reflect(direction, hit2D.normal);
+            //position = hit2D.point + direction * 0.01f;
+
+            if (reflectRemaining > 0 && currentBounceIndex <= maxSplitCount)
             {
-                iactive = false;
+                direction = Vector2.Reflect(direction, hit2D.normal);
+                position = hit2D.point + direction * 0.01f;
+                DrawLaserReflection(position, direction, --reflectRemaining);
             }
 
 
         }
+
     }
 }
 

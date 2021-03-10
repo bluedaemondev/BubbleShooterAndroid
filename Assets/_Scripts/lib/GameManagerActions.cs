@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -6,55 +7,102 @@ using UnityEngine.SceneManagement;
 
 public class GameManagerActions : MonoBehaviour
 {
-    public static GameManagerActions current;
+    public static GameManagerActions instance { get; private set; }
 
-    [Header("Debugging, borrar")]
-    public KeyCode Restart = KeyCode.R;
-    public KeyCode Exit = KeyCode.Escape;
+    //[Header("Debugging, borrar")]
+    //public KeyCode Restart = KeyCode.R;
+    //public KeyCode Exit = KeyCode.Escape;
 
     public UnityEvent defeatEvent;
     public UnityEvent winEvent;
+    public UnityEvent onPause;
+    public UnityEvent onResumeGame;
+    public UnityEvent onLoadGameScene;
+
+    // transition = timeTransition:float , sceneNameToLoad:string
+    //public UnityEvent<float, string> onTransition;
+
+    public float gametime;
+
+
+    public bool isPaused = false;
 
 
     private void Awake()
     {
-        GameManagerActions.current = this;
+        if (!instance)
+            instance = this;
 
         if (defeatEvent == null)
             defeatEvent = new UnityEvent();
         if (winEvent == null)
             winEvent = new UnityEvent();
+        if (onPause == null)
+            onPause = new UnityEvent();
+        if (onResumeGame == null)
+            onResumeGame = new UnityEvent();
+        //if (onTransition == null)
+        //    onTransition = new UnityEvent<float, string>();
 
-        //LoadNewMapPage(int length)
     }
-#if UNITY_STANDALONE || UNITY_EDITOR
 
-    void Update()
+    
+
+    private void Start()
     {
+        onPause.AddListener(PauseGame);
+        onResumeGame.AddListener(ResumeGame);
 
-        if (Input.GetKeyDown(Restart))
-        {
-            ReloadScene();
-        }
-
-        if (Input.GetKeyDown(Exit))
-        {
-            ExitGame();
-        }
+        gametime = 0;
+    }
+    private void Update()
+    {
+        if (!isPaused)
+            this.gametime += Time.deltaTime;
+    }
+    public void PauseGame()
+    {
+        Debug.Log("paused game");
+        isPaused = true;
+    }
+    public void ResumeGame()
+    {
+        Debug.Log("resuming game");
+        isPaused = false;
 
     }
-#endif
 
     public void ExitGame()
     {
         Application.Quit();
     }
-    public void ReloadScene()
+    public AsyncOperation LoadSceneByNameAsync(string sceneName)
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        var operation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+        return operation;
     }
-    public void LoadNextScene()
+
+    #region Deprecated
+    //public void ReloadScene()
+    //{
+    //    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    //}
+    //public void LoadNextScene()
+    //{
+    //    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    //}
+    //public void LoadSceneByName(string name)
+    //{
+    //    SceneManager.LoadScene(SceneManager.GetSceneByName(name).buildIndex);
+    //}
+    #endregion
+    public string GetTotalGametime()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        var ts = TimeSpan.FromSeconds(gametime);
+        return string.Format("{0:00}:{1:00}", ts.Minutes, ts.Seconds);
+    }
+    public bool CheckGameOver()
+    {
+        return false;
     }
 }

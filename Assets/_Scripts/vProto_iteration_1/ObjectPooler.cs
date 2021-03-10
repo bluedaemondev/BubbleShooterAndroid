@@ -13,40 +13,36 @@ public class ObjectPooler : MonoBehaviour
 
     private void Awake()
     {
-        if (!instance)
-            instance = this;
-    }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        poolDict = new Dictionary<string, Queue<GameObject>>();
-        foreach (Pool pool in pools)
+        instance = this;
+
+        instance.poolDict = new Dictionary<string, Queue<GameObject>>();
+        foreach (Pool pool in instance.pools)
         {
             Queue<GameObject> objectPool = new Queue<GameObject>();
             for (int i = 0; i < pool.poolSize; i++)
             {
-                GameObject obj = Instantiate(pool.prefab, transform);
+                GameObject obj = Instantiate(pool.prefab, instance.transform);
                 obj.SetActive(false);
                 objectPool.Enqueue(obj);
             }
-            poolDict.Add(pool.tag, objectPool);
+            instance.poolDict.Add(pool.tag, objectPool);
         }
     }
 
-    public GameObject SpawnFromPool(string tag)//Vector3 position
+    public GameObject SpawnFromPool(string tag) //Vector3 position
     {
-        if (!poolDict.ContainsKey(tag))
+        if (!instance.poolDict.ContainsKey(tag))
         {
             Debug.LogError("Pool w tag " + tag + " doesnt exist");
             return null;
         }
 
-        var objectToSpawn = poolDict[tag].Dequeue();
+        var objectToSpawn = instance.poolDict[tag].Dequeue();
         objectToSpawn.SetActive(true);
         //objectToSpawn.transform.position = position;
 
-        poolDict[tag].Enqueue(objectToSpawn);
+        instance.poolDict[tag].Enqueue(objectToSpawn);
 
         return objectToSpawn;
     }

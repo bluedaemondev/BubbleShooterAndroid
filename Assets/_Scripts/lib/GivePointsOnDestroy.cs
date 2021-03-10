@@ -8,6 +8,7 @@ public class GivePointsOnDestroy : MonoBehaviour
 
     private void OnDestroy()
     {
-         PointsManager.current.AddKillToTotal(pointsGivenOnDeath);
+        PointsManager.instance.AddToTotal(pointsGivenOnDeath);
+        // readd to pool
     }
 }

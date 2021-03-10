@@ -6,6 +6,18 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/MainMenu.unity
+    path: Assets/Scenes/Statics/GameUtils_loadFirst.unity
+    guid: b545c5dd47f31354bb7ca59ada28bd1c
+  - enabled: 1
+    path: Assets/Scenes/Statics/MainMenu.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/Statics/LoadingScene.unity
+    guid: 70850e2fe4eae8d4885c5c2d1f67c121
+  - enabled: 1
+    path: Assets/Scenes/ComicIntroSlides.unity
+    guid: fb64372fd6cd05f42a5ee5f1a1f69bde
+  - enabled: 1
+    path: Assets/Scenes/SampleGame_proto_v1.unity
+    guid: 4dedcd473ac1cce4499acf191a514225
   m_configObjects: {}

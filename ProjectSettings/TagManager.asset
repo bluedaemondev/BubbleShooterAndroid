@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - bouncer
+  - bubble
   layers:
   - Default
   - TransparentFX
@@ -14,8 +15,8 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
+  - bounce
+  - attachTo
   - 
   - 
   - 
@@ -39,6 +40,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 890208049
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0

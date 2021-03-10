@@ -1,51 +1,149 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PointsManager : MonoBehaviour
 {
-    public static PointsManager current { get; private set; }
+    public static PointsManager instance { get; private set; }
 
-    public int total = 0;
-    public float comboMultiplier = 1; 
-    public float timeToResetComboMultiplier = 4.5f; // cuanto tiempo pasa hasta que puede hacer otro golpe y sumar al combo
-    public float currentTimeInCombo = 0; // timer actual
+    int total = 0;
+
+    [Header("Prefab de puntos")]
+    public GameObject ptsPrefab;
+
+
+    [Header("Multiplicador de combo actual")]
+    public float comboMultiplier = 1;
+    [Header("Maximo del multiplicador de combo")]
+    public float comboMultiplierMax = 4;
+    [Space]
+    [Header("Tiempo hasta bajar un nivel de multiplicador de combo")]
+    public float timeToResetMultiplier = 4.5f;
+
+
+    //public float currentTimeInCombo = 0; // timer actual
+
+    public UnityEvent<int> onPointsUpdate;
+    public UnityEvent<float> onMultiplierUpdate;
+    public UnityEvent onSetMultiplier;
 
     // Start is called before the first frame update
     void Awake()
     {
-        if (current == null)
-            current = this;
+        if (instance == null)
+            instance = this;
+
+        onPointsUpdate = new UnityEvent<int>();
+        onMultiplierUpdate = new UnityEvent<float>();
+
     }
 
-    private void Update()
+    /// <summary>
+    /// Llamar en un inicio de escena si requiere iniciar el sistema de vuelta
+    /// o por primera vez
+    /// </summary>
+    public void StartAccountance()
     {
-        currentTimeInCombo += Time.deltaTime;
+        total = 0;
+        comboMultiplier = 1;
 
-        if(currentTimeInCombo >= timeToResetComboMultiplier)
+        StopAllCoroutines();
+        onPointsUpdate.Invoke(GetTotalPoints());
+        onMultiplierUpdate.Invoke(GetComboMultiplier());
+    }
+
+    /// <summary>
+    /// Para iniciar un multiplicador de puntos
+    /// </summary>
+    /// <param name="targetNumber">Numero maximo deseado para el multiplicador</param>
+    public void SetMultiplier(float targetNumber)
+    {
+        for (int i = 0; i < targetNumber; i++)
         {
-            //ResetComboMultiplier();
-            print("reset combo");
-            currentTimeInCombo = 0;
+            SumToComboMultiplier();
+            if (comboMultiplier == comboMultiplierMax)
+                break;
+        }
+        StartCoroutine(DecreaseMultiplierOverTime());
+    }
+
+    /// <summary>
+    /// Coroutine para ir bajando el multiplicador a medida que pasa el tiempo
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator DecreaseMultiplierOverTime()
+    {
+        while (comboMultiplier > 1)
+        {
+            // espero los segundos necesarios hasta bajar un nivel de multiplicador
+            yield return new WaitForSeconds(timeToResetMultiplier);
+            // bajo un nivel y actualizo ui necesaria
+            LowerComboMultiplier();
+            // repito hasta bajarlo a 1
         }
     }
 
-    public void AddKillToTotal(int pts)
+    public int GetTotalPoints()
     {
-        PointsManager.current.total += System.Convert.ToInt32(pts * PointsManager.current.comboMultiplier);
-        SumToComboMultiplier();
+        return this.total;
+    }
 
-        HudController.current.UpdatePointsUI(PointsManager.current.total);
-        Debug.Log("total actual = " + PointsManager.current.total);
+    public void AddToTotal(int pts)
+    {
+        this.total += (int)(pts * comboMultiplier);
+
+        onPointsUpdate.Invoke(GetTotalPoints());
+
+        Debug.Log("total actual = " + GetTotalPoints());
     }
 
     public float SumToComboMultiplier()
     {
-        return PointsManager.current.comboMultiplier++;
+        if (this.comboMultiplier < comboMultiplierMax)
+            this.comboMultiplier++;
+        else
+            this.comboMultiplier = comboMultiplierMax;
+
+        onMultiplierUpdate.Invoke(GetComboMultiplier());
+
+        // definir una formula para sumar puntos de forma equilibrada
+        // con alguna curva de internet
+
+        return GetComboMultiplier();
+    }
+    public float LowerComboMultiplier()
+    {
+        if (this.comboMultiplier > 1)
+            this.comboMultiplier--;
+        else
+            ResetComboMultiplier();
+
+        // definir una formula para sumar puntos de forma equilibrada
+        // con alguna curva de internet
+        onMultiplierUpdate.Invoke(GetComboMultiplier());
+
+        return GetComboMultiplier();
+    }
+
+    public float GetComboMultiplier()
+    {
+        return this.comboMultiplier;
     }
 
     public void ResetComboMultiplier()
     {
-        PointsManager.current.comboMultiplier = 1;
+        this.comboMultiplier = 1;
+    }
+
+    /// <summary>
+    /// Instancia una particula de efecto para dar feedback cuando se explotan las burbujas
+    /// </summary>
+    /// <param name="atPosition"></param>
+    /// <param name="duration"></param>
+    public void InstantiatePointAddEffect(Vector2 atPosition, float duration = 0.5f)
+    {
+        var goPts = Instantiate(ptsPrefab, atPosition, Quaternion.identity);
+        Destroy(goPts, duration);
     }
 }

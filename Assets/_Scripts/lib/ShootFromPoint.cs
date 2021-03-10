@@ -28,7 +28,7 @@ public class ShootFromPoint : MonoBehaviour
     SpriteRenderer gunHolder;
     private void Start()
     {
-        GameManagerActions.current.defeatEvent.AddListener(DisableComponent);
+        GameManagerActions.instance.defeatEvent.AddListener(DisableComponent);
     }
     public void DisableComponent()
     {
