@@ -26,14 +26,14 @@ public class GoogleAdmobAd : MonoBehaviour
     public virtual void RequestAd()
     {
         Debug.Log("Loading ad...");
-        AdmobComponentsManager.instance.onSendToTopAds.Invoke();
+        //AdmobComponentsManager.instance.onSendToTopAds.Invoke();
 
     }
 
     public virtual void RequestAd(AdPosition position)
     {
         Debug.Log("Loading ad... at " + position.ToString());
-        AdmobComponentsManager.instance.onSendToTopAds.Invoke();
+        //AdmobComponentsManager.instance.onSendToTopAds.Invoke();
 
     }
 

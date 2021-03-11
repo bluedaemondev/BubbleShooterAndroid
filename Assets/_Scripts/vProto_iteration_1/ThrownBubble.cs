@@ -6,8 +6,8 @@ public class ThrownBubble : MonoBehaviour
 {
     Vector2 lastVelocity;
     Rigidbody2D rbBubble;
-    [SerializeField]
-    BubbleType type;
+    //[SerializeField]
+    public BubbleType type;
 
     public bool processed = false;
 
@@ -65,8 +65,6 @@ public class ThrownBubble : MonoBehaviour
             var bubbleCollisionWith = collisionInfo.collider.GetComponent<Bubble>();
             HandleSnapIntoGrid(bubbleCollisionWith);
             this.GetComponent<Collider2D>().enabled = false;
-
-            //this.processed = true;
         }
 
 
@@ -104,7 +102,7 @@ public class ThrownBubble : MonoBehaviour
         {
             var hitBubble = TileGrid.instance.grid[colHit, rowHit];
 
-            Debug.Log("Hit handling at x:" + hitBubble.colRaw + ", y: " + hitBubble.rowRaw);
+            //Debug.Log("Hit handling at x:" + hitBubble.colRaw + ", y: " + hitBubble.rowRaw);
 
             BubbleNeighbor neighborComparer = new BubbleNeighbor();
             var listNeighborOffset = neighborComparer.GetTileOffsetsBasedOnParity(rowHit % 2);
@@ -116,7 +114,7 @@ public class ThrownBubble : MonoBehaviour
             foreach (var found in cast)
                 if (found.collider.GetComponent<ThrownBubble>())
                 {
-                    Debug.Log("found bubble at  " + found.collider.name.ToString() + " , " + found.point);
+                    //Debug.Log("found bubble at  " + found.collider.name.ToString() + " , " + found.point);
                     SetNearestPositionOnGrid(listNeighborOffset, hitBubble.transform, transform);
                     break;
                 }
@@ -175,7 +173,7 @@ public class ThrownBubble : MonoBehaviour
         swapObject.GetComponent<SpriteRenderer>().sprite = this.type.sprite;
 
         var auxPop = swapObject.GetComponent<PopBubble>();
-        auxPop.StartCoroutine(auxPop.StartNeighborScan(type));
+        auxPop.StartCoroutine(auxPop.StartNeighborScan(type, !BubbleResources.instance.specialBubbleResources.Contains(type)));
     }
 
     

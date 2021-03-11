@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
 public class AdmobCanvasController : MonoBehaviour
 {
@@ -21,6 +23,13 @@ public class AdmobCanvasController : MonoBehaviour
     }
     public void SendFront()
     {
+
+        StartCoroutine(MetodoDown());
+    }
+    private IEnumerator MetodoDown()
+    {
+        Debug.Log("canvas : " + this.gameObject.name + " , sorting = " + this.canvas.sortingOrder);
+        yield return new WaitForSeconds(0.2f);
         this.canvas.sortingOrder = 11;
         Debug.Log("canvas : " + this.gameObject.name + " , sorting = " + this.canvas.sortingOrder);
 

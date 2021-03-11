@@ -17,7 +17,7 @@ public class ShowRewardedAdOnClick : MonoBehaviour
     public void ShowRewardedAd()
     {
         AdmobComponentsManager.instance.RequestRewardedAd();
-        //AdmobComponentsManager.instance.onSendToTopAds.Invoke();
+        AdmobComponentsManager.instance.onSendToTopAds.Invoke();
     }
 
 }

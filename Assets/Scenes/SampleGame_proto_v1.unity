@@ -178,7 +178,7 @@ MonoBehaviour:
   - type: yellow
     sprite: {fileID: -3572015860060408352, guid: a9aaec6d678d353408a6bb1686b49d5b, type: 3}
   specialBubbleResources:
-  - type: explode
+  - type: line
     sprite: {fileID: 8642488696473482513, guid: a9aaec6d678d353408a6bb1686b49d5b, type: 3}
 --- !u!1 &736878745
 GameObject:
@@ -954,6 +954,48 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bde9e9fef6af88a4aae5a81a7702abe9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1943490691
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1943490688}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59b58005ebcfb8e49b8adb04b6e0277f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &1990272604 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1709750060, guid: bcae947fc64dece43a3f9066132693ea, type: 3}
+  m_PrefabInstance: {fileID: 5418949626432706797}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1990272606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1990272604}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 885610b026b8cc447921efdd6d891066, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  qtyGiven: 1
+--- !u!114 &1990272607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1990272604}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc63f6ad5fd637645b8c9f4a44a3fd2b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1771620025773126951
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1277,6 +1319,30 @@ PrefabInstance:
       propertyPath: m_fontSize
       value: 64.6
       objectReference: {fileID: 0}
+    - target: {fileID: 1709750060, guid: bcae947fc64dece43a3f9066132693ea, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1709750060, guid: bcae947fc64dece43a3f9066132693ea, type: 3}
+      propertyPath: m_Name
+      value: ButtonAddSpecial_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1709750061, guid: bcae947fc64dece43a3f9066132693ea, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 26
+      objectReference: {fileID: 0}
+    - target: {fileID: 1709750061, guid: bcae947fc64dece43a3f9066132693ea, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -280
+      objectReference: {fileID: 0}
+    - target: {fileID: 1709750063, guid: bcae947fc64dece43a3f9066132693ea, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 90774435766318164, guid: bcae947fc64dece43a3f9066132693ea, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1164816050713327769, guid: bcae947fc64dece43a3f9066132693ea, type: 3}
       propertyPath: m_fontAsset
       value: 
@@ -1327,7 +1393,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4683086569135490372, guid: bcae947fc64dece43a3f9066132693ea, type: 3}
       propertyPath: m_Color.a
-      value: 0
+      value: 0.67058825
       objectReference: {fileID: 0}
     - target: {fileID: 5133346025431064246, guid: bcae947fc64dece43a3f9066132693ea, type: 3}
       propertyPath: m_IsActive
@@ -1527,7 +1593,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5857322927226686190, guid: bcae947fc64dece43a3f9066132693ea, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.00018310547
+      value: 0.00024414062
       objectReference: {fileID: 0}
     - target: {fileID: 5857322927226686190, guid: bcae947fc64dece43a3f9066132693ea, type: 3}
       propertyPath: m_SizeDelta.x

@@ -1,13 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Button = UnityEngine.UI.Button;
 using Image = UnityEngine.UI.Image;
 
-public class ShuffleMusicUIController : MonoBehaviour
+[RequireComponent(typeof(Button))]
+
+public class CooldownButtonUIController : MonoBehaviour
 {
     [Header("Visuales")]
     public Image holderImg;
+    private Button btnComponent;
+
 
     [Header("Cooldown")]
     public float timeCooldown = 10f;
@@ -18,16 +22,19 @@ public class ShuffleMusicUIController : MonoBehaviour
     {
         if (holderImg == null)
             holderImg = GetComponent<Image>();
+        btnComponent = GetComponent<Button>();
+
+        btnComponent.onClick.AddListener(CooldownOnCLick);
 
     }
 
-    public void ButtonShufflePressed()
+    void CooldownOnCLick()
     {
         if (btnEnabled)
         {
             StartCoroutine(StartCooldown());
-            ShuffleMusicManager.instance.onShuffleMusic.Invoke(ShuffleOptions.Reset);
         }
+
     }
 
     private IEnumerator StartCooldown()

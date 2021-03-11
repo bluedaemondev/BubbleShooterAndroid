@@ -7,13 +7,13 @@ public class PopBubble : MonoBehaviour
 {
     [HideInInspector]
     public bool processed = false;
-    Bubble compoBubble;
+    protected Bubble compoBubble;
 
     [Header("Puntos que da la burbuja al explotar")]
     public int pointsOnPop = 100;
 
     //// Start is called before the first frame update
-    void Start()
+    protected void Start()
     {
         this.compoBubble = GetComponent<Bubble>();
     }
@@ -25,7 +25,7 @@ public class PopBubble : MonoBehaviour
     /// mandar al pool
     /// </summary>
     /// <returns></returns>
-    public IEnumerator Pop()
+    public virtual IEnumerator Pop()
     {
         processed = false; // false?
         PointsManager.instance.InstantiatePointAddEffect(transform.position);
@@ -33,7 +33,7 @@ public class PopBubble : MonoBehaviour
         yield return null;
         Debug.Log("poping " + gameObject.name);
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.05f);
         gameObject.SetActive(false);
 
     }
@@ -63,13 +63,13 @@ public class PopBubble : MonoBehaviour
 
     }
 
-    public IEnumerator SearchAnidado(BubbleType matchType, bool matchByType = true)
+    public virtual IEnumerator SearchAnidado(BubbleType matchType, bool matchByType = true)
     {
         // me fijo si :
         // - el tipo es igual
         // - es un especial que no matchea por color
         // - ya procese este vecino
-        if ((matchType.Equals(compoBubble.type) || !matchByType) && !processed)
+        if ((matchType.Equals(compoBubble.type) && matchByType) && !processed)
         {
             processed = true;
             TileGrid.instance.cluster.Add(this.compoBubble);
@@ -99,13 +99,21 @@ public class PopBubble : MonoBehaviour
                 }
             }
         }
-
-
-
-
-
-
-
+        else if(!matchByType && !processed)
+        {
+            switch (compoBubble.type.type)
+            {
+                /// todos estos casos deben estar definidos en la lista de burbujas
+                /// especiales que esta guardada en BubbleResources. 
+                case "line":
+                    processed = true;
+                    for (int col = 0; col < TileGrid.instance.grid.GetLength(0); col++)
+                    {
+                        TileGrid.instance.cluster.Add(TileGrid.instance.grid[col, this.compoBubble.rowRaw]);
+                    }
+                    break;
+            }
+        }
     }
 
 }
