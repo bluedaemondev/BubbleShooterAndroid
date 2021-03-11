@@ -39,7 +39,6 @@ public class TileGrid : MonoBehaviour
         cluster = new List<Bubble>();
         floatingclusters = new List<Bubble>();
 
-        onRemoveCluster.AddListener(RemClusTest); // delete
     }
 
     // Start is called before the first frame update
@@ -89,7 +88,7 @@ public class TileGrid : MonoBehaviour
             //exploto la burbuja y hago los cambios visuales necesarios.
             foreach (var bb in instance.cluster.FindAll(b => b != null))
             {
-                if (bb != null && bb.gameObject.activeInHierarchy)
+                if (bb.gameObject.activeInHierarchy)
                 {
                     var target = bb.GetComponent<PopBubble>();
                     yield return target.StartCoroutine(target.Pop());
@@ -114,174 +113,58 @@ public class TileGrid : MonoBehaviour
 
     }
 
-
-    //public List<Bubble> GetNeighbors(Bubble tile)
-    //{
-    //    var nArr = neighborOffsetArray.GetTileOffsetsBasedOnParity(tile.rowRaw % 2);
-    //    List<Bubble> neighbors = new List<Bubble>();
-
-    //    for (int pos = 0; pos < nArr.Length; pos++)
-    //    {
-    //        // coordenada del vecino
-    //        var nXpos = (int)(tile.colRaw + nArr[pos].x);
-    //        var nYpos = (int)(tile.rowRaw + nArr[pos].y);
-
-    //        if (nXpos < 0)
-    //            nXpos = 0;
-    //        else if (nXpos > instance.grid.GetLength(0))
-    //            nXpos = instance.grid.GetLength(0);
-
-    //        if (nYpos < 0)
-    //            nYpos = 0;
-    //        else if (nXpos > instance.grid.GetLength(1))
-    //            nXpos = instance.grid.GetLength(1);
-
-    //        // validacion de datos
-    //        if (nXpos >= 0 && nXpos < instance.grid.GetLength(0) && nYpos >= 0 && nYpos < instance.grid.GetLength(1))
-    //        {
-    //            //Debug.Log("neighbors ,  row " + nYpos + ", col " + nXpos);
-    //            if (instance.grid[nXpos, nYpos] != null)
-    //            {
-    //                neighbors.Add(instance.grid[nXpos, nYpos]);
-    //            }
-    //        }
-    //    }
-    //    Debug.Log("neighbors found: ");
-    //    foreach (var n in neighbors)
-    //        Debug.Log(n.ToString() + ", row " + n.rowRaw + ", col " + n.colRaw + " , color = " + n.type.type.ToString());
-    //    Debug.Log("end");
-
-    //    return neighbors;
-    //}
-
-    /// <summary>
-    /// Devuelve un cluster de burbujas en la posicion indicada
-    /// </summary>
-    /// <param name="tileX"></param>
-    /// <param name="tileY"></param>
-    /// <returns></returns>
-    //public List<Bubble> GetCluster(int tileX, int tileY, bool matchColor, bool reset)
-    //{
-    //    List<Bubble> foundCluster = new List<Bubble>();
-
-    //    Bubble targetTile = grid[tileX, tileY];
-    //    Stack<Bubble> toProcess = new Stack<Bubble>();
-
-    //    toProcess.Push(targetTile);
-
-    //    while (toProcess.Count > 0)
-    //    {
-    //        var currentTile = toProcess.Pop();
-    //        // si es del mismo el color o no hace falta que sea match por color
-    //        if (!matchColor || currentTile.type.type == targetTile.type.type)
-    //        {
-    //            foundCluster.Add(currentTile);
-    //            var neighbors = GetNeighbors(currentTile);
-
-    //            // reviso los colores vecinos
-    //            for (var i = 0; i < neighbors.Count; i++)
-    //            {
-    //                if (!neighbors[i].processed)
-    //                {
-    //                    toProcess.Push(neighbors[i]);
-    //                    neighbors[i].processed = true;
-    //                }
-    //            }
-    //        }
-    //    }
-
-    //    return foundCluster;
-    //}
-
     /// <summary>
     /// Clusters que pueden caer en un impacto y explosion
     /// </summary>
     /// <returns></returns>
-    //public List<Bubble> GetFloatingClusters()
-    //{
-    //    List<Bubble> foundFloatingClusters = new List<Bubble>();
-    //    //onResetProcessed.Invoke();
-
-    //    //reviso todas las burbujas
-    //    for (int i = 0; i < instance.grid.GetLength(0); i++)
-    //    {
-    //        for (int j = 0; j < instance.grid.GetLength(1); j++)
-    //        {
-    //            var tile = grid[i, j];
-    //            if (tile == null)
-    //                continue;
-
-    //            if (!tile.processed)
-    //            {
-    //                var foundCluster = GetCluster(i, j, false, false);
-
-    //                // tiene que haber al menos un tile en el cluster
-    //                if (foundCluster.Count <= 0)
-    //                    continue;
-
-    //                var floating = true;
-    //                for (var k = 0; k < foundCluster.Count; k++)
-    //                {
-    //                    if (foundCluster[k].rowRaw == 0)
-    //                    {
-    //                        // esta pegado al techo / ultima fila cargada
-    //                        floating = false;
-    //                        break;
-    //                    }
-    //                }
-    //                if (floating)
-    //                {
-    //                    foundFloatingClusters.AddRange(foundCluster);
-    //                }
-    //            }
-    //        }
-    //    }
-
-    //    Debug.Log(foundFloatingClusters);
-
-    //    return foundFloatingClusters;
-
-    //}
-
-    public void SetCurrentCluster(int colHit, int rowHit, bool matchColor, bool reset)
+    public IEnumerator ProcessFloatingClusters(int highestRowProcessed) //<List<Bubble>>
     {
-        //instance.cluster = GetCluster(colHit, rowHit, matchColor, reset);
-        //if (cluster.Count >= 3)
-        //{
-        //    onRemoveCluster.Invoke(colHit, rowHit, cluster.Count); // paso la cantidad de burbujas al contador de puntos
+        List<Bubble> foundFloatingClusters = new List<Bubble>();
 
-        //    return;
-        //}
-    }
-    public void RemClusTest(int column, int row, int count)
-    {
+        List<Bubble> toProcessFloating = new List<Bubble>();
 
-        //Debug.Log(count);
-        //if (count < 3)
-        //    return;
+        // busco desde la ultima posicion que se que explotaron burbujas,
+        // todas las que estan en esa fila, y las que estan por debajo.
+        for (int column = 0; column < instance.grid.GetLength(0); column++)
+        {
+            for (int row = highestRowProcessed; row < instance.grid.GetLength(1); row++)
+            {
+                var tile = grid[column, row];
+                if (tile == null || !tile.gameObject.activeInHierarchy)
+                    continue;
 
-        //while (cluster.Count > 0)
-        //{
-        //    //if (column == cluster[cluster.Count - 1].colRaw && row == cluster[cluster.Count - 1].rowRaw)
-        //    //{
-        //    Debug.Log("call RemClusTest ev. = " + cluster[cluster.Count - 1].colRaw + " , " + cluster[cluster.Count - 1].rowRaw + " ; cnt = " + count);
-        //    //cluster[cluster.Count - 1].gameObject.SetActive(false);
-        //    Debug.Log("removing row: " + (cluster[cluster.Count - 1].rowRaw + " col: " + (cluster[cluster.Count - 1].colRaw)));
-        //    cluster.RemoveAt(cluster.Count - 1);
-        //    //}
+                toProcessFloating.Add(tile);
+            }
+        }
 
-        //}
+        // cuando tengo esa lista armada, voy a recorrer buscando sus vecinos que esten en
+        // posicion de vecino [ 0, 1, 2, 3 ]
+        // ( en sentido contrario de las agujas del reloj, pos. derecha a izquierda lateral )
+        BubbleNeighbor neighborObject = new BubbleNeighbor();
+        var listedNeighbors = neighborObject.GetTileOffsetsBasedOnParity(highestRowProcessed % 2);
 
-        //var floatingClusters = GetFloatingClusters();
+        bool isFloating = false;
 
-        //while (floatingClusters.Count > 0)
-        //{
-        //    //Destroy(i);
-        //    //Debug.Log("Floating cluster content " + i.type.type);
-        //    floatingClusters[floatingClusters.Count - 1].gameObject.SetActive(false);
-        //    //Debug.Log("Cluster cagado " + (cluster.Count - 1).ToString());
-        //    floatingClusters.RemoveAt(floatingClusters.Count - 1);
-        //}
+        for (int posN = 0; posN < 4; posN++)
+        {
+            switch (posN)
+            {
+                case 1:
+                case 2:
+                    foreach(var tile in toProcessFloating.FindAll(i => i.colRaw == highestRowProcessed))
+                    {
+                        if(tile.colRaw + (int)listedNeighbors[posN].x < instance.grid.GetLength(0))
+                        {
+
+                        }
+                    }
+                    break;
+
+            }
+        }
+
+        Debug.Log(foundFloatingClusters);
+
 
     }
 
