@@ -75,33 +75,42 @@ public class TileGrid : MonoBehaviour
         transform.position = new Vector3(-2.5f, gridHeight * tileSize * 2.75f - rowsForPlayer);
     }
 
-    public void SetCluster()
+    public void SetCluster(bool force = false)
     {
         StartCoroutine(ClusterPopOrReset());
     }
 
-    IEnumerator ClusterPopOrReset()
+    IEnumerator ClusterPopOrReset(bool force = false)
     {
         yield return null;
 
-        if (instance.cluster.Count >= 3)
+        if (instance.cluster.Count >= 3 && !force || force)
         {
             //exploto la burbuja y hago los cambios visuales necesarios.
             foreach (var bb in instance.cluster)
             {
-                var target = bb.GetComponent<PopBubble>();
-                yield return target.StartCoroutine(target.Pop());
+                if (bb != null)
+                {
+                    var target = bb.GetComponent<PopBubble>();
+                    yield return target.StartCoroutine(target.Pop());
+                }
             }
         }
         else
         {
-
             //reseteo los estados de procesado para poder hacer combo de vuelta cuando haya suficientes.
             foreach (var bb in instance.cluster)
             {
-                bb.GetComponent<PopBubble>().processed = false;
+                if (bb != null)
+                {
+                    bb.GetComponent<PopBubble>().processed = false;
+                }
             }
         }
+
+        yield return null;
+
+        instance.cluster = new List<Bubble>();
 
     }
 

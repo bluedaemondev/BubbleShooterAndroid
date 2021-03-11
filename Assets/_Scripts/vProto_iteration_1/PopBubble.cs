@@ -59,7 +59,8 @@ public class PopBubble : MonoBehaviour
 
         yield return null;
 
-        TileGrid.instance.SetCluster();
+        TileGrid.instance.SetCluster(!matchByType); 
+        // si no matcheo por tipo, fuerzo la operacion de limpiar el cluster del mapa
 
     }
 
