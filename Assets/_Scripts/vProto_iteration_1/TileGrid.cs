@@ -87,9 +87,9 @@ public class TileGrid : MonoBehaviour
         if (instance.cluster.Count >= 3 && !force || force)
         {
             //exploto la burbuja y hago los cambios visuales necesarios.
-            foreach (var bb in instance.cluster)
+            foreach (var bb in instance.cluster.FindAll(b => b != null))
             {
-                if (bb != null)
+                if (bb != null && bb.gameObject.activeInHierarchy)
                 {
                     var target = bb.GetComponent<PopBubble>();
                     yield return target.StartCoroutine(target.Pop());

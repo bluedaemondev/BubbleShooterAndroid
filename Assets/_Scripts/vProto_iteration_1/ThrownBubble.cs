@@ -161,6 +161,13 @@ public class ThrownBubble : MonoBehaviour
         else if (swapObject.GetComponent<Bubble>().rowRaw >= TileGrid.instance.grid.GetLength(1))
             swapObject.GetComponent<Bubble>().rowRaw = TileGrid.instance.grid.GetLength(1) - 1;
 
+        /// calculo el desplazamiento que tiene fila par / impar en pantalla
+        if (swapObject.GetComponent<Bubble>().rowRaw % 2 == 0)
+            swapObject.transform.position = new Vector3(swapObject.transform.position.x + 0.1f, swapObject.transform.position.y, 0);
+        else
+            swapObject.transform.position = new Vector3(swapObject.transform.position.x - 0.1f, swapObject.transform.position.y, 0);
+
+
         swapObject.layer = LayerMask.NameToLayer("attachTo");
 
 

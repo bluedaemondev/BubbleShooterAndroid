@@ -55,11 +55,11 @@ public class PopBubble : MonoBehaviour
 
         yield return StartCoroutine(SearchAnidado(matchType, matchByType));
 
+        yield return null;
         Debug.Log(TileGrid.instance.cluster.Count);
 
-        yield return null;
 
-        TileGrid.instance.SetCluster(!matchByType); 
+        TileGrid.instance.SetCluster(!matchByType);
         // si no matcheo por tipo, fuerzo la operacion de limpiar el cluster del mapa
 
     }
@@ -100,7 +100,7 @@ public class PopBubble : MonoBehaviour
                 }
             }
         }
-        else if(!matchByType && !processed)
+        else if (!matchByType && !processed)
         {
             switch (compoBubble.type.type)
             {

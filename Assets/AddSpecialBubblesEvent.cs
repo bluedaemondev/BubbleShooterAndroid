@@ -28,5 +28,6 @@ public class AddSpecialBubblesEvent : MonoBehaviour
         currentToSwitch.GetComponent<SpriteRenderer>().sprite = currentToSwitch.type.sprite;
         
         shooter.currentThrowables.Enqueue(currentToSwitch);
+        shooter.SwitchBubblePriority();
     }
 }

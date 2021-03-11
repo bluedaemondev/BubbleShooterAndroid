@@ -46,7 +46,7 @@ public class BubbleShooter : MonoBehaviour
     /// <summary>
     // Switch current bubble 2 -> 1 
     /// </summary>
-    void SwitchBubblePriority()
+    public void SwitchBubblePriority()
     {
 
         var auxBubbleSec = currentThrowables.Dequeue(); // first in
