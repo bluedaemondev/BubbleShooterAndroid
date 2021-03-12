@@ -48,7 +48,7 @@ public class PopBubble : MonoBehaviour
     {
         yield return null;
 
-        Debug.Log("Starting scan at " + this.compoBubble.name);
+        //Debug.Log("Starting scan at " + this.compoBubble.name);
         TileGrid.instance.cluster = new List<Bubble>();
 
         processed = false;
@@ -56,8 +56,6 @@ public class PopBubble : MonoBehaviour
         yield return StartCoroutine(SearchAnidado(matchType, matchByType));
 
         yield return null;
-        Debug.Log(TileGrid.instance.cluster.Count);
-
 
         TileGrid.instance.SetCluster(!matchByType);
         // si no matcheo por tipo, fuerzo la operacion de limpiar el cluster del mapa

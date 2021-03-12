@@ -82,7 +82,7 @@ public class TileGrid : MonoBehaviour
     IEnumerator ClusterPopOrReset(bool force = false)
     {
 
-        int maxRowHitIdx = 1 ;
+        int maxRowHitIdx = 1;
 
         yield return null;
 
@@ -96,8 +96,10 @@ public class TileGrid : MonoBehaviour
                     var target = bb.GetComponent<PopBubble>();
 
                     if (target.GetComponent<Bubble>().rowRaw >= maxRowHitIdx)
+                    {
                         maxRowHitIdx = target.GetComponent<Bubble>().rowRaw;
-
+                        Debug.Log("setting max row hit " + maxRowHitIdx + " bbl " + target.gameObject.name);
+                    }
                     yield return target.StartCoroutine(target.Pop());
                 }
             }
@@ -116,10 +118,10 @@ public class TileGrid : MonoBehaviour
 
         yield return null;
 
+        if (instance.cluster.Count >= 3)
+            yield return StartCoroutine(ProcessFloatingClusters(maxRowHitIdx));
+
         instance.cluster = new List<Bubble>();
-
-        yield return StartCoroutine(ProcessFloatingClusters(maxRowHitIdx));
-
     }
 
     /// <summary>
@@ -128,7 +130,7 @@ public class TileGrid : MonoBehaviour
     /// <returns></returns>
     public IEnumerator ProcessFloatingClusters(int highestRowProcessed) //<List<Bubble>>
     {
-        Debug.Log("Processing floating clusters....");
+        Debug.Log("Processing floating clusters...." + " max idx = " + highestRowProcessed);
 
         List<Bubble> foundFloatingClusters = new List<Bubble>();
 
@@ -140,7 +142,6 @@ public class TileGrid : MonoBehaviour
         {
             for (int row = highestRowProcessed; row < instance.grid.GetLength(1); row++)
             {
-                Debug.Log("fallando en " + column + " " + row);
                 var tile = instance.grid[column, row];
                 if (tile == null || !tile.gameObject.activeInHierarchy)
                     continue;
@@ -159,26 +160,43 @@ public class TileGrid : MonoBehaviour
 
         bool isFloating = false;
 
-        for (int posN = 0; posN < 4; posN++)
+        for (int posN = 0; posN < 5; posN++)
         {
-            switch (posN)
+            //switch (posN)
+            //{
+            //    case 1: // arriba derecha (impar) / arriba (par)
+            //    case 2: // arriba (impar) / arriba izquierda (par)
+            foreach (var tile in toProcessFloating)//.FindAll(i => i.colRaw == highestRowProcessed))
             {
-                case 1: // arriba derecha (impar) / arriba (par)
-                case 2: // arriba (impar) / arriba izquierda (par)
-                    foreach (var tile in toProcessFloating.FindAll(i => i.colRaw == highestRowProcessed))
-                    {
-                        var targetNeighborCol = tile.colRaw + (int)listedNeighbors[posN].x;
-                        //Debug.Log("fallando 2 en " + targetNeighborCol + " col");
+                
 
-                        if (targetNeighborCol < instance.grid.GetLength(0) &&
-                            instance.grid[targetNeighborCol, highestRowProcessed] == null)
-                        {
-                            isFloating = true;
-                            //Debug.Log(" floating cluster below" + instance.grid[targetNeighborCol, highestRowProcessed]);
-                        }
-                    }
-                    break;
+                var targetNeighborCol = tile.colRaw + (int)listedNeighbors[posN].x;
+                var targetNeighborRow = -tile.rowRaw + (int)listedNeighbors[posN].y;
+
+                if (targetNeighborCol < 0)
+                    targetNeighborCol = 0;
+                else if (targetNeighborCol >= TileGrid.instance.grid.GetLength(0))
+                    targetNeighborCol = TileGrid.instance.grid.GetLength(0) - 1;
+
+                if (targetNeighborRow < 0)
+                    targetNeighborRow = 0;
+                else if (targetNeighborRow >= TileGrid.instance.grid.GetLength(1))
+                    targetNeighborRow = TileGrid.instance.grid.GetLength(1) - 1;
+
+                Debug.Log("fallando 2 en " + targetNeighborCol + " col " + targetNeighborRow + " row");
+
+
+                instance.grid[targetNeighborCol, targetNeighborRow].GetComponent<SpriteRenderer>().color = Color.black;
+
+                if (targetNeighborCol < instance.grid.GetLength(0) &&
+                    instance.grid[targetNeighborCol, targetNeighborRow] == null)
+                {
+                    isFloating = true;
+                    //Debug.Log(" floating cluster below" + instance.grid[targetNeighborCol, highestRowProcessed]);
+                }
             }
+            //break;
+            //}
 
             if (isFloating)
                 foundFloatingClusters.AddRange(toProcessFloating);
@@ -189,6 +207,8 @@ public class TileGrid : MonoBehaviour
         foreach (var floating in foundFloatingClusters)
         {
             Debug.Log("Popping " + floating.name);
+            floating.GetComponent<SpriteRenderer>().color = Color.white;
+
             yield return floating.GetComponent<PopBubble>()?.StartCoroutine(floating.GetComponent<PopBubble>().Pop());
 
         }

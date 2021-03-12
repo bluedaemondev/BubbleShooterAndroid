@@ -149,21 +149,22 @@ public class ThrownBubble : MonoBehaviour
 
         swapObject.transform.position = (Vector2)origin.transform.position + offsets[minDistIdx] * TileGrid.instance.tileSize;
 
-        swapObject.GetComponent<Bubble>().colRaw = (int)offsets[minDistIdx].x + origin.GetComponent<Bubble>().colRaw;
-        swapObject.GetComponent<Bubble>().rowRaw = -(int)offsets[minDistIdx].y + origin.GetComponent<Bubble>().rowRaw;
+        var bubbleComponentSwap = swapObject.GetComponent<Bubble>();
+        bubbleComponentSwap.colRaw = (int)offsets[minDistIdx].x + origin.GetComponent<Bubble>().colRaw;
+        bubbleComponentSwap.rowRaw = -(int)offsets[minDistIdx].y + origin.GetComponent<Bubble>().rowRaw;
 
-        if (swapObject.GetComponent<Bubble>().colRaw < 0)
-            swapObject.GetComponent<Bubble>().colRaw = 0;
-        else if (swapObject.GetComponent<Bubble>().colRaw >= TileGrid.instance.grid.GetLength(0))
-            swapObject.GetComponent<Bubble>().colRaw = TileGrid.instance.grid.GetLength(0) - 1;
+        if (bubbleComponentSwap.colRaw < 0)
+            bubbleComponentSwap.colRaw = 0;
+        else if (bubbleComponentSwap.colRaw >= TileGrid.instance.grid.GetLength(0))
+            bubbleComponentSwap.colRaw = TileGrid.instance.grid.GetLength(0) - 1;
 
-        if (swapObject.GetComponent<Bubble>().rowRaw < 0)
-            swapObject.GetComponent<Bubble>().rowRaw = 0;
-        else if (swapObject.GetComponent<Bubble>().rowRaw >= TileGrid.instance.grid.GetLength(1))
-            swapObject.GetComponent<Bubble>().rowRaw = TileGrid.instance.grid.GetLength(1) - 1;
+        if (bubbleComponentSwap.rowRaw < 0)
+            bubbleComponentSwap.rowRaw = 0;
+        else if (bubbleComponentSwap.rowRaw >= TileGrid.instance.grid.GetLength(1))
+            bubbleComponentSwap.rowRaw = TileGrid.instance.grid.GetLength(1) - 1;
 
         /// calculo el desplazamiento que tiene fila par / impar en pantalla
-        if (swapObject.GetComponent<Bubble>().rowRaw % 2 == 0)
+        if (bubbleComponentSwap.rowRaw % 2 == 0)
             swapObject.transform.position = new Vector3(swapObject.transform.position.x + 0.1f, swapObject.transform.position.y, 0);
         else
             swapObject.transform.position = new Vector3(swapObject.transform.position.x - 0.1f, swapObject.transform.position.y, 0);
@@ -172,12 +173,11 @@ public class ThrownBubble : MonoBehaviour
         swapObject.layer = LayerMask.NameToLayer("attachTo");
 
 
-        Debug.Log("x = " + swapObject.GetComponent<Bubble>().colRaw + ", y = " + swapObject.GetComponent<Bubble>().rowRaw);
+        //Debug.Log("x = " + bubbleComponentSwap.colRaw + ", y = " + bubbleComponentSwap.rowRaw);
 
-        TileGrid.instance.grid[swapObject.GetComponent<Bubble>().colRaw, swapObject.GetComponent<Bubble>().rowRaw] =
-            swapObject.GetComponent<Bubble>();
+        TileGrid.instance.grid[bubbleComponentSwap.colRaw, bubbleComponentSwap.rowRaw] = bubbleComponentSwap;
 
-        swapObject.GetComponent<Bubble>().type = this.type;
+        bubbleComponentSwap.type = this.type;
         swapObject.GetComponent<SpriteRenderer>().sprite = this.type.sprite;
 
         var auxPop = swapObject.GetComponent<PopBubble>();
