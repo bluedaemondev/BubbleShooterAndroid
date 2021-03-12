@@ -81,6 +81,9 @@ public class TileGrid : MonoBehaviour
 
     IEnumerator ClusterPopOrReset(bool force = false)
     {
+
+        int maxRowHitIdx = 1 ;
+
         yield return null;
 
         if (instance.cluster.Count >= 3 && !force || force)
@@ -91,6 +94,10 @@ public class TileGrid : MonoBehaviour
                 if (bb.gameObject.activeInHierarchy)
                 {
                     var target = bb.GetComponent<PopBubble>();
+
+                    if (target.GetComponent<Bubble>().rowRaw >= maxRowHitIdx)
+                        maxRowHitIdx = target.GetComponent<Bubble>().rowRaw;
+
                     yield return target.StartCoroutine(target.Pop());
                 }
             }
@@ -111,6 +118,8 @@ public class TileGrid : MonoBehaviour
 
         instance.cluster = new List<Bubble>();
 
+        yield return StartCoroutine(ProcessFloatingClusters(maxRowHitIdx));
+
     }
 
     /// <summary>
@@ -119,6 +128,8 @@ public class TileGrid : MonoBehaviour
     /// <returns></returns>
     public IEnumerator ProcessFloatingClusters(int highestRowProcessed) //<List<Bubble>>
     {
+        Debug.Log("Processing floating clusters....");
+
         List<Bubble> foundFloatingClusters = new List<Bubble>();
 
         List<Bubble> toProcessFloating = new List<Bubble>();
@@ -129,13 +140,16 @@ public class TileGrid : MonoBehaviour
         {
             for (int row = highestRowProcessed; row < instance.grid.GetLength(1); row++)
             {
-                var tile = grid[column, row];
+                Debug.Log("fallando en " + column + " " + row);
+                var tile = instance.grid[column, row];
                 if (tile == null || !tile.gameObject.activeInHierarchy)
                     continue;
 
                 toProcessFloating.Add(tile);
             }
         }
+
+        yield return null;
 
         // cuando tengo esa lista armada, voy a recorrer buscando sus vecinos que esten en
         // posicion de vecino [ 0, 1, 2, 3 ]
@@ -149,18 +163,34 @@ public class TileGrid : MonoBehaviour
         {
             switch (posN)
             {
-                case 1:
-                case 2:
-                    foreach(var tile in toProcessFloating.FindAll(i => i.colRaw == highestRowProcessed))
+                case 1: // arriba derecha (impar) / arriba (par)
+                case 2: // arriba (impar) / arriba izquierda (par)
+                    foreach (var tile in toProcessFloating.FindAll(i => i.colRaw == highestRowProcessed))
                     {
-                        if(tile.colRaw + (int)listedNeighbors[posN].x < instance.grid.GetLength(0))
-                        {
+                        var targetNeighborCol = tile.colRaw + (int)listedNeighbors[posN].x;
+                        //Debug.Log("fallando 2 en " + targetNeighborCol + " col");
 
+                        if (targetNeighborCol < instance.grid.GetLength(0) &&
+                            instance.grid[targetNeighborCol, highestRowProcessed] == null)
+                        {
+                            isFloating = true;
+                            //Debug.Log(" floating cluster below" + instance.grid[targetNeighborCol, highestRowProcessed]);
                         }
                     }
                     break;
-
             }
+
+            if (isFloating)
+                foundFloatingClusters.AddRange(toProcessFloating);
+
+            yield return null;
+        }
+
+        foreach (var floating in foundFloatingClusters)
+        {
+            Debug.Log("Popping " + floating.name);
+            yield return floating.GetComponent<PopBubble>()?.StartCoroutine(floating.GetComponent<PopBubble>().Pop());
+
         }
 
         Debug.Log(foundFloatingClusters);

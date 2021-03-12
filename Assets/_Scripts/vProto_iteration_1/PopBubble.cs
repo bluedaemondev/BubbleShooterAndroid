@@ -74,7 +74,6 @@ public class PopBubble : MonoBehaviour
         {
             processed = true;
             TileGrid.instance.cluster.Add(this.compoBubble);
-            Debug.Log(this.compoBubble + " added");
 
             BubbleNeighbor myNeighbors = new BubbleNeighbor();
             foreach (var neighbor in myNeighbors.GetTileOffsetsBasedOnParity(compoBubble.rowRaw % 2))
@@ -92,7 +91,7 @@ public class PopBubble : MonoBehaviour
                         // estando en la grilla, reviso el tipo
                         var target = TileGrid.instance.grid[compoBubble.colRaw + (int)neighbor.x, compoBubble.rowRaw - (int)neighbor.y];
                         // si es valido y es una burbuja, hago otro search anidado a sus vecinos
-                        if (target != null)
+                        if (target != null && target.gameObject.activeInHierarchy)
                             yield return StartCoroutine(target.GetComponent<PopBubble>().SearchAnidado(matchType, matchByType));
 
 
@@ -105,7 +104,7 @@ public class PopBubble : MonoBehaviour
             switch (compoBubble.type.type)
             {
                 /// todos estos casos deben estar definidos en la lista de burbujas
-                /// especiales que esta guardada en BubbleResources. 
+                /// especiales (guardada en BubbleResources). 
                 case "line":
                     processed = true;
                     for (int col = 0; col < TileGrid.instance.grid.GetLength(0); col++)

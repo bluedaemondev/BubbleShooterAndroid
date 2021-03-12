@@ -148,6 +148,7 @@ public class ThrownBubble : MonoBehaviour
         var swapObject = ObjectPooler.instance.SpawnFromPool("bubble");
 
         swapObject.transform.position = (Vector2)origin.transform.position + offsets[minDistIdx] * TileGrid.instance.tileSize;
+
         swapObject.GetComponent<Bubble>().colRaw = (int)offsets[minDistIdx].x + origin.GetComponent<Bubble>().colRaw;
         swapObject.GetComponent<Bubble>().rowRaw = -(int)offsets[minDistIdx].y + origin.GetComponent<Bubble>().rowRaw;
 
