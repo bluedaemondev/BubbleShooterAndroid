@@ -84,7 +84,7 @@ public class AdmobRewardedInterstitialScript : GoogleAdmobAd
 
         if (GameManagerActions.instance.isPaused)
         {
-            StartCoroutine(base.DelayedResume());
+            GameManagerActions.instance.StartCoroutine(GameManagerActions.instance.DelayedResume());
         }
         //base.HandleOnAdOpened(sender, args);
     }
@@ -116,7 +116,8 @@ public class AdmobRewardedInterstitialScript : GoogleAdmobAd
         this.rewardedInterstitial.OnAdFailedToPresentFullScreenContent -= HandleAdFailedToPresent;
         if (GameManagerActions.instance.isPaused)
         {
-            StartCoroutine(base.DelayedResume());
+            GameManagerActions.instance.StartCoroutine(GameManagerActions.instance.DelayedResume());
+
         }
     }
 

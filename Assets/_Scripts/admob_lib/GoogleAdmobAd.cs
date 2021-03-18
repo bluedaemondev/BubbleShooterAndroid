@@ -13,12 +13,7 @@ public class GoogleAdmobAd : MonoBehaviour
         Debug.Log("Starting ad service");
     }
 
-    public virtual IEnumerator DelayedResume()
-    {
-        yield return new WaitForSeconds(1f);
-        GameManagerActions.instance.onResumeGame.Invoke();
-
-    }
+    
 
     /// <summary>
     /// Llamar para mostrar un anuncio

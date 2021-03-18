@@ -151,7 +151,10 @@ public class TileGrid : MonoBehaviour
                     isFloating = true;
                     continue;
                 }
-                toProcessFloating.Add(tile);
+                else
+                {
+                    toProcessFloating.Add(tile);
+                }
                 //instance.grid[column, row].GetComponent<SpriteRenderer>().color = Color.black; //dbg
 
             }
@@ -167,7 +170,7 @@ public class TileGrid : MonoBehaviour
 
         foreach (var possibleFloater in toProcessFloating)
         {
-            if (possibleFloater.rowRaw <= highestRowProcessed)
+            if (possibleFloater.rowRaw < highestRowProcessed)
                 continue;
 
             for (int i = 0; i < listedNeighbors.Length; i++)

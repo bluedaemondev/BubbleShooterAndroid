@@ -65,6 +65,9 @@ public class ThrownBubble : MonoBehaviour
             var bubbleCollisionWith = collisionInfo.collider.GetComponent<Bubble>();
             HandleSnapIntoGrid(bubbleCollisionWith);
             this.GetComponent<Collider2D>().enabled = false;
+            
+            //TickSystem.instance.Tick();
+
         }
 
 
@@ -89,7 +92,7 @@ public class ThrownBubble : MonoBehaviour
         if (colHit < 0)
             colHit = 0;
         else if (colHit >= TileGrid.instance.grid.GetLength(0))
-            colHit = TileGrid.instance.grid.GetLength(0);
+            colHit = TileGrid.instance.grid.GetLength(0) - 1;
 
         if (rowHit < 0)
             rowHit = 0;
@@ -105,8 +108,8 @@ public class ThrownBubble : MonoBehaviour
             //Debug.Log("Hit handling at x:" + hitBubble.colRaw + ", y: " + hitBubble.rowRaw);
 
             BubbleNeighbor neighborComparer = new BubbleNeighbor();
-            var listNeighborOffset = neighborComparer.GetWithoutDiagonals();//GetTileOffsetsBasedOnParity(rowHit % 2);
-
+            var listNeighborOffset = neighborComparer.GetTileOffsetsBasedOnParity(rowHit % 2);
+            //GetWithoutDiagonals();//
 
             var cast = Physics2D.RaycastAll(hitBubble.transform.position, (transform.position - hitBubble.transform.position), radius);
             Debug.DrawRay(hitBubble.transform.position, (transform.position - hitBubble.transform.position) * radius, Color.green, 2f);
@@ -122,7 +125,7 @@ public class ThrownBubble : MonoBehaviour
 
         if (GameManagerActions.instance.CheckGameOver())
             return;
-        
+
         this.gameObject.SetActive(false);
 
         //TileGrid.instance.SetCurrentCluster(colHit, rowHit, true, false);
@@ -211,6 +214,6 @@ public class ThrownBubble : MonoBehaviour
         auxPop.StartCoroutine(auxPop.StartNeighborScan(type, !BubbleResources.instance.specialBubbleResources.Contains(type)));
     }
 
-    
+
 
 }
