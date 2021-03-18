@@ -8,9 +8,7 @@ public class BubbleShooterSceneActions : MonoBehaviour
 
     void Start()
     {
-
         SetUpRequiredMechanics();
-
     }
 
     void SetUpRequiredMechanics()

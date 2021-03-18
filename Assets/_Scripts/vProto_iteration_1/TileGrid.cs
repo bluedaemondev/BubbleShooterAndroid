@@ -42,10 +42,10 @@ public class TileGrid : MonoBehaviour
     }
 
     // Start is called before the first frame update
-    void Start()
-    {
-        AdmobComponentsManager.instance.onSendToBackAds.Invoke();
-    }
+    //void Start()
+    //{
+    //    AdmobComponentsManager.instance.onSendToBackAds.Invoke();
+    //}
 
     private void GenerateGrid()
     {
