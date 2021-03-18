@@ -57,7 +57,7 @@ public class PopBubble : MonoBehaviour
 
         yield return null;
 
-        TileGrid.instance.SetCluster(!matchByType);
+        TileGrid.instance.SetCluster(this.compoBubble, !matchByType);
         // si no matcheo por tipo, fuerzo la operacion de limpiar el cluster del mapa
 
     }
@@ -74,7 +74,7 @@ public class PopBubble : MonoBehaviour
             TileGrid.instance.cluster.Add(this.compoBubble);
 
             BubbleNeighbor myNeighbors = new BubbleNeighbor();
-            foreach (var neighbor in myNeighbors.GetTileOffsetsBasedOnParity(compoBubble.rowRaw % 2))
+            foreach (var neighbor in myNeighbors.GetWithoutDiagonals()) //GetTileOffsetsBasedOnParity(compoBubble.rowRaw % 2))
             {
                 // lista de vectores de offset para agregar a la posicion de
                 // composite bubble.
@@ -89,9 +89,24 @@ public class PopBubble : MonoBehaviour
                         // estando en la grilla, reviso el tipo
                         var target = TileGrid.instance.grid[compoBubble.colRaw + (int)neighbor.x, compoBubble.rowRaw - (int)neighbor.y];
                         // si es valido y es una burbuja, hago otro search anidado a sus vecinos
-                        if (target != null && target.gameObject.activeInHierarchy)
-                            yield return StartCoroutine(target.GetComponent<PopBubble>().SearchAnidado(matchType, matchByType));
 
+                        if (target != null && target.gameObject.activeInHierarchy)
+                        {
+                            RaycastHit2D recheck = Physics2D.Raycast(transform.position, target.transform.position - transform.position);
+                            Debug.DrawRay(transform.position, target.transform.position - transform.position, Color.red, 2f);
+                            Debug.Log("Drawing ray recheck");
+                            //yield return new WaitForSeconds(2f);
+
+
+                            if (recheck.collider != null)
+                            {
+                                if (matchType.Equals(this.compoBubble.type) && matchType.Equals(recheck.collider.GetComponent<Bubble>().type))
+                                {
+                                    yield return StartCoroutine(target.GetComponent<PopBubble>().SearchAnidado(matchType, matchByType));
+                                }
+                            }
+                        
+                        }
 
                     }
                 }

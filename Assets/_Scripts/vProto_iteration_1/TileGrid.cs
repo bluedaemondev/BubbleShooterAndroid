@@ -61,10 +61,10 @@ public class TileGrid : MonoBehaviour
                 GameObject refTile = (GameObject)ObjectPooler.instance.SpawnFromPool("bubble");
                 refTile.name = "bubble_" + col.ToString() + row.ToString();
                 var bubble = refTile.GetComponent<Bubble>();
+
                 bubble.OnObjectSpawn(row, col, tileSize);
                 instance.grid[col, row] = bubble;
                 instance.grid[col, row].gameObject.SetActive(true);
-
             }
         }
 
@@ -74,15 +74,14 @@ public class TileGrid : MonoBehaviour
         transform.position = new Vector3(-2.5f, gridHeight * tileSize * 2.75f - rowsForPlayer);
     }
 
-    public void SetCluster(bool force = false)
+    public void SetCluster(Bubble baseSearch, bool force = false)
     {
-        StartCoroutine(ClusterPopOrReset());
+        StartCoroutine(ClusterPopOrReset(baseSearch));
     }
 
-    IEnumerator ClusterPopOrReset(bool force = false)
+    IEnumerator ClusterPopOrReset(Bubble baseSearch, bool force = false)
     {
-
-        int maxRowHitIdx = 1;
+        int maxRowHitIdx = baseSearch.rowRaw;
 
         yield return null;
 
@@ -128,7 +127,7 @@ public class TileGrid : MonoBehaviour
     /// Clusters que pueden caer en un impacto y explosion
     /// </summary>
     /// <returns></returns>
-    public IEnumerator ProcessFloatingClusters(int highestRowProcessed) //<List<Bubble>>
+    public IEnumerator ProcessFloatingClusters(int highestRowProcessed)
     {
         Debug.Log("Processing floating clusters...." + " max idx = " + highestRowProcessed);
 
@@ -136,42 +135,45 @@ public class TileGrid : MonoBehaviour
 
         List<Bubble> toProcessFloating = new List<Bubble>();
 
+
+        bool isFloating = false;
+
+
         // busco desde la ultima posicion que se que explotaron burbujas,
         // todas las que estan en esa fila, y las que estan por debajo.
-        for (int column = 0; column < instance.grid.GetLength(0); column++)
+        for (int row = highestRowProcessed; row < instance.grid.GetLength(1); row++)
         {
-            for (int row = highestRowProcessed; row < instance.grid.GetLength(1); row++)
+            for (int column = 0; column < instance.grid.GetLength(0); column++)
             {
                 var tile = instance.grid[column, row];
                 if (tile == null || !tile.gameObject.activeInHierarchy)
+                {
+                    isFloating = true;
                     continue;
-
+                }
                 toProcessFloating.Add(tile);
+                //instance.grid[column, row].GetComponent<SpriteRenderer>().color = Color.black; //dbg
+
             }
         }
 
         yield return null;
 
         // cuando tengo esa lista armada, voy a recorrer buscando sus vecinos que esten en
-        // posicion de vecino [ 0, 1, 2, 3 ]
+        // posicion de vecino [ 0, 1, 2, 3, 4 ]
         // ( en sentido contrario de las agujas del reloj, pos. derecha a izquierda lateral )
         BubbleNeighbor neighborObject = new BubbleNeighbor();
-        var listedNeighbors = neighborObject.GetTileOffsetsBasedOnParity(highestRowProcessed % 2);
+        var listedNeighbors = neighborObject.GetUpperNeighbors();
 
-        bool isFloating = false;
-
-        for (int posN = 0; posN < 5; posN++)
+        foreach (var possibleFloater in toProcessFloating)
         {
-            //switch (posN)
-            //{
-            //    case 1: // arriba derecha (impar) / arriba (par)
-            //    case 2: // arriba (impar) / arriba izquierda (par)
-            foreach (var tile in toProcessFloating)//.FindAll(i => i.colRaw == highestRowProcessed))
-            {
-                
+            if (possibleFloater.rowRaw <= highestRowProcessed)
+                continue;
 
-                var targetNeighborCol = tile.colRaw + (int)listedNeighbors[posN].x;
-                var targetNeighborRow = -tile.rowRaw + (int)listedNeighbors[posN].y;
+            for (int i = 0; i < listedNeighbors.Length; i++)
+            {
+                var targetNeighborCol = possibleFloater.colRaw + (int)listedNeighbors[i].x;
+                var targetNeighborRow = possibleFloater.rowRaw + (int)listedNeighbors[i].y;
 
                 if (targetNeighborCol < 0)
                     targetNeighborCol = 0;
@@ -183,37 +185,37 @@ public class TileGrid : MonoBehaviour
                 else if (targetNeighborRow >= TileGrid.instance.grid.GetLength(1))
                     targetNeighborRow = TileGrid.instance.grid.GetLength(1) - 1;
 
-                Debug.Log("fallando 2 en " + targetNeighborCol + " col " + targetNeighborRow + " row");
+                isFloating &= (instance.grid[targetNeighborCol, targetNeighborRow] == null ||
+                    !instance.grid[targetNeighborCol, targetNeighborRow].gameObject.activeInHierarchy ||
+                    instance.grid[targetNeighborCol, targetNeighborRow].floating);
 
+                Debug.Log("floating = " + isFloating);
 
-                instance.grid[targetNeighborCol, targetNeighborRow].GetComponent<SpriteRenderer>().color = Color.black;
-
-                if (targetNeighborCol < instance.grid.GetLength(0) &&
-                    instance.grid[targetNeighborCol, targetNeighborRow] == null)
+                if (instance.grid[targetNeighborCol, targetNeighborRow])
                 {
-                    isFloating = true;
-                    //Debug.Log(" floating cluster below" + instance.grid[targetNeighborCol, highestRowProcessed]);
+                    instance.grid[targetNeighborCol, targetNeighborRow].floating = isFloating;
+                    foundFloatingClusters.Add(instance.grid[targetNeighborCol, targetNeighborRow]);
                 }
             }
-            //break;
-            //}
-
-            if (isFloating)
-                foundFloatingClusters.AddRange(toProcessFloating);
-
-            yield return null;
         }
+
+
 
         foreach (var floating in foundFloatingClusters)
         {
+            if (floating.gameObject == null || !floating.gameObject.activeInHierarchy)
+                continue;
+
             Debug.Log("Popping " + floating.name);
             floating.GetComponent<SpriteRenderer>().color = Color.white;
 
-            yield return floating.GetComponent<PopBubble>()?.StartCoroutine(floating.GetComponent<PopBubble>().Pop());
+
+            Debug.Log("foundFloatingClusters " + floating.gameObject.name);
+
+            yield return floating.GetComponent<PopBubble>().StartCoroutine(floating.GetComponent<PopBubble>().StartNeighborScan(new BubbleType(), false));
 
         }
 
-        Debug.Log(foundFloatingClusters);
 
 
     }

@@ -105,11 +105,11 @@ public class ThrownBubble : MonoBehaviour
             //Debug.Log("Hit handling at x:" + hitBubble.colRaw + ", y: " + hitBubble.rowRaw);
 
             BubbleNeighbor neighborComparer = new BubbleNeighbor();
-            var listNeighborOffset = neighborComparer.GetTileOffsetsBasedOnParity(rowHit % 2);
+            var listNeighborOffset = neighborComparer.GetWithoutDiagonals();//GetTileOffsetsBasedOnParity(rowHit % 2);
 
 
-            var cast = Physics2D.RaycastAll(hitBubble.transform.position, (transform.position - hitBubble.transform.position), radius * 2f);
-            Debug.DrawRay(hitBubble.transform.position, (transform.position - hitBubble.transform.position) * radius * 2f, Color.green, 2f);
+            var cast = Physics2D.RaycastAll(hitBubble.transform.position, (transform.position - hitBubble.transform.position), radius);
+            Debug.DrawRay(hitBubble.transform.position, (transform.position - hitBubble.transform.position) * radius, Color.green, 2f);
 
             foreach (var found in cast)
                 if (found.collider.GetComponent<ThrownBubble>())
@@ -138,12 +138,37 @@ public class ThrownBubble : MonoBehaviour
         for (int i = 0; i < offsets.Length; i++)
         {
             var distance = Vector2.Distance((Vector2)origin.position + offsets[i] * TileGrid.instance.tileSize, targetToAdapt.position);
-            if (distance <= minDist)
+            var bbl = origin.GetComponent<Bubble>();
+
+            var trX = bbl.colRaw + (int)offsets[i].x;
+            var trY = bbl.rowRaw - (int)offsets[i].y;
+
+            if (trX < 0)
+                trX = 0;
+            else if (trX >= TileGrid.instance.grid.GetLength(0))
+                trX = TileGrid.instance.grid.GetLength(0) - 1;
+
+            if (trY < 0)
+                trY = 0;
+            else if (trY >= TileGrid.instance.grid.GetLength(1))
+                trY = TileGrid.instance.grid.GetLength(1) - 1;
+
+            var nullCheck = TileGrid.instance.grid[trX, trY];
+
+
+
+            if (distance < minDist && nullCheck == null)
             {
+                Debug.Log("Setting min dist = " + distance + " , " + trX + " " + trY);
+
                 minDist = distance;
                 minDistIdx = i;
             }
+
         }
+
+
+
 
         var swapObject = ObjectPooler.instance.SpawnFromPool("bubble");
 
@@ -165,9 +190,9 @@ public class ThrownBubble : MonoBehaviour
 
         /// calculo el desplazamiento que tiene fila par / impar en pantalla
         if (bubbleComponentSwap.rowRaw % 2 == 0)
-            swapObject.transform.position = new Vector3(swapObject.transform.position.x + 0.1f, swapObject.transform.position.y, 0);
+            swapObject.transform.position = new Vector3(bubbleComponentSwap.transform.position.x + 0.1f, bubbleComponentSwap.transform.position.y, 0);
         else
-            swapObject.transform.position = new Vector3(swapObject.transform.position.x - 0.1f, swapObject.transform.position.y, 0);
+            swapObject.transform.position = new Vector3(bubbleComponentSwap.transform.position.x - 0.1f, bubbleComponentSwap.transform.position.y, 0);
 
 
         swapObject.layer = LayerMask.NameToLayer("attachTo");
@@ -179,6 +204,8 @@ public class ThrownBubble : MonoBehaviour
 
         bubbleComponentSwap.type = this.type;
         swapObject.GetComponent<SpriteRenderer>().sprite = this.type.sprite;
+
+        Debug.Log(bubbleComponentSwap.colRaw + "x snap y" + bubbleComponentSwap.rowRaw);
 
         var auxPop = swapObject.GetComponent<PopBubble>();
         auxPop.StartCoroutine(auxPop.StartNeighborScan(type, !BubbleResources.instance.specialBubbleResources.Contains(type)));

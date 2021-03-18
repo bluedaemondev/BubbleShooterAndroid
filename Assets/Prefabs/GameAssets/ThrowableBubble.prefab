@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 111218648079613885}
   - component: {fileID: 111218648079613884}
-  - component: {fileID: 8692663981910243145}
   - component: {fileID: 2971553132299920655}
   - component: {fileID: 2452826111613456078}
+  - component: {fileID: 8310995580768174734}
   m_Layer: 0
   m_Name: ThrowableBubble
   m_TagString: bubble
@@ -85,22 +85,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!58 &8692663981910243145
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 111218648079613886}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.5
 --- !u!114 &2971553132299920655
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -113,6 +97,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ee3b6114f9e2304e80f34451e59967f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  type:
+    type: 
+    sprite: {fileID: 0}
+  processed: 0
 --- !u!50 &2452826111613456078
 Rigidbody2D:
   serializedVersion: 4
@@ -133,4 +121,20 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
+--- !u!58 &8310995580768174734
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 111218648079613886}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5

@@ -10,6 +10,7 @@ public class Bubble : MonoBehaviour, IPooleableObject
     [Header("Tipo de burbuja cargado")]
     public BubbleType type;
     public bool processed;
+    public bool floating;
 
     // posicion en coordenadas reales.
     float RowYPosition;
