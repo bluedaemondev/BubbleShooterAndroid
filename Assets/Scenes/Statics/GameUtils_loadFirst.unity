@@ -276,6 +276,30 @@ PrefabInstance:
       propertyPath: m_PlayOnAwake
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6815096919542105093, guid: d069925e7d47abc4eb17d7ea8c35184e, type: 3}
+      propertyPath: listAllAvailableLoops.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: 10cdc586a4e8c6d44bcaf93f326fbdef, type: 3}
+    - target: {fileID: 6815096919542105093, guid: d069925e7d47abc4eb17d7ea8c35184e, type: 3}
+      propertyPath: listAllAvailableLoops.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: a94786a9cad98a04f92f6d15fbbc88cc, type: 3}
+    - target: {fileID: 6815096919542105093, guid: d069925e7d47abc4eb17d7ea8c35184e, type: 3}
+      propertyPath: listAllAvailableLoops.Array.data[2]
+      value: 
+      objectReference: {fileID: 8300000, guid: 8b360324c8662e04cb4572df6d23c6a5, type: 3}
+    - target: {fileID: 6815096919542105093, guid: d069925e7d47abc4eb17d7ea8c35184e, type: 3}
+      propertyPath: listAllAvailableLoops.Array.data[3]
+      value: 
+      objectReference: {fileID: 8300000, guid: 90071fbf8dda8fd4285a31f1f69420b5, type: 3}
+    - target: {fileID: 6815096919542105093, guid: d069925e7d47abc4eb17d7ea8c35184e, type: 3}
+      propertyPath: listAllAvailableLoops.Array.data[4]
+      value: 
+      objectReference: {fileID: 8300000, guid: 5cbf3fed6833ec44db6d12140aa19654, type: 3}
+    - target: {fileID: 6815096919542105093, guid: d069925e7d47abc4eb17d7ea8c35184e, type: 3}
+      propertyPath: listAllAvailableLoops.Array.data[5]
+      value: 
+      objectReference: {fileID: 8300000, guid: 634788dec3259fd4590c6107b470359f, type: 3}
     m_RemovedComponents:
     - {fileID: 1888708849, guid: d069925e7d47abc4eb17d7ea8c35184e, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: d069925e7d47abc4eb17d7ea8c35184e, type: 3}

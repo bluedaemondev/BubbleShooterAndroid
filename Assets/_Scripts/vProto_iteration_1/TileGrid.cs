@@ -51,10 +51,10 @@ public class TileGrid : MonoBehaviour
     {
         int rowsForPlayer = 10;
         //rows = rows; // Posible problema en reinicio de mapa
-        instance.grid = new Bubble[cols, rows + rowsForPlayer];
+        instance.grid = new Bubble[cols, rows + rowsForPlayer * 2];
 
 
-        for (int row = 0; row < rows - rowsForPlayer; row++)
+        for (int row = rowsForPlayer; row < rows + rowsForPlayer; row++)
         {
             for (int col = 0; col < cols; col++)
             {

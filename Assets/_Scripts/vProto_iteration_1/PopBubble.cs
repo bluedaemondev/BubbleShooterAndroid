@@ -105,7 +105,7 @@ public class PopBubble : MonoBehaviour
                                     yield return StartCoroutine(target.GetComponent<PopBubble>().SearchAnidado(matchType, matchByType));
                                 }
                             }
-                        
+
                         }
 
                     }
@@ -122,7 +122,18 @@ public class PopBubble : MonoBehaviour
                     processed = true;
                     for (int col = 0; col < TileGrid.instance.grid.GetLength(0); col++)
                     {
-                        TileGrid.instance.cluster.Add(TileGrid.instance.grid[col, this.compoBubble.rowRaw]);
+                        if(compoBubble.rowRaw >= 1 && compoBubble.rowRaw < TileGrid.instance.grid.GetLength(1))
+                        {
+                            TileGrid.instance.cluster.Add(TileGrid.instance.grid[col, this.compoBubble.rowRaw]);
+                            TileGrid.instance.cluster.Add(TileGrid.instance.grid[col, compoBubble.rowRaw - 1]);
+                            Debug.Log("Doble fila deleteada");
+                        }
+                        else if (compoBubble.rowRaw == 0)
+                        {
+                            TileGrid.instance.cluster.Add(TileGrid.instance.grid[col, this.compoBubble.rowRaw]);
+                            Debug.Log("Fila techo deleteada");
+                        }
+
                     }
                     break;
             }
