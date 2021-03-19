@@ -1007,6 +1007,10 @@ PrefabInstance:
       propertyPath: rows
       value: 20
       objectReference: {fileID: 0}
+    - target: {fileID: 1771620024613949809, guid: cc7e4ba9db1564241a905e2ad89d858b, type: 3}
+      propertyPath: rowsForPlayer
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 1771620024613949810, guid: cc7e4ba9db1564241a905e2ad89d858b, type: 3}
       propertyPath: pools.Array.size
       value: 2

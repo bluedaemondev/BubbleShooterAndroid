@@ -52,14 +52,15 @@ public class PopBubble : MonoBehaviour
         TileGrid.instance.cluster = new List<Bubble>();
 
         processed = false;
+        if (this != null && this.gameObject.activeInHierarchy)
+        {
+            yield return StartCoroutine(SearchAnidado(matchType, matchByType));
 
-        yield return StartCoroutine(SearchAnidado(matchType, matchByType));
+            yield return null;
 
-        yield return null;
-
-        TileGrid.instance.SetCluster(this.compoBubble, !matchByType);
-        // si no matcheo por tipo, fuerzo la operacion de limpiar el cluster del mapa
-
+            TileGrid.instance.SetCluster(this.compoBubble, !matchByType);
+            // si no matcheo por tipo, fuerzo la operacion de limpiar el cluster del mapa
+        }
     }
 
     public virtual IEnumerator SearchAnidado(BubbleType matchType, bool matchByType = true)
@@ -98,7 +99,7 @@ public class PopBubble : MonoBehaviour
                             //yield return new WaitForSeconds(2f);
 
 
-                            if (recheck.collider != null)
+                            if (recheck.collider != null && this.compoBubble != null)
                             {
                                 if (matchType.Equals(this.compoBubble.type) && matchType.Equals(recheck.collider.GetComponent<Bubble>().type))
                                 {
@@ -122,7 +123,7 @@ public class PopBubble : MonoBehaviour
                     processed = true;
                     for (int col = 0; col < TileGrid.instance.grid.GetLength(0); col++)
                     {
-                        if(compoBubble.rowRaw >= 1 && compoBubble.rowRaw < TileGrid.instance.grid.GetLength(1))
+                        if (compoBubble.rowRaw >= 1 && compoBubble.rowRaw < TileGrid.instance.grid.GetLength(1))
                         {
                             TileGrid.instance.cluster.Add(TileGrid.instance.grid[col, this.compoBubble.rowRaw]);
                             TileGrid.instance.cluster.Add(TileGrid.instance.grid[col, compoBubble.rowRaw - 1]);

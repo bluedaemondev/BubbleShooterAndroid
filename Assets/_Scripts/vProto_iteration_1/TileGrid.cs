@@ -100,6 +100,7 @@ public class TileGrid : MonoBehaviour
                         Debug.Log("setting max row hit " + maxRowHitIdx + " bbl " + target.gameObject.name);
                     }
                     yield return target.StartCoroutine(target.Pop());
+                    instance.grid[target.GetComponent<Bubble>().colRaw, target.GetComponent<Bubble>().rowRaw] = null;
                 }
             }
         }

@@ -7,8 +7,8 @@ public class BackgroundImageManager : MonoBehaviour
 {
     public static BackgroundImageManager instance { get; private set; }
 
-    [Header("Animator para transiciones de fondo")]
-    public Animator animator;
+    [SerializeField, Header("Animator para transiciones de fondo (Autoloaded)")]
+    Animator animator;
 
     [Header("Todos los backgrounds disponibles")]
     public List<Sprite> listAllAvailableBackgrounds;
@@ -47,12 +47,13 @@ public class BackgroundImageManager : MonoBehaviour
             //Cargo la cantidad requerida evitando loops repetidos
             for (int i = 0; i < availableBackgroundsInRun; i++)
             {
-                int rndPick = 0;
-                do
-                {
-                    rndPick = Random.Range(0, listAllAvailableBackgrounds.Count);
-                } while (sceneBackgrounds.Contains(listAllAvailableBackgrounds[rndPick]));
-                sceneBackgrounds.Add(listAllAvailableBackgrounds[rndPick]);
+                //int rndPick = 0;
+                //do
+                //{
+                //    rndPick = Random.Range(0, listAllAvailableBackgrounds.Count);
+                //} while (sceneBackgrounds.Contains(listAllAvailableBackgrounds[rndPick]));
+
+                sceneBackgrounds.Add(listAllAvailableBackgrounds[i]);
             }
             sprRendBg.sprite = sceneBackgrounds[currentIndexSelected];
         }
