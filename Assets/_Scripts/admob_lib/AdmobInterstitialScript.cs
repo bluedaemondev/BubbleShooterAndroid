@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class AdmobInterstitialScript : GoogleAdmobAd
 {
-    public new string appIdInterstitial = "a-app-pub-3940256099942544/1033173712"; // string instertitial
+    public string componentTypeStringAdmob = "a-app-pub-3940256099942544/1033173712"; // string instertitial
     public InterstitialAd interstitial;
 
 

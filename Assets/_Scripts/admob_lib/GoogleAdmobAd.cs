@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class GoogleAdmobAd : MonoBehaviour
 {
-    public string componentTypeStringAdmob = ""; // strs de prueba en branch develop, strs produccion en main.
+    //public string componentTypeStringAdmob = ""; // strs de prueba en branch develop, strs produccion en main.
 
     public virtual void Start()
     {

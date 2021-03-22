@@ -378,7 +378,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7099335728857642921, guid: 0839b7394c73651498b6902cd6b8c245, type: 3}
       propertyPath: staticSceneCountInBuildSettings
-      value: 0
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7099335728857642922, guid: 0839b7394c73651498b6902cd6b8c245, type: 3}
       propertyPath: m_LocalPosition.x

@@ -8,7 +8,7 @@ using System;
 
 public class AdmobBannerScript : GoogleAdmobAd
 {
-    private new string componentTypeStringAdmob = "ca-app-pub-3940256099942544/6300978111";
+    public string componentTypeStringAdmob = "ca-app-pub-3940256099942544/6300978111";
     private BannerView bannerView;
 
     // Start is called before the first frame update

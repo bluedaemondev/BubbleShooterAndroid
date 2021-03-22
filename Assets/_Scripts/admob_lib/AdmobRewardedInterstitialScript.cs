@@ -8,7 +8,7 @@ using System;
 public class AdmobRewardedInterstitialScript : GoogleAdmobAd
 {
     public RewardedInterstitialAd rewardedInterstitial;
-    public new string componentTypeStringAdmob = "ca-app-pub-3940256099942544/1033173712";
+    public string componentTypeStringAdmob = "ca-app-pub-3940256099942544/1033173712";
 
     public UnityEvent onAdLoadedCallback;
     public UnityEvent<Reward> onRewardAfterAd;
