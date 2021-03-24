@@ -60,8 +60,8 @@ public class Ball : MonoBehaviour {
     }
 
     public void RemoveBall(){
-        //Destroy(gameObject);
-        gameObject.SetActive(false);
+        Destroy(gameObject);
+        //gameObject.SetActive(false);
     }
 
     public void SetGravity(){

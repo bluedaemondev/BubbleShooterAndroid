@@ -28,12 +28,7 @@ public class Gun : MonoBehaviour
         _counter = GetComponent<Counter>();
     }
 	
-    // Update is called once per frame
-    void Update()
-    {
-	
-    }
-
+   
     public void InitGun(GameManager gameManager)
     {
         _gameManager = gameManager;   
@@ -41,6 +36,7 @@ public class Gun : MonoBehaviour
 
     public void ClearBullets()
     {
+        // todo : pooling
         Destroy(_bullet.gameObject);
         Destroy(_preBullet.gameObject);
     }
