@@ -229,24 +229,22 @@ public class TileGrid : MonoBehaviour
     /// </summary>
     /// <param name="posToParse">Posicion a transformar</param>
     /// <returns>(X,Y)</returns>
-    public Tuple<int, int> WorldToGridPosition(Vector2 posToParse, int colKnown, int rowKnown)
+    public Vector2 WorldToGridPosition(Vector2 newPosToAttach)
     {
 
+        Vector2 result = Vector2.zero;
 
-        bool isEvenRow = rowKnown % 2 == 0;
-        if (isEvenRow)
-            posToParse.x += 0.1f;
-        else
-            posToParse.x -= 0.1f;
-
-        int Item1 = (int)(posToParse.x / tileSize);
-        int Item2 = (int)(posToParse.y / -tileSize);
-
+        //bool isEvenRow = newPosToAttach.y % 2 == 0;
         //if (isEvenRow)
-        //    res.x += 0.1f;
+        //    posToParse.x += 0.1f;
+        //else
+        //    posToParse.x -= 0.1f;
+
+        //result.x = posToParse.x / tileSize;
+        //result.y = posToParse.y / -tileSize;
 
 
-        return new Tuple<int, int>(Item1, Item2);
+        return result;
 
     }
 }
