@@ -19,7 +19,7 @@ public class ImageSequenceUIController : MonoBehaviour
     [Header("Configuracion de eventos disparados en skip de cinematica")]
     public UnityEvent onSkipSequence;
 
-    public string sceneLoadAfter = "SampleGame_proto_v1";
+    [SerializeField]string sceneLoadAfter = "Demo";
 
     private void Awake()
     {
