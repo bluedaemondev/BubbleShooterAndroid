@@ -69,7 +69,8 @@ public class BallManager : MonoBehaviour
 
     Ball instantiateNewBall(Common.BallColors color)
     {
-        GameObject go = (GameObject)GameObject.Instantiate(BallPrefab);
+        //GameObject go = (GameObject)GameObject.Instantiate(BallPrefab);
+        GameObject go = ObjectPooler.instance.SpawnFromPool("ball");
         go.transform.parent = PivotGrid;
         go.transform.localScale = Vector3.one;
         go.transform.localPosition = new Vector3(-1000, 0, 0);

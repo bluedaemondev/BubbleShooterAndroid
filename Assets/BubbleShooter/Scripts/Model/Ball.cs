@@ -38,10 +38,6 @@ public class Ball : MonoBehaviour {
         _counter = GetComponent<Counter>();
     }
 
-    void Update(){
-        
-    }
-
     public void Init(BallManager ballManager){
         _ballManager = ballManager;
     }
@@ -64,7 +60,8 @@ public class Ball : MonoBehaviour {
     }
 
     public void RemoveBall(){
-        Destroy(gameObject);
+        //Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 
     public void SetGravity(){
@@ -99,7 +96,35 @@ public class Ball : MonoBehaviour {
 
         return colorResult;
     }
-	
+    BubbleType getRealColorSprite(Common.BallColors color)
+    {
+        Color colorResult = Color.white;
+        BubbleType spriteResult;
+
+        switch (color)
+        {
+            case Common.BallColors.Blue:
+                colorResult = Color.blue;
+                
+                break;
+            case Common.BallColors.Green:
+                colorResult = Color.green;
+                break;
+            case Common.BallColors.Red:
+                colorResult = Color.red;
+                break;
+            case Common.BallColors.Yellow:
+                colorResult = Color.yellow;
+                break;
+            case Common.BallColors.Pink:
+                colorResult = new Color(1, 0.2f, 1);
+                break;
+        }
+        spriteResult = BubbleResources.instance.bubbleResources[(int)color];
+
+        return spriteResult;
+    }
+
     public void WasShoot(Transform bulletRoot, Vector3 force){
         releaseFromGun(bulletRoot);
         addForce(force);

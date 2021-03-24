@@ -5,7 +5,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Networking;
-using System.Security.Policy;
+//using System.Security.Policy;
 using UnityEngine.UI;
 
 public class AimingShotLine : MonoBehaviour
