@@ -229,22 +229,11 @@ public class TileGrid : MonoBehaviour
     /// </summary>
     /// <param name="posToParse">Posicion a transformar</param>
     /// <returns>(X,Y)</returns>
-    public Vector2 WorldToGridPosition(Vector2 newPosToAttach)
+    public Vector3 TransformGridToVectorPosition(int x, int y)
     {
-
-        Vector2 result = Vector2.zero;
-
-        //bool isEvenRow = newPosToAttach.y % 2 == 0;
-        //if (isEvenRow)
-        //    posToParse.x += 0.1f;
-        //else
-        //    posToParse.x -= 0.1f;
-
-        //result.x = posToParse.x / tileSize;
-        //result.y = posToParse.y / -tileSize;
-
-
-        return result;
-
+        float pivotTopLeftX = (y % 2 == 0) ? 0 : tileSize / 2.0f;
+        float positionX = pivotTopLeftX + x * tileSize + tileSize / 2.0f;
+        float positionY = -y * tileSize - tileSize / 2.0f;
+        return new Vector3(positionX, positionY, 0);
     }
 }

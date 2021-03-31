@@ -9,23 +9,27 @@ public class UIManager : MonoBehaviour
 {
 
     public Text _centerText;
+    public GameObject _gameoverUtils;
+
     public Text _score;
     public Parallax _background;
 
     // Use this for initialization
-    void Start()
-    {
-    }
+    //void Start()
+    //{
+    //}
 	
-    // Update is called once per frame
-    void Update()
-    {
+    //// Update is called once per frame
+    //void Update()
+    //{
 	
-    }
+    //}
 
     public void DisplayGameOver()
     {
         _centerText.gameObject.SetActive(true);
+        //_gameoverUtils.SetActive(true);
+
         _centerText.text = "Game Over";
         _background.StopMode();
     }

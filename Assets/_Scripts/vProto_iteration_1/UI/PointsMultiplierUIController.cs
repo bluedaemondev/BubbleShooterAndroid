@@ -10,6 +10,7 @@ public class PointsMultiplierUIController : MonoBehaviour
     public string precedingString = "x";
     
     private Text textComponent;
+
     // Start is called before the first frame update
     void Start()
     {

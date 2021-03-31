@@ -120,6 +120,7 @@ public class ThrownBubble : MonoBehaviour
                     SetNearestPositionOnGrid(listNeighborOffset, hitBubble.transform, transform);
                     break;
                 }
+
         }
 
         if (GameManagerActions.instance.CheckGameOver())
@@ -174,8 +175,6 @@ public class ThrownBubble : MonoBehaviour
 
         var swapObject = ObjectPooler.instance.SpawnFromPool("bubble");
 
-        //swapObject.transform.position = (Vector2)origin.transform.position + offsets[minDistIdx] * TileGrid.instance.tileSize;
-
         var bubbleComponentSwap = swapObject.GetComponent<Bubble>();
         bubbleComponentSwap.colRaw = (int)offsets[minDistIdx].x + origin.GetComponent<Bubble>().colRaw;
         bubbleComponentSwap.rowRaw = -(int)offsets[minDistIdx].y + origin.GetComponent<Bubble>().rowRaw;
@@ -190,14 +189,7 @@ public class ThrownBubble : MonoBehaviour
         else if (bubbleComponentSwap.rowRaw >= TileGrid.instance.grid.GetLength(1))
             bubbleComponentSwap.rowRaw = TileGrid.instance.grid.GetLength(1) - 1;
 
-        /// calculo el desplazamiento que tiene fila par / impar en pantalla
-        if (bubbleComponentSwap.rowRaw % 2 == 0)
-            swapObject.transform.position = new Vector3((bubbleComponentSwap.colRaw) * TileGrid.instance.tileSize + 0.1f + swapObject.transform.parent.position.x,
-                (bubbleComponentSwap.rowRaw / 2) * TileGrid.instance.tileSize - 10 * TileGrid.instance.tileSize, 0);
-        else
-            swapObject.transform.position = new Vector3((bubbleComponentSwap.colRaw) * TileGrid.instance.tileSize - 0.1f + swapObject.transform.parent.position.x,
-                (bubbleComponentSwap.rowRaw / 2) * TileGrid.instance.tileSize - 10 * TileGrid.instance.tileSize, 0);
-
+        swapObject.transform.position = TileGrid.instance.TransformGridToVectorPosition(bubbleComponentSwap.colRaw, bubbleComponentSwap.rowRaw);
 
         swapObject.layer = LayerMask.NameToLayer("attachTo");
 
@@ -205,7 +197,7 @@ public class ThrownBubble : MonoBehaviour
         bubbleComponentSwap.type = this.type;
         swapObject.GetComponent<SpriteRenderer>().sprite = this.type.sprite;
 
-        Debug.Log("DONDE CONCHA ESTA " + bubbleComponentSwap.gameObject.name + bubbleComponentSwap.colRaw + "x snap y" + bubbleComponentSwap.rowRaw);
+        //Debug.Log("DONDE CONCHA ESTA " + bubbleComponentSwap.gameObject.name + bubbleComponentSwap.colRaw + "x snap y" + bubbleComponentSwap.rowRaw);
 
         var auxPop = swapObject.GetComponent<PopBubble>();
         TileGrid.instance.grid[bubbleComponentSwap.colRaw, bubbleComponentSwap.rowRaw] = bubbleComponentSwap;

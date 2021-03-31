@@ -34,11 +34,6 @@ public class GameManager : MonoBehaviour
         OnStartGame();
     }
 	
-    // Update is called once per frame
-    void Update()
-    {
-	
-    }
 
     #region Game state
     public void OnStartGame()

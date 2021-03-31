@@ -35,12 +35,6 @@ public class Counter : MonoBehaviour
     EndEverySeconds endEverySeconds;
     UpdatingPercentage updating;
 
-    // Use this for initialization
-    void Start ()
-    {
-
-    }
-
     // Update is called once per frame
     void FixedUpdate ()
     {
