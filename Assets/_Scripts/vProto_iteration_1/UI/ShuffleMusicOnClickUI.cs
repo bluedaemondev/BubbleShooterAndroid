@@ -4,7 +4,7 @@ using UnityEngine;
 using Button = UnityEngine.UI.Button;
 
 [RequireComponent(typeof(Button))]
-public class ShuffleMusicEvent : MonoBehaviour
+public class ShuffleMusicOnClickUI : MonoBehaviour
 {
     Button btnComponent;
     
