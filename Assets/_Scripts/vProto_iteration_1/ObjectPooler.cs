@@ -6,8 +6,6 @@ public class ObjectPooler : MonoBehaviour
 {
     public static ObjectPooler instance { get; private set; }
 
-
-
     Dictionary<string, Queue<GameObject>> poolDict;
     public List<Pool> pools;
 

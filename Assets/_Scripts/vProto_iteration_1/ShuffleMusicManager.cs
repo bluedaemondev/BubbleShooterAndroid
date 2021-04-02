@@ -65,7 +65,7 @@ public class ShuffleMusicManager : MonoBehaviour
 
     private void ChangeMusicLoop()
     {
-        Debug.Log("I control time : " + timeRepeatLoopInvoker);
+        //Debug.Log("I control time : " + timeRepeatLoopInvoker);
         timeRepeatLoopInvoker = CalculateInvokerTime();
         onShuffleMusic.Invoke(ShuffleOptions.Next);
     }
