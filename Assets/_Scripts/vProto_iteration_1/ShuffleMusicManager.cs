@@ -13,6 +13,8 @@ public class ShuffleMusicManager : MonoBehaviour
 
     public UnityEvent<ShuffleOptions> onShuffleMusic;
 
+    public List<BackgroundAndMusic> collectionLoops;
+
     public int availableLoopsInRun = 5;
     [Header("Tiempo de repeticion por loop")]
     public float timeRepeatLoop = 10f;
@@ -65,7 +67,6 @@ public class ShuffleMusicManager : MonoBehaviour
 
     private void ChangeMusicLoop()
     {
-        //Debug.Log("I control time : " + timeRepeatLoopInvoker);
         timeRepeatLoopInvoker = CalculateInvokerTime();
         onShuffleMusic.Invoke(ShuffleOptions.Next);
     }

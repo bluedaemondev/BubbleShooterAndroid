@@ -14,7 +14,7 @@ public class BubbleShooterSceneActions : MonoBehaviour
     void SetUpRequiredMechanics()
     {
         ShuffleMusicManager.instance.StartShuffleMechanic();
-        BackgroundImageManager.instance.StartShuffleMechanic();
+        //BackgroundImageManager.instance.StartShuffleMechanic();
         //PointsManager.instance.StartAccountance();
     }
 }

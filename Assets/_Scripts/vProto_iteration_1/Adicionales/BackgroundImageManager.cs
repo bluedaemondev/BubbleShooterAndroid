@@ -66,6 +66,9 @@ public class BackgroundImageManager : MonoBehaviour
             // pasa a la siguiente cancion
             case ShuffleOptions.Next:
                 currentIndexSelected = Mathf.Clamp(currentIndexSelected + 1, 0, sceneBackgrounds.Count - 1);
+                print(currentIndexSelected);
+                print(sceneBackgrounds.Count - 1);
+                
                 this.sprRendBg.sprite = sceneBackgrounds[currentIndexSelected];
                 //animator.Play("changingBackground");
                 break;
