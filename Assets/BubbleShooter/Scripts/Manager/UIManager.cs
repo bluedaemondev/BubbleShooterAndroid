@@ -18,11 +18,11 @@ public class UIManager : MonoBehaviour
     //void Start()
     //{
     //}
-	
+
     //// Update is called once per frame
     //void Update()
     //{
-	
+
     //}
 
     public void DisplayGameOver()
@@ -31,14 +31,17 @@ public class UIManager : MonoBehaviour
         //_gameoverUtils.SetActive(true);
 
         _centerText.text = "Game Over";
-        _background.StopMode();
+
+        if (_background)
+            _background.StopMode();
     }
 
     public void DisplayWin()
     {
         _centerText.gameObject.SetActive(true);
         _centerText.text = "Win";
-        _background.StopMode();
+        if (_background)
+            _background.StopMode();
     }
 
     public void UpdateScore(int score)
@@ -53,12 +56,17 @@ public class UIManager : MonoBehaviour
 
     public void TurnOnRedAlert()
     {
-        _background.RedAlert();
+        if (_background)
+        {
+
+            _background.RedAlert();
+        }
     }
 
     public void NormalMode()
     {
-        _background.NormalMode();
+        if (_background)
+            _background.NormalMode();
     }
 
 }

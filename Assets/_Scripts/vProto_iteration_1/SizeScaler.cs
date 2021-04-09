@@ -8,7 +8,7 @@ public class SizeScaler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        float width = ScreenSize.GetScreenToWorldWidth;
+        float width = FindObjectOfType<ScreenSize>().GetScreenToWorldWidth;
         transform.localScale = Vector3.one * width;
 
         Vector3 normalizedPos = Utils.instance.MainCam.transform.position;

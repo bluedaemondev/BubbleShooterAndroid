@@ -7,9 +7,6 @@ public class BackgroundImageManager : MonoBehaviour
 {
     public static BackgroundImageManager instance { get; private set; }
 
-    //[SerializeField, Header("Animator para transiciones de fondo (Autoloaded)")]
-    //Animator animator;
-
     [Header("Todos los backgrounds disponibles")]
     public List<Sprite> listAllAvailableBackgrounds;
 
@@ -21,15 +18,17 @@ public class BackgroundImageManager : MonoBehaviour
     public int currentIndexSelected = 0;
     private SpriteRenderer sprRendBg;
 
+    Animator animator;
+
     void Awake()
     {
         if (!instance)
             instance = this;
 
-        //if (!animator)
-        //{
-        //    animator = transform.parent.GetComponent<Animator>();
-        //}
+        if (!animator)
+        {
+            animator = GetComponent<Animator>();
+        }
     }
 
     public void StartShuffleMechanic()
@@ -47,12 +46,7 @@ public class BackgroundImageManager : MonoBehaviour
             //Cargo la cantidad requerida evitando loops repetidos
             for (int i = 0; i < availableBackgroundsInRun; i++)
             {
-                //int rndPick = 0;
-                //do
-                //{
-                //    rndPick = Random.Range(0, listAllAvailableBackgrounds.Count);
-                //} while (sceneBackgrounds.Contains(listAllAvailableBackgrounds[rndPick]));
-
+                
                 sceneBackgrounds.Add(listAllAvailableBackgrounds[i]);
             }
             sprRendBg.sprite = sceneBackgrounds[currentIndexSelected];
