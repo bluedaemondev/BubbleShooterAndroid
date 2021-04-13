@@ -26,11 +26,11 @@ public class BallManager : MonoBehaviour
         _originalPosition = PivotGrid.localPosition;
         _score = new Score();
     }
-	
+
     // Update is called once per frame
-    void Update()
-    {
-    }
+    //void Update()
+    //{
+    //}
 
     #region Logic ball
 
@@ -49,7 +49,7 @@ public class BallManager : MonoBehaviour
             {
                 if (_gridManager.IsValidGridPosition(i, j))
                 {
-                    Ball ball = instantiateNewBall(randomBallColor(_numberOfDiffColor+1));
+                    Ball ball = instantiateNewBall(randomBallColor(_numberOfDiffColor + 1));
                     assignBallToGrid(ball, i, j);
                     ball.FixPosition();
                 }
@@ -60,7 +60,7 @@ public class BallManager : MonoBehaviour
 
     public Ball GenerateBallAsBullet()
     {
-        Common.BallColors randomColor = (Common.BallColors)Random.Range(1, _numberOfDiffColor+1);
+        Common.BallColors randomColor = (Common.BallColors)Random.Range(1, _numberOfDiffColor + 1);
         Ball ball = instantiateNewBall(randomColor);
         ball.tag = Common.LAYER_BULLET;
         ball.SetNewLayer(Common.LAYER_BULLET);
@@ -74,7 +74,7 @@ public class BallManager : MonoBehaviour
         go.transform.parent = PivotGrid;
         go.transform.localScale = Vector3.one;
         go.transform.localPosition = new Vector3(-1000, 0, 0);
-            
+
         Ball ball = go.GetComponent<Ball>();
         ball.Init(this);
         ball.SetBallColor(color);
@@ -82,11 +82,11 @@ public class BallManager : MonoBehaviour
         return ball;
     }
 
-    void assignBallToGrid(Ball ball, int x, int  y)
+    void assignBallToGrid(Ball ball, int x, int y)
     {
         GridCell grid = _gridManager.RegisterBall(x, y, ball);
         ball.SetGridPosition(grid);
-      
+
         ball.transform.localPosition = ball.GetGridPosition().Position;
         ball.name = "Ball_" + x.ToString() + y.ToString();
     }
@@ -160,12 +160,12 @@ public class BallManager : MonoBehaviour
 
     void removeBallFromGrid(GridCell cell)
     {
-        _gridManager.RemoveBallFromGridCell(cell);       
+        _gridManager.RemoveBallFromGridCell(cell);
     }
 
     void removeBallFromGame(Ball ball)
     {
-        if(ball != null)
+        if (ball != null)
             ball.RemoveBall();
     }
 
@@ -196,7 +196,15 @@ public class BallManager : MonoBehaviour
     {
         //Debug.Log("Checking...");
         // get list same colors
-        List<GridCell> listSameColors = _gridManager.GetListNeighborsSameColorRecursive(bullet);
+        List<GridCell> listSameColors;
+        if (!bullet.isLineSpecial)
+            listSameColors = _gridManager.GetListNeighborsSameColorRecursive(bullet);
+        else
+        {
+            // es especial de linea
+            listSameColors = _gridManager.GetListNeighborsInLine(bullet);
+        }
+        
         bool isExploded = listSameColors.Count >= 2;
 
         // check explode 
@@ -228,7 +236,7 @@ public class BallManager : MonoBehaviour
     public float PushDown()
     {
         float heightDown = _gridManager.GetCellSizeY();
-        PivotGrid.localPosition -= new Vector3(0, heightDown, 0); 
+        PivotGrid.localPosition -= new Vector3(0, heightDown, 0);
         return heightDown;
     }
 
@@ -241,7 +249,7 @@ public class BallManager : MonoBehaviour
                 removeBallFromGame(_gridManager.GetGridCell(i, j).Ball);
                 removeBallFromGrid(_gridManager.GetGridCell(i, j));
             }
-        }        
+        }
     }
 
     int countRemainingBalls()
@@ -254,7 +262,7 @@ public class BallManager : MonoBehaviour
                 if (_gridManager.IsOccupiedBall(i, j))
                     count++;
             }
-        }  
+        }
         return count;
     }
 

@@ -50,17 +50,46 @@ public class ShuffleMusicManager : MonoBehaviour
     {
         LoadSceneLoopList();
 
-        timeRepeatLoopInvoker = CalculateInvokerTime();
+        //timeRepeatLoopInvoker = CalculateInvokerTime();
         onShuffleMusic.AddListener(ChangeLoops);
         StartCoroutine(ChangeBasedOnInvokeTime());
     }
+    public void ChangeLoops(ShuffleOptions toDo)
+    {
+        switch (toDo)
+        {
+            // pasa a la siguiente cancion
+            case ShuffleOptions.Next:
+                currentIndexSelected = Mathf.Clamp(currentIndexSelected + 1, 0, sceneLoops.Count - 1);
+                if (currentIndexSelected >= sceneLoops.Count - 1)
+                {
+                    Debug.Log("Terminados todos los loops, saliendo.");
+                    //break;
+                }
+                Debug.Log("Changin " + sceneLoops.Count + "" + currentIndexSelected + " ");
+                PlayBackgroundAndMusic(sceneLoops[currentIndexSelected]);
 
+                break;
+
+            // arma una nueva lista con los loops
+            case ShuffleOptions.Reset:
+                currentIndexSelected = 0;
+                LoadSceneLoopList();
+                break;
+
+            // elige un indice actual aleatorio dentro de la lista?
+            case ShuffleOptions.Random:
+                Debug.Log("Random picked shuffle (idx) " + this.name);
+                break;
+        }
+
+    }
     private IEnumerator ChangeBasedOnInvokeTime()
     {
         while (currentIndexSelected < sceneLoops.Count)
         {
-            ChangeMusicLoop();
             yield return new WaitForSeconds(timeRepeatLoopInvoker);
+            ChangeMusicLoop();
         }
 
     }
@@ -94,40 +123,6 @@ public class ShuffleMusicManager : MonoBehaviour
         backgroundController.PlayState(clip.AnimatorStateName);
     }
 
-    public void ChangeLoops(ShuffleOptions toDo)
-    {
-        switch (toDo)
-        {
-            // pasa a la siguiente cancion
-            case ShuffleOptions.Next:
-                currentIndexSelected = Mathf.Clamp(currentIndexSelected + 1, 0, sceneLoops.Count - 1);
-                if (currentIndexSelected == sceneLoops.Count - 1)
-                {
-                    Debug.Log("Terminados todos los loops, saliendo.");
-                    //break;
-                    PlayBackgroundAndMusic(sceneLoops[sceneLoops.Count - 1]);
-
-                    break;
-                }
-                Debug.Log("Changin " + sceneLoops.Count + "" + currentIndexSelected + " ");
-                PlayBackgroundAndMusic(sceneLoops[currentIndexSelected++]);
-
-                break;
-
-            // arma una nueva lista con los loops
-            case ShuffleOptions.Reset:
-                currentIndexSelected = 0;
-                LoadSceneLoopList();
-                break;
-
-            // elige un indice actual aleatorio dentro de la lista?
-            case ShuffleOptions.Random:
-                Debug.Log("Random picked shuffle (idx) " + this.name);
-                break;
-
-
-        }
-
-    }
+    
 
 }

@@ -6,6 +6,7 @@ using System.Collections;
 
 public class Common {
 
+    public Sprite specialBubbleSprite;
     public enum BallColors{
         None,
         Red,

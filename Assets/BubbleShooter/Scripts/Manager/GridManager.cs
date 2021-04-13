@@ -4,6 +4,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 public class GridManager
 {
@@ -94,13 +95,13 @@ public class GridManager
     #endregion
 
     #region Neighbor
-    public List<GridCell> GetNeighborSameColorBalls(Common.BallColors color, int x, int y)
+    public List<GridCell> GetNeighborSameColorBalls(Common.BallColors color, int x, int y, bool force)
     {
         List<GridCell> list = new List<GridCell>();
         List<GridCell> neightbors = GetNeighborCells(x, y);
         foreach (GridCell cell in neightbors)
         {
-            if (IsOccupiedBall(cell.X, cell.Y) && cell.Ball.GetBallColor() == color)
+            if (IsOccupiedBall(cell.X, cell.Y) && cell.Ball.GetBallColor() == color || force)
             {
                 list.Add(cell);
             }
@@ -186,14 +187,14 @@ public class GridManager
     {
         List<GridCell> sameColors = new List<GridCell>();
         List<GridCell> neighbors = GetNeighborSameColorBalls(bullet.GetBallColor(),
-                                       bullet.GetGridPosition().X, bullet.GetGridPosition().Y);
+                                       bullet.GetGridPosition().X, bullet.GetGridPosition().Y, false);
         GridCell mainCell = bullet.GetGridPosition();
         do
         {
             List<GridCell> listTemp = new List<GridCell>();
             foreach (GridCell cell in neighbors)
             {
-                List<GridCell> list = GetNeighborSameColorBalls(mainCell.Ball.GetBallColor(), cell.X, cell.Y);
+                List<GridCell> list = GetNeighborSameColorBalls(mainCell.Ball.GetBallColor(), cell.X, cell.Y, false);
                 list = list.FindAll(c => !neighbors.Contains(c));
                 list = list.FindAll(c => !listTemp.Contains(c));
                 list = list.FindAll(c => !sameColors.Contains(c));
@@ -206,7 +207,39 @@ public class GridManager
         } while(neighbors.Count > 0);
         return sameColors;
     }
-    #endregion 
+
+    public List<GridCell> GetListNeighborsInLine(Ball bullet)
+    {
+        var targetCell = this.GetGridCell(bullet.GetGridPosition().X, bullet.GetGridPosition().Y);
+
+        List<GridCell> lineIndiferentColors = new List<GridCell>();
+        List<GridCell> neighbors = getSameLevelBallsBasedCell(targetCell);
+        neighbors.AddRange(getParentBallsBasedCell(targetCell));
+
+        GridCell mainCell = bullet.GetGridPosition();
+
+        do
+        {
+            List<GridCell> listTemp = new List<GridCell>();
+            foreach (GridCell cell in neighbors)
+            {
+                List<GridCell> list = GetNeighborSameColorBalls(mainCell.Ball.GetBallColor(), cell.X, cell.Y, true);
+                list = list.FindAll(c => !neighbors.Contains(c));
+                list = list.FindAll(c => !listTemp.Contains(c));
+                list = list.FindAll(c => !lineIndiferentColors.Contains(c));
+                if (list.Contains(mainCell))
+                    list.Remove(mainCell);
+                listTemp.AddRange(list);
+            }
+            lineIndiferentColors.AddRange(neighbors);
+            neighbors = listTemp;
+        } while (neighbors.Count > 0);
+
+
+        return lineIndiferentColors;
+
+    }
+    #endregion
 
     #region Holding Balls relate
     List<Ball> getListBallsFromListCells(List<GridCell> listCell)

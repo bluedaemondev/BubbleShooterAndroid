@@ -10,24 +10,29 @@ public class AddSpecialBubblesEvent : MonoBehaviour
     public int qtyGiven = 3;
     Button btnComponent;
 
+    BallManager ballManager;
+    Gun gun;
+
     // Start is called before the first frame update
     void Start()
     {
         btnComponent = GetComponent<Button>();
+        
+        ballManager = FindObjectOfType<BallManager>();
+        gun = FindObjectOfType<Gun>();
 
         btnComponent.onClick.AddListener(AddBubbles);
 
     }
 
-   void AddBubbles()
+    void AddBubbles()
     {
-        var shooter = FindObjectOfType<BubbleShooter>();
-
-        var currentToSwitch = shooter.currentThrowables.Dequeue();
-        currentToSwitch.type = BubbleResources.GenerateSpecialBubbleType();
-        currentToSwitch.GetComponent<SpriteRenderer>().sprite = currentToSwitch.type.sprite;
+        var newSpecial = ballManager.GenerateBallAsBullet();
+        newSpecial.isLineSpecial = true;
+        newSpecial.GetComponent<UnityEngine.UI.Image>().sprite = BubbleResources.GenerateSpecialBubbleType().sprite;
         
-        shooter.currentThrowables.Enqueue(currentToSwitch);
-        shooter.SwitchBubblePriority();
+        gun.LoadBullets(newSpecial);
+
+        Debug.Log("loaded " + newSpecial.ToString());
     }
 }
