@@ -215,7 +215,7 @@ public class BallManager : MonoBehaviour
             int noBallsSameColor = listSameColors.Count;
             foreach (GridCell cell in listSameColors)
             {
-                cell.Ball.EffectExplodeBall();
+                cell.Ball.EffectExplodeBall(); // To test
                 removeBallFromGrid(cell);
             }
 

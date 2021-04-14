@@ -9,17 +9,15 @@ public class AddSpecialBubblesEvent : MonoBehaviour
     [Header("Cantidad de burbujas especiales a entregar")]
     public int qtyGiven = 3;
     Button btnComponent;
+    public GameManager gameManager;
 
-    BallManager ballManager;
-    Gun gun;
 
     // Start is called before the first frame update
     void Start()
     {
         btnComponent = GetComponent<Button>();
-        
-        ballManager = FindObjectOfType<BallManager>();
-        gun = FindObjectOfType<Gun>();
+
+        gameManager = FindObjectOfType<GameManager>();
 
         btnComponent.onClick.AddListener(AddBubbles);
 
@@ -27,11 +25,11 @@ public class AddSpecialBubblesEvent : MonoBehaviour
 
     void AddBubbles()
     {
-        var newSpecial = ballManager.GenerateBallAsBullet();
+        var newSpecial = gameManager.ballManager.GenerateBallAsBullet();
         newSpecial.isLineSpecial = true;
         newSpecial.GetComponent<UnityEngine.UI.Image>().sprite = BubbleResources.GenerateSpecialBubbleType().sprite;
         
-        gun.LoadBullets(newSpecial);
+        gameManager.gun.LoadBullets(newSpecial);
 
         Debug.Log("loaded " + newSpecial.ToString());
     }
