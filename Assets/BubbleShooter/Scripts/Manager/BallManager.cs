@@ -204,7 +204,7 @@ public class BallManager : MonoBehaviour
             // es especial de linea
             listSameColors = _gridManager.GetListNeighborsInLine(bullet);
         }
-        
+
         bool isExploded = listSameColors.Count >= 2;
 
         // check explode 
@@ -215,7 +215,13 @@ public class BallManager : MonoBehaviour
             int noBallsSameColor = listSameColors.Count;
             foreach (GridCell cell in listSameColors)
             {
-                cell.Ball.EffectExplodeBall(); // To test
+                if (cell.Ball)
+                    cell.Ball.EffectExplodeBall(); // To test
+                else
+                {
+                    PointsManager.instance.InstantiatePointAddEffect(cell.Position);
+                }
+
                 removeBallFromGrid(cell);
             }
 
