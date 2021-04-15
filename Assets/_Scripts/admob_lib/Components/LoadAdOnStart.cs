@@ -26,6 +26,8 @@ public class LoadAdOnStart : MonoBehaviour
                 AdmobComponentsManager.instance.RequestRewardedAd();
                 break;
         }
+
+        AdmobComponentsManager.instance.onSendToTopAds.Invoke();
     }
 
 }

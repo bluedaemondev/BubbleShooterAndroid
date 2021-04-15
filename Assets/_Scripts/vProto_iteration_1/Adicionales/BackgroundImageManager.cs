@@ -7,9 +7,6 @@ public class BackgroundImageManager : MonoBehaviour
 {
     public static BackgroundImageManager instance { get; private set; }
 
-    [Header("Animator para transiciones de fondo")]
-    public Animator animator;
-
     [Header("Todos los backgrounds disponibles")]
     public List<Sprite> listAllAvailableBackgrounds;
 
@@ -21,6 +18,8 @@ public class BackgroundImageManager : MonoBehaviour
     public int currentIndexSelected = 0;
     private SpriteRenderer sprRendBg;
 
+    Animator animator;
+
     void Awake()
     {
         if (!instance)
@@ -28,7 +27,7 @@ public class BackgroundImageManager : MonoBehaviour
 
         if (!animator)
         {
-            animator = transform.parent.GetComponent<Animator>();
+            animator = GetComponent<Animator>();
         }
     }
 
@@ -47,12 +46,8 @@ public class BackgroundImageManager : MonoBehaviour
             //Cargo la cantidad requerida evitando loops repetidos
             for (int i = 0; i < availableBackgroundsInRun; i++)
             {
-                int rndPick = 0;
-                do
-                {
-                    rndPick = Random.Range(0, listAllAvailableBackgrounds.Count);
-                } while (sceneBackgrounds.Contains(listAllAvailableBackgrounds[rndPick]));
-                sceneBackgrounds.Add(listAllAvailableBackgrounds[rndPick]);
+                
+                sceneBackgrounds.Add(listAllAvailableBackgrounds[i]);
             }
             sprRendBg.sprite = sceneBackgrounds[currentIndexSelected];
         }
@@ -65,8 +60,11 @@ public class BackgroundImageManager : MonoBehaviour
             // pasa a la siguiente cancion
             case ShuffleOptions.Next:
                 currentIndexSelected = Mathf.Clamp(currentIndexSelected + 1, 0, sceneBackgrounds.Count - 1);
+                print(currentIndexSelected);
+                print(sceneBackgrounds.Count - 1);
+                
                 this.sprRendBg.sprite = sceneBackgrounds[currentIndexSelected];
-                animator.Play("changingBackground");
+                //animator.Play("changingBackground");
                 break;
 
             // arma una nueva lista con los loops

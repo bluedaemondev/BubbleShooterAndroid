@@ -8,7 +8,7 @@ using System;
 public class AdmobRewardedInterstitialScript : GoogleAdmobAd
 {
     public RewardedInterstitialAd rewardedInterstitial;
-    public new string componentTypeStringAdmob = "ca-app-pub-3940256099942544/1033173712";
+    public string componentTypeStringAdmob = "ca-app-pub-3940256099942544/1033173712";
 
     public UnityEvent onAdLoadedCallback;
     public UnityEvent<Reward> onRewardAfterAd;
@@ -46,13 +46,17 @@ public class AdmobRewardedInterstitialScript : GoogleAdmobAd
             {
                 GameManagerActions.instance.onPause.Invoke();
             }
+            //AdmobComponentsManager.instance.onSendToTopAds.Invoke();
+            //StartCoroutine(SendAdToTopAfterPresentation());
+
+
         }
     }
 
     private void UserEarnedRewardCallback(Reward reward)
     {
         Debug.Log("ver que devuelve esto.  T:" + reward.Type + " , Amt: " + reward.Amount);
-        onRewardAfterAd.Invoke(reward);
+        //onRewardAfterAd.Invoke(reward);
     }
 
     private void AdLoadCallback(RewardedInterstitialAd ad, string error)
@@ -67,9 +71,10 @@ public class AdmobRewardedInterstitialScript : GoogleAdmobAd
             rewardedInterstitial.OnPaidEvent += HandlePaidEvent;
 
             Debug.Log("Rewarded interstitial finalizado");
-            onAdLoadedCallback.Invoke();
+            //onAdLoadedCallback.Invoke();
         }
     }
+   
     public void HandlePaidEvent(object sender, AdValueEventArgs args)
     {
         print("Rewarded interstitial ad has received a paid event.");
@@ -79,7 +84,7 @@ public class AdmobRewardedInterstitialScript : GoogleAdmobAd
 
         if (GameManagerActions.instance.isPaused)
         {
-            StartCoroutine(DelayedResume());
+            GameManagerActions.instance.StartCoroutine(GameManagerActions.instance.DelayedResume());
         }
         //base.HandleOnAdOpened(sender, args);
     }
@@ -89,7 +94,8 @@ public class AdmobRewardedInterstitialScript : GoogleAdmobAd
         this.rewardedInterstitial.OnAdDidDismissFullScreenContent -= HandleAdDidDismiss;
         if (GameManagerActions.instance.isPaused)
         {
-            StartCoroutine(DelayedResume());
+            //StartCoroutine(base.DelayedResume());
+            GameManagerActions.instance.onResumeGame.Invoke();
         }
 
 
@@ -101,6 +107,7 @@ public class AdmobRewardedInterstitialScript : GoogleAdmobAd
         //base.HandleOnAdFailedToLoad(sender, args);
         this.rewardedInterstitial.OnAdDidPresentFullScreenContent -= HandleAdDidPresent;
 
+        //AdmobComponentsManager.instance.onSendToTopAds.Invoke();
     }
 
     private void HandleAdFailedToPresent(object sender, AdErrorEventArgs args)
@@ -109,7 +116,8 @@ public class AdmobRewardedInterstitialScript : GoogleAdmobAd
         this.rewardedInterstitial.OnAdFailedToPresentFullScreenContent -= HandleAdFailedToPresent;
         if (GameManagerActions.instance.isPaused)
         {
-            StartCoroutine(DelayedResume());
+            GameManagerActions.instance.StartCoroutine(GameManagerActions.instance.DelayedResume());
+
         }
     }
 

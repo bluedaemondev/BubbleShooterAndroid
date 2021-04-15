@@ -6,8 +6,8 @@ public class ThrownBubble : MonoBehaviour
 {
     Vector2 lastVelocity;
     Rigidbody2D rbBubble;
-    [SerializeField]
-    BubbleType type;
+    //[SerializeField]
+    public BubbleType type;
 
     public bool processed = false;
 
@@ -66,7 +66,7 @@ public class ThrownBubble : MonoBehaviour
             HandleSnapIntoGrid(bubbleCollisionWith);
             this.GetComponent<Collider2D>().enabled = false;
 
-            //this.processed = true;
+
         }
 
 
@@ -91,7 +91,7 @@ public class ThrownBubble : MonoBehaviour
         if (colHit < 0)
             colHit = 0;
         else if (colHit >= TileGrid.instance.grid.GetLength(0))
-            colHit = TileGrid.instance.grid.GetLength(0);
+            colHit = TileGrid.instance.grid.GetLength(0) - 1;
 
         if (rowHit < 0)
             rowHit = 0;
@@ -104,27 +104,28 @@ public class ThrownBubble : MonoBehaviour
         {
             var hitBubble = TileGrid.instance.grid[colHit, rowHit];
 
-            Debug.Log("Hit handling at x:" + hitBubble.colRaw + ", y: " + hitBubble.rowRaw);
+            //Debug.Log("Hit handling at x:" + hitBubble.colRaw + ", y: " + hitBubble.rowRaw);
 
             BubbleNeighbor neighborComparer = new BubbleNeighbor();
-            var listNeighborOffset = neighborComparer.GetTileOffsetsBasedOnParity(rowHit % 2);
+            var listNeighborOffset = neighborComparer.GetWithoutDiagonals();//GetTileOffsetsBasedOnParity(rowHit % 2);
+            //GetWithoutDiagonals();//
 
-
-            var cast = Physics2D.RaycastAll(hitBubble.transform.position, (transform.position - hitBubble.transform.position), radius * 2f);
-            Debug.DrawRay(hitBubble.transform.position, (transform.position - hitBubble.transform.position) * radius * 2f, Color.green, 2f);
+            var cast = Physics2D.RaycastAll(hitBubble.transform.position, (transform.position - hitBubble.transform.position), radius);
+            Debug.DrawRay(hitBubble.transform.position, (transform.position - hitBubble.transform.position) * radius, Color.green, 2f);
 
             foreach (var found in cast)
                 if (found.collider.GetComponent<ThrownBubble>())
                 {
-                    Debug.Log("found bubble at  " + found.collider.name.ToString() + " , " + found.point);
+                    //Debug.Log("found bubble at  " + found.collider.name.ToString() + " , " + found.point);
                     SetNearestPositionOnGrid(listNeighborOffset, hitBubble.transform, transform);
                     break;
                 }
+
         }
 
         if (GameManagerActions.instance.CheckGameOver())
             return;
-        
+
         this.gameObject.SetActive(false);
 
         //TileGrid.instance.SetCurrentCluster(colHit, rowHit, true, false);
@@ -140,44 +141,70 @@ public class ThrownBubble : MonoBehaviour
         for (int i = 0; i < offsets.Length; i++)
         {
             var distance = Vector2.Distance((Vector2)origin.position + offsets[i] * TileGrid.instance.tileSize, targetToAdapt.position);
-            if (distance <= minDist)
+            var bbl = origin.GetComponent<Bubble>();
+
+            var trX = bbl.colRaw + (int)offsets[i].x;
+            var trY = bbl.rowRaw - (int)offsets[i].y;
+
+            if (trX < 0)
+                trX = 0;
+            else if (trX >= TileGrid.instance.grid.GetLength(0))
+                trX = TileGrid.instance.grid.GetLength(0) - 1;
+
+            if (trY < 0)
+                trY = 0;
+            else if (trY >= TileGrid.instance.grid.GetLength(1))
+                trY = TileGrid.instance.grid.GetLength(1) - 1;
+
+            var nullCheck = TileGrid.instance.grid[trX, trY];
+
+
+
+            if (distance < minDist && nullCheck == null)
             {
+                Debug.Log("Setting min dist = " + distance + " , " + trX + " " + trY);
+
                 minDist = distance;
                 minDistIdx = i;
             }
+
         }
+
+
+
 
         var swapObject = ObjectPooler.instance.SpawnFromPool("bubble");
 
-        swapObject.transform.position = (Vector2)origin.transform.position + offsets[minDistIdx] * TileGrid.instance.tileSize;
-        swapObject.GetComponent<Bubble>().colRaw = (int)offsets[minDistIdx].x + origin.GetComponent<Bubble>().colRaw;
-        swapObject.GetComponent<Bubble>().rowRaw = -(int)offsets[minDistIdx].y + origin.GetComponent<Bubble>().rowRaw;
+        var bubbleComponentSwap = swapObject.GetComponent<Bubble>();
+        bubbleComponentSwap.colRaw = (int)offsets[minDistIdx].x + origin.GetComponent<Bubble>().colRaw;
+        bubbleComponentSwap.rowRaw = -(int)offsets[minDistIdx].y + origin.GetComponent<Bubble>().rowRaw;
 
-        if (swapObject.GetComponent<Bubble>().colRaw < 0)
-            swapObject.GetComponent<Bubble>().colRaw = 0;
-        else if (swapObject.GetComponent<Bubble>().colRaw >= TileGrid.instance.grid.GetLength(0))
-            swapObject.GetComponent<Bubble>().colRaw = TileGrid.instance.grid.GetLength(0) - 1;
+        if (bubbleComponentSwap.colRaw < 0)
+            bubbleComponentSwap.colRaw = 0;
+        else if (bubbleComponentSwap.colRaw >= TileGrid.instance.grid.GetLength(0))
+            bubbleComponentSwap.colRaw = TileGrid.instance.grid.GetLength(0) - 1;
 
-        if (swapObject.GetComponent<Bubble>().rowRaw < 0)
-            swapObject.GetComponent<Bubble>().rowRaw = 0;
-        else if (swapObject.GetComponent<Bubble>().rowRaw >= TileGrid.instance.grid.GetLength(1))
-            swapObject.GetComponent<Bubble>().rowRaw = TileGrid.instance.grid.GetLength(1) - 1;
+        if (bubbleComponentSwap.rowRaw < 0)
+            bubbleComponentSwap.rowRaw = 0;
+        else if (bubbleComponentSwap.rowRaw >= TileGrid.instance.grid.GetLength(1))
+            bubbleComponentSwap.rowRaw = TileGrid.instance.grid.GetLength(1) - 1;
+
+        swapObject.transform.position = TileGrid.instance.TransformGridToVectorPosition(bubbleComponentSwap.colRaw, bubbleComponentSwap.rowRaw);
 
         swapObject.layer = LayerMask.NameToLayer("attachTo");
 
 
-        Debug.Log("x = " + swapObject.GetComponent<Bubble>().colRaw + ", y = " + swapObject.GetComponent<Bubble>().rowRaw);
-
-        TileGrid.instance.grid[swapObject.GetComponent<Bubble>().colRaw, swapObject.GetComponent<Bubble>().rowRaw] =
-            swapObject.GetComponent<Bubble>();
-
-        swapObject.GetComponent<Bubble>().type = this.type;
+        bubbleComponentSwap.type = this.type;
         swapObject.GetComponent<SpriteRenderer>().sprite = this.type.sprite;
 
+        //Debug.Log("DONDE CONCHA ESTA " + bubbleComponentSwap.gameObject.name + bubbleComponentSwap.colRaw + "x snap y" + bubbleComponentSwap.rowRaw);
+
         var auxPop = swapObject.GetComponent<PopBubble>();
-        auxPop.StartCoroutine(auxPop.StartNeighborScan(type));
+        TileGrid.instance.grid[bubbleComponentSwap.colRaw, bubbleComponentSwap.rowRaw] = bubbleComponentSwap;
+
+        auxPop.StartCoroutine(auxPop.StartNeighborScan(type, !BubbleResources.instance.specialBubbleResources.Contains(type)));
     }
 
-    
+
 
 }

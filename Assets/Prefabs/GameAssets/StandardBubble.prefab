@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 111218648079613885}
   - component: {fileID: 111218648079613884}
-  - component: {fileID: 8692663981910243145}
   - component: {fileID: 51387951}
   - component: {fileID: 4399559333414784701}
+  - component: {fileID: 1769039466619163933}
   m_Layer: 9
   m_Name: StandardBubble
   m_TagString: bubble
@@ -85,22 +85,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!58 &8692663981910243145
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 111218648079613886}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.5
 --- !u!114 &51387951
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -117,6 +101,7 @@ MonoBehaviour:
     type: 
     sprite: {fileID: 0}
   processed: 0
+  floating: 0
   colRaw: 0
   rowRaw: 0
 --- !u!114 &4399559333414784701
@@ -132,3 +117,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   processed: 0
+  pointsOnPop: 100
+--- !u!58 &1769039466619163933
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 111218648079613886}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.41962433

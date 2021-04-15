@@ -6,19 +6,14 @@ using UnityEngine;
 
 public class GoogleAdmobAd : MonoBehaviour
 {
-    public string componentTypeStringAdmob = ""; // strs de prueba en branch develop, strs produccion en main.
+    //public string componentTypeStringAdmob = ""; // strs de prueba en branch develop, strs produccion en main.
 
     public virtual void Start()
     {
         Debug.Log("Starting ad service");
     }
 
-    public virtual IEnumerator DelayedResume()
-    {
-        yield return new WaitForSeconds(1f);
-        GameManagerActions.instance.onResumeGame.Invoke();
-
-    }
+    
 
     /// <summary>
     /// Llamar para mostrar un anuncio
@@ -33,7 +28,7 @@ public class GoogleAdmobAd : MonoBehaviour
     public virtual void RequestAd(AdPosition position)
     {
         Debug.Log("Loading ad... at " + position.ToString());
-        AdmobComponentsManager.instance.onSendToTopAds.Invoke();
+        //AdmobComponentsManager.instance.onSendToBackAds.Invoke();
 
     }
 

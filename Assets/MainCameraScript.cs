@@ -6,8 +6,8 @@ public class MainCameraScript : MonoBehaviour
 {
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        Utils.instance.SetMainCamera(this.GetComponent<Camera>());
+        //Utils.instance.MainCam = this.GetComponent<Camera>();
     }
 }

@@ -2,7 +2,8 @@
 using UnityEngine;
 
 [System.Serializable]
-public struct BubbleType {
+public struct BubbleType
+{
     public string type;
     public Sprite sprite;
 }
@@ -30,6 +31,12 @@ public class BubbleResources : MonoBehaviour
         }
         int randSelection = Random.Range(0, sourceList.Count);
 
+        return sourceList[randSelection];
+    }
+    public static BubbleType GenerateSpecialBubbleType()
+    {
+        var sourceList = BubbleResources.instance.specialBubbleResources;
+        int randSelection = Random.Range(0, sourceList.Count);
         return sourceList[randSelection];
     }
 }

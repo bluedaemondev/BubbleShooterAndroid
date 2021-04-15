@@ -18,7 +18,7 @@ public class SetPointMultiplierOnClick : MonoBehaviour
 
     void ChangeMultiplierBasedOnShuffleState()
     {
-        var targetMult = ShuffleMusicManager.instance.currentIndexSelected;
+        var targetMult = ShuffleMusicManager.instance.CurrentIndex;
         PointsManager.instance.SetMultiplier(targetMult+1);
         Debug.Log("target multiplier " + targetMult + " , manager = " + PointsManager.instance.GetComboMultiplier());
 

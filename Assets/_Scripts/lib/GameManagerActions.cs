@@ -105,4 +105,11 @@ public class GameManagerActions : MonoBehaviour
     {
         return false;
     }
+
+    public IEnumerator DelayedResume(float tWait = 1f)
+    {
+        yield return new WaitForSeconds(tWait);
+        GameManagerActions.instance.onResumeGame.Invoke();
+
+    }
 }

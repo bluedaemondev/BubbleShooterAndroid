@@ -16,8 +16,13 @@ public class ShowRewardedAdOnClick : MonoBehaviour
 
     public void ShowRewardedAd()
     {
+
+        foreach(var ctr in GameObject.FindObjectsOfType<Counter>())
+        {
+            ctr.StopTimer();
+        }
         AdmobComponentsManager.instance.RequestRewardedAd();
-        //AdmobComponentsManager.instance.onSendToTopAds.Invoke();
+        AdmobComponentsManager.instance.onSendToTopAds.Invoke();
     }
 
 }

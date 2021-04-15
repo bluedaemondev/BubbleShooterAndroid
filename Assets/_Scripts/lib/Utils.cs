@@ -7,13 +7,21 @@ public class Utils : MonoBehaviour
 {
     public static Utils instance { get; private set; }
 
-    Camera MainCam;
+    private Camera _mainCam;
 
+    public Camera MainCam
+    {
+        get { return _mainCam; }
+        set { SetMainCamera(value); }
+    }
 
     private void Awake()
     {
         if (!instance)
+        {
             instance = this;
+            instance.MainCam = Camera.main;
+        }
     }
     public bool GetTouchEnding()
     {
@@ -30,7 +38,7 @@ public class Utils : MonoBehaviour
 
     public void SetMainCamera(Camera mainCamScene)
     {
-        MainCam = mainCamScene;
+        instance._mainCam = mainCamScene;
     }
 
     public bool GetContinuousTouch()
@@ -66,7 +74,7 @@ public class Utils : MonoBehaviour
     }
     public Vector3 MouseToWorldWithoutZ()
     {
-        Vector3 result = MainCam.ScreenToWorldPoint(Input.mousePosition);
+        Vector3 result = _mainCam.ScreenToWorldPoint(Input.mousePosition);
         result.z = 0;
         return result;
     }

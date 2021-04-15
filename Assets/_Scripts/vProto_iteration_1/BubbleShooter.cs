@@ -46,7 +46,7 @@ public class BubbleShooter : MonoBehaviour
     /// <summary>
     // Switch current bubble 2 -> 1 
     /// </summary>
-    void SwitchBubblePriority()
+    public void SwitchBubblePriority()
     {
 
         var auxBubbleSec = currentThrowables.Dequeue(); // first in
@@ -74,6 +74,7 @@ public class BubbleShooter : MonoBehaviour
         thrown.SetImpulseForce(force);
 
         TickSystem.instance.Tick();
+
         CurrentBubbleSwitch.instance.onSwitchBubble.Invoke();
         StartCoroutine(ResumeAfterTime(cooldownBubbleShoot));
     }
@@ -102,7 +103,7 @@ public class BubbleShooter : MonoBehaviour
     }
     public void EnableControl()
     {
-        StartCoroutine(ResumeAfterTime(1f));
+        StartCoroutine(ResumeAfterTime(1.5f));
     }
 
     private IEnumerator ResumeAfterTime(float t)
