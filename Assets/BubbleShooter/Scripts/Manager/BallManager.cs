@@ -38,7 +38,10 @@ public class BallManager : MonoBehaviour
     {
         if (_gridManager == null)
         {
-            _gridManager = new GridManager(8, 14, 120, 100);
+            if (!(level is ProceduralLevelProfile))
+                _gridManager = new GridManager(8, 14, 120, 100);
+
+
             _numberOfInitRow = level.GetInitRow();
             _numberOfDiffColor = level.GetNumColor();
         }
