@@ -28,8 +28,11 @@ public class AddSpecialBubblesEvent : MonoBehaviour
         var newSpecial = gameManager.ballManager.GenerateBallAsBullet();
         newSpecial.isLineSpecial = true;
         newSpecial.GetComponent<UnityEngine.UI.Image>().sprite = BubbleResources.GenerateSpecialBubbleType().sprite;
-        
+
+        gameManager.gun.BlockGun();
         gameManager.gun.LoadBullets(newSpecial);
+
+        gameManager.gun.UnBlockGun();
         Debug.Log("loaded " + newSpecial.ToString());
     }
 }

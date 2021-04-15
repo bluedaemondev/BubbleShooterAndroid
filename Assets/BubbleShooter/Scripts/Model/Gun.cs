@@ -80,7 +80,6 @@ public class Gun : MonoBehaviour
 
     public void LoadBullets(Ball newBullet)
     {
-       
         if (_counter.CurrentState == Counter.CounterState.STOP)
         {
             _counter.StartTimerUpdatePercentage(0.1f, () =>

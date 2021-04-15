@@ -61,12 +61,12 @@ public class ShuffleMusicManager : MonoBehaviour
             // pasa a la siguiente cancion
             case ShuffleOptions.Next:
                 currentIndexSelected = Mathf.Clamp(currentIndexSelected + 1, 0, sceneLoops.Count - 1);
-                if (currentIndexSelected >= sceneLoops.Count - 1)
-                {
-                    Debug.Log("Terminados todos los loops, saliendo.");
-                    //break;
-                }
-                Debug.Log("Changin " + sceneLoops.Count + "" + currentIndexSelected + " ");
+                //if (currentIndexSelected >= sceneLoops.Count - 1)
+                //{
+                //    //Debug.Log("Terminados todos los loops, saliendo.");
+                //    //break;
+                //}
+                //Debug.Log("Changin " + sceneLoops.Count + "" + currentIndexSelected + " ");
                 PlayBackgroundAndMusic(sceneLoops[currentIndexSelected]);
 
                 break;
@@ -79,7 +79,7 @@ public class ShuffleMusicManager : MonoBehaviour
 
             // elige un indice actual aleatorio dentro de la lista?
             case ShuffleOptions.Random:
-                Debug.Log("Random picked shuffle (idx) " + this.name);
+                //Debug.Log("Random picked shuffle (idx) " + this.name);
                 break;
         }
 

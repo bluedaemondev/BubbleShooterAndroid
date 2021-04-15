@@ -99,7 +99,9 @@ public class GridManager
     public List<GridCell> GetLineXNeighbors(int x, int y, bool force)
     {
         List<GridCell> result = new List<GridCell>();
-        List<GridCell> neighbors = GetNeighborCells(x, y).FindAll(n => n.X == x || n.X == x + 1);
+        List<GridCell> neighbors = GetNeighborCells(x, y).FindAll(n => n.Y == x || n.Y == x + 1);
+
+        Debug.Log("special neighbors = " + neighbors.Count);
 
         foreach (GridCell cell in neighbors)
         {
@@ -232,7 +234,7 @@ public class GridManager
         var targetCell = this.GetGridCell(bullet.GetGridPosition().X, bullet.GetGridPosition().Y);
 
         List<GridCell> lineIndiferentColors = new List<GridCell>();
-        List<GridCell> neighbors = getSameLevelBallsBasedCell(targetCell);
+        List<GridCell> neighbors = GetLineXNeighbors(targetCell.X, targetCell.Y, false);//getSameLevelNoParentBallBasedCell(targetCell);
         //neighbors.AddRange(getParentBallsBasedCell(targetCell));
 
         GridCell mainCell = bullet.GetGridPosition();
@@ -244,7 +246,7 @@ public class GridManager
             {
                 List<GridCell> list = GetLineXNeighbors(cell.X, cell.Y, false);
 
-                list = list.FindAll(c => !neighbors.Contains(c));
+                //list = list.FindAll(c => !neighbors.Contains(c));
                 list = list.FindAll(c => !listTemp.Contains(c));
                 list = list.FindAll(c => !lineIndiferentColors.Contains(c));
                 if (list.Contains(mainCell))
