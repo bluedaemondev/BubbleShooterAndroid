@@ -114,7 +114,7 @@ public class Counter : MonoBehaviour
 
     public void ContinueTimer ()
     {
-        if (currentState == CounterState.PAUSE) {
+        if (currentState == CounterState.PAUSE || currentState == CounterState.STOP) {
             currentState = CounterState.RUN;
             //  Debug.Log("Cont");
 

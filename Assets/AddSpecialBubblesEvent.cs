@@ -33,6 +33,10 @@ public class AddSpecialBubblesEvent : MonoBehaviour
         gameManager.gun.LoadBullets(newSpecial);
 
         gameManager.gun.UnBlockGun();
+        foreach (var ctr in GameObject.FindObjectsOfType<Counter>())
+        {
+            ctr.ContinueTimer();
+        }
         Debug.Log("loaded " + newSpecial.ToString());
     }
 }

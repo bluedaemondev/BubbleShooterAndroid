@@ -99,7 +99,15 @@ public class GridManager
     public List<GridCell> GetLineXNeighbors(int x, int y, bool force)
     {
         List<GridCell> result = new List<GridCell>();
-        List<GridCell> neighbors = GetNeighborCells(x, y).FindAll(n => n.Y == x || n.Y == x + 1);
+        List<GridCell> neighbors = new List<GridCell>();
+
+        foreach (var item in generatedGridWithBalls)
+        {
+            if (item.Y == y || item.Y == y - 1)
+            {
+                neighbors.Add(item);
+            }
+        }
 
         Debug.Log("special neighbors = " + neighbors.Count);
 
@@ -121,7 +129,7 @@ public class GridManager
 
         foreach (GridCell cell in neightbors)
         {
-            if (IsOccupiedBall(cell.X, cell.Y) && cell.Ball.GetBallColor() == color || 
+            if (IsOccupiedBall(cell.X, cell.Y) && cell.Ball.GetBallColor() == color ||
                 IsOccupiedBall(cell.X, cell.Y) && force)
             {
                 list.Add(cell);
@@ -193,7 +201,7 @@ public class GridManager
                     smallestDistance = currentDistance;
                     nearestCell = gridCell;
                 }
-            } 
+            }
         }
         return nearestCell;
     }
@@ -225,7 +233,7 @@ public class GridManager
             }
             sameColors.AddRange(neighbors);
             neighbors = listTemp;
-        } while(neighbors.Count > 0);
+        } while (neighbors.Count > 0);
         return sameColors;
     }
 
@@ -244,7 +252,7 @@ public class GridManager
             List<GridCell> listTemp = new List<GridCell>();
             foreach (GridCell cell in neighbors)
             {
-                List<GridCell> list = GetLineXNeighbors(cell.X, cell.Y, false);
+                List<GridCell> list = neighbors;
 
                 //list = list.FindAll(c => !neighbors.Contains(c));
                 list = list.FindAll(c => !listTemp.Contains(c));
@@ -269,7 +277,7 @@ public class GridManager
         List<Ball> listBalls = new List<Ball>();
         foreach (GridCell cell in listCell)
         {
-            if(cell.Ball != null)
+            if (cell.Ball != null)
                 listBalls.Add(cell.Ball);
         }
         return listBalls;
@@ -283,7 +291,7 @@ public class GridManager
 
     List<Ball> GetListUnHoldBallsAndUnHoldFromGridRecursive()
     {
-        
+
         List<Ball> removedList = new List<Ball>();
         List<GridCell> unDecidedList = new List<GridCell>();
         for (int j = 1; j < _gridSizeY; j++)
@@ -314,7 +322,7 @@ public class GridManager
                                     RemoveBallFromGridCell(cell);
 
                                     removedList.AddRange(getListBallsFromListCells(list));
-                                    list.ForEach(delegate(GridCell c)
+                                    list.ForEach(delegate (GridCell c)
                                         {
                                             RemoveBallFromGridCell(c);
                                             unDecidedList.Remove(c);
@@ -331,10 +339,10 @@ public class GridManager
                 }
             }
             unDecidedList.Clear();
-        }  
+        }
         if (removedList.Count == 0)
             return removedList;
-        
+
         removedList.AddRange(GetListUnHoldBallsAndUnHoldFromGridRecursive());
         return removedList;
     }
@@ -345,7 +353,7 @@ public class GridManager
         List<GridCell> pairs = new List<GridCell>();
         pairs.Add(new GridCell(cell.X - 1, cell.Y));
         pairs.Add(new GridCell(cell.X + 1, cell.Y));
-     
+
         foreach (GridCell pair in pairs)
         {
             if (IsValidGridPosition(pair.X, pair.Y) && IsOccupiedBall(pair.X, pair.Y))
@@ -410,7 +418,8 @@ public class GridManager
         return childList;
     }
 
-    List<GridCell> getSameLevelNoParentBallBasedCell(GridCell cell){
+    List<GridCell> getSameLevelNoParentBallBasedCell(GridCell cell)
+    {
         List<GridCell> result = new List<GridCell>();
         List<GridCell> listChild = getSameLevelBallsBasedCell(cell);
         foreach (GridCell c in listChild)
@@ -423,8 +432,8 @@ public class GridManager
         }
         return result;
     }
-   
-    #endregion 
+
+    #endregion
 
     #region Debug
 
