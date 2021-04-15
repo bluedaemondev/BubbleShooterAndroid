@@ -29,9 +29,7 @@ public class AddSpecialBubblesEvent : MonoBehaviour
         newSpecial.isLineSpecial = true;
         newSpecial.GetComponent<UnityEngine.UI.Image>().sprite = BubbleResources.GenerateSpecialBubbleType().sprite;
         
-        //gameManager.gun.ClearBullets();
         gameManager.gun.LoadBullets(newSpecial);
-
         Debug.Log("loaded " + newSpecial.ToString());
     }
 }

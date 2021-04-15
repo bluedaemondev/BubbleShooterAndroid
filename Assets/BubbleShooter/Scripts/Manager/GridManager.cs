@@ -95,13 +95,32 @@ public class GridManager
     #endregion
 
     #region Neighbor
+
+    public List<GridCell> GetLineXNeighbors(int x, int y, bool force)
+    {
+        List<GridCell> result = new List<GridCell>();
+        List<GridCell> neighbors = GetNeighborCells(x, y).FindAll(n => n.X == x || n.X == x + 1);
+
+        foreach (GridCell cell in neighbors)
+        {
+            if (IsOccupiedBall(cell.X, cell.Y) || force)
+            {
+                result.Add(cell);
+            }
+        }
+        return result;
+
+    }
+
     public List<GridCell> GetNeighborSameColorBalls(Common.BallColors color, int x, int y, bool force)
     {
         List<GridCell> list = new List<GridCell>();
         List<GridCell> neightbors = GetNeighborCells(x, y);
+
         foreach (GridCell cell in neightbors)
         {
-            if (IsOccupiedBall(cell.X, cell.Y) && cell.Ball.GetBallColor() == color || force)
+            if (IsOccupiedBall(cell.X, cell.Y) && cell.Ball.GetBallColor() == color || 
+                IsOccupiedBall(cell.X, cell.Y) && force)
             {
                 list.Add(cell);
             }
@@ -214,7 +233,7 @@ public class GridManager
 
         List<GridCell> lineIndiferentColors = new List<GridCell>();
         List<GridCell> neighbors = getSameLevelBallsBasedCell(targetCell);
-        neighbors.AddRange(getParentBallsBasedCell(targetCell));
+        //neighbors.AddRange(getParentBallsBasedCell(targetCell));
 
         GridCell mainCell = bullet.GetGridPosition();
 
@@ -223,7 +242,8 @@ public class GridManager
             List<GridCell> listTemp = new List<GridCell>();
             foreach (GridCell cell in neighbors)
             {
-                List<GridCell> list = GetNeighborSameColorBalls(mainCell.Ball.GetBallColor(), cell.X, cell.Y, true);
+                List<GridCell> list = GetLineXNeighbors(cell.X, cell.Y, false);
+
                 list = list.FindAll(c => !neighbors.Contains(c));
                 list = list.FindAll(c => !listTemp.Contains(c));
                 list = list.FindAll(c => !lineIndiferentColors.Contains(c));
