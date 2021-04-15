@@ -10,6 +10,7 @@ public class GridManager
 {
 
     private GridCell[,] generatedGridWithBalls;
+    private bool isProcedural = false;
 
     private int _gridSizeX;
 
@@ -39,12 +40,14 @@ public class GridManager
         return _cellSizeY;
     }
 
-    public GridManager(int gridSizeX, int gridSizeY, int cellSizeX, int cellSizeY)
+    public GridManager(int gridSizeX, int gridSizeY, int cellSizeX, int cellSizeY, bool proceduralGeneration =false)
     {
         _gridSizeX = gridSizeX;
         _gridSizeY = gridSizeY;
         _cellSizeX = cellSizeX;
         _cellSizeY = cellSizeY;
+        isProcedural = proceduralGeneration;
+
         generatedGridWithBalls = new GridCell[_gridSizeX, _gridSizeY];
         for (int i = 0; i < _gridSizeX; i++)
         {

@@ -12,6 +12,7 @@ public class BallManager : MonoBehaviour
     public Transform PivotGrid;
 
     GridManager _gridManager;
+
     int _numberOfInitRow;
     int _numberOfDiffColor;
     Vector3 _originalPosition;
@@ -40,7 +41,10 @@ public class BallManager : MonoBehaviour
         {
             if (!(level is ProceduralLevelProfile))
                 _gridManager = new GridManager(8, 14, 120, 100);
-
+            else
+            {
+                _gridManager = new GridManager(8, 14, 120, 100, true);
+            }
 
             _numberOfInitRow = level.GetInitRow();
             _numberOfDiffColor = level.GetNumColor();
@@ -58,6 +62,13 @@ public class BallManager : MonoBehaviour
                 }
             }
         }
+
+    }
+
+    public Ball GenerateInUpperCluster()
+    {
+        var balltemp = instantiateNewBall(Common.BallColors.Blue);
+        balltemp.AssignBulletToGrid(new GridCell(0, -1));
 
     }
 
