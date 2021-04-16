@@ -68,7 +68,7 @@ public class BallManager : MonoBehaviour
     public Ball GenerateInUpperCluster()
     {
         var balltemp = instantiateNewBall(Common.BallColors.Blue);
-        balltemp.AssignBulletToGrid(new GridCell(0, -1));
+        balltemp.AssignBulletToGrid(new GridCell(0, _gridManager.GetGridSizeY()));
 
     }
 
