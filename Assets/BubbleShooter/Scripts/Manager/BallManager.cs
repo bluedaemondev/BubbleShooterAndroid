@@ -12,6 +12,7 @@ public class BallManager : MonoBehaviour
     public Transform PivotGrid;
 
     GridManager _gridManager;
+    GridManager _secondaryGridManager;
 
     int _numberOfInitRow;
     int _numberOfDiffColor;
@@ -39,11 +40,11 @@ public class BallManager : MonoBehaviour
     {
         if (_gridManager == null)
         {
-            if (!(level is ProceduralLevelProfile))
-                _gridManager = new GridManager(8, 14, 120, 100);
-            else
+            _gridManager = new GridManager(8, 14, 120, 100);
+
+            if (level is ProceduralLevelProfile)
             {
-                _gridManager = new GridManager(8, 14, 120, 100, true);
+                _secondaryGridManager = new GridManager(8, 14, 120, 100);
             }
 
             _numberOfInitRow = level.GetInitRow();
@@ -65,12 +66,12 @@ public class BallManager : MonoBehaviour
 
     }
 
-    public Ball GenerateInUpperCluster()
-    {
-        var balltemp = instantiateNewBall(Common.BallColors.Blue);
-        balltemp.AssignBulletToGrid(new GridCell(0, _gridManager.GetGridSizeY()));
+    //public Ball GenerateInUpperCluster()
+    //{
+    //    var balltemp = instantiateNewBall(randomBallColor(_numberOfDiffColor + 1));
+    //    balltemp.AssignBulletToGrid(new GridCell(0, _gridManager.GetGridSizeY()));
 
-    }
+    //}
 
     public Ball GenerateBallAsBullet()
     {
@@ -96,9 +97,16 @@ public class BallManager : MonoBehaviour
         return ball;
     }
 
-    void assignBallToGrid(Ball ball, int x, int y)
+    void assignBallToGrid(Ball ball, int x, int y, bool useMain = true)
     {
-        GridCell grid = _gridManager.RegisterBall(x, y, ball);
+        GridCell grid;
+        if (useMain)
+            grid = _gridManager.RegisterBall(x, y, ball);
+        else
+        {
+            grid = _secondaryGridManager.RegisterBall(x, y, ball);
+        }
+        
         ball.SetGridPosition(grid);
 
         ball.transform.localPosition = ball.GetGridPosition().Position;
@@ -165,6 +173,7 @@ public class BallManager : MonoBehaviour
 
     public void AssignBulletToGrid(Ball bullet, GridCell gridCellClue)
     {
+
         bullet.transform.parent = PivotGrid;
         bullet.transform.localScale = Vector3.one;
 

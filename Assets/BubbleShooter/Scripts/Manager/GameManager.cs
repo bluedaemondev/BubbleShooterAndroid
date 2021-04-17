@@ -101,6 +101,9 @@ public class GameManager : MonoBehaviour
 
     public void OnWin()
     {
+        Debug.Log("on finish main grid bubbles");
+
+
         _gameState = Common.GameState.Gameover;
 
         pusher.OnPause();

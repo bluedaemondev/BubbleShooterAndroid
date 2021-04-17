@@ -156,10 +156,12 @@ public class Ball : MonoBehaviour {
 
                 if (nameHit.Equals(Common.LAYER_BALL))
                 {
+                    print("case LAYER_BALL");
                     AssignBulletToGrid(other.gameObject.GetComponent<Ball>().GetGridPosition());
                 }
                 else
                 {
+                    print("case LAYER_BALL else");
                     AssignBulletToGrid(other.transform.localPosition);
                 }
 
