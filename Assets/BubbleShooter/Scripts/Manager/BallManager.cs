@@ -106,7 +106,7 @@ public class BallManager : MonoBehaviour
         {
             grid = _secondaryGridManager.RegisterBall(x, y, ball);
         }
-        
+
         ball.SetGridPosition(grid);
 
         ball.transform.localPosition = ball.GetGridPosition().Position;
@@ -185,6 +185,28 @@ public class BallManager : MonoBehaviour
     {
         _gridManager.RemoveBallFromGridCell(cell);
     }
+    void AddToSecondaryGrid(GridCell cell)
+    {
+        var positionInSecondaryGrid = CalculateComplementaryGridCell(cell);
+        if (_secondaryGridManager.IsValidGridPosition(positionInSecondaryGrid.x, positionInSecondaryGrid.y))
+        {
+            var ball = GenerateBallAsBullet();
+            assignBallToGrid(ball, positionInSecondaryGrid.x, positionInSecondaryGrid.y, false);
+            Debug.Log("ball => " + ball.name + " " + ball.GetGridPosition());
+
+        }
+    }
+
+    private Vector2Int CalculateComplementaryGridCell(GridCell cell)
+    {
+        Vector2Int result = new Vector2Int();
+
+        result.x = cell.X;
+        result.y = cell.Y;
+
+
+        return result;
+    }
 
     void removeBallFromGame(Ball ball)
     {
@@ -246,6 +268,7 @@ public class BallManager : MonoBehaviour
                 }
 
                 removeBallFromGrid(cell);
+                AddToSecondaryGrid(cell);
             }
 
             // remove unrelated/ unhold balls
