@@ -183,8 +183,10 @@ public class BallManager : MonoBehaviour
         var positionInSecondaryGrid = CalculateComplementaryGridCell(cell);
         if (_secondaryGridManager.IsValidGridPosition(positionInSecondaryGrid.x, positionInSecondaryGrid.y))
         {
-            var ball = GenerateBallAsBullet();
+            var ball = instantiateNewBall(randomBallColor(5));
             assignBallToGrid(ball, positionInSecondaryGrid.x, positionInSecondaryGrid.y, false);
+            ball.FixPosition();
+
             Debug.Log("ball => " + ball.name + " " + ball.GetGridPosition());
 
         }
@@ -306,6 +308,9 @@ public class BallManager : MonoBehaviour
             {
                 if (_gridManager.IsOccupiedBall(i, j))
                     count++;
+                if (_secondaryGridManager.IsOccupiedBall(i, j))
+                    count++;
+
             }
         }
         return count;
