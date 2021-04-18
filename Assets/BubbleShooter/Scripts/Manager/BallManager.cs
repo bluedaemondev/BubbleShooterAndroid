@@ -66,13 +66,6 @@ public class BallManager : MonoBehaviour
 
     }
 
-    //public Ball GenerateInUpperCluster()
-    //{
-    //    var balltemp = instantiateNewBall(randomBallColor(_numberOfDiffColor + 1));
-    //    balltemp.AssignBulletToGrid(new GridCell(0, _gridManager.GetGridSizeY()));
-
-    //}
-
     public Ball GenerateBallAsBullet()
     {
         Common.BallColors randomColor = (Common.BallColors)Random.Range(1, _numberOfDiffColor + 1);

@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
     public Pusher pusher;
     public Deadline deadline;
 
-    public LevelProfile _level;
+    public ProceduralLevelProfile _level;
     public LevelProfile GetLevelProfile(){
         return _level;
     }
