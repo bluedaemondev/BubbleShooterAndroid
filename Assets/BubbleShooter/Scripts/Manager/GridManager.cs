@@ -12,7 +12,12 @@ public class GridManager
     private GridCell[,] generatedGridWithBalls;
 
     private int _gridSizeX;
+    private Vector2 _offsetFromBasePivot;
 
+    public Vector2 GetOffsetFromPivot()
+    {
+        return _offsetFromBasePivot;
+    }
     public int GetGridSizeX()
     {
         return _gridSizeX;
@@ -39,12 +44,13 @@ public class GridManager
         return _cellSizeY;
     }
 
-    public GridManager(int gridSizeX, int gridSizeY, int cellSizeX, int cellSizeY)
+    public GridManager(int gridSizeX, int gridSizeY, int cellSizeX, int cellSizeY, Vector2 offsetFromPivot = new Vector2())
     {
         _gridSizeX = gridSizeX;
         _gridSizeY = gridSizeY;
         _cellSizeX = cellSizeX;
         _cellSizeY = cellSizeY;
+        _offsetFromBasePivot = offsetFromPivot;
 
         generatedGridWithBalls = new GridCell[_gridSizeX, _gridSizeY];
         for (int i = 0; i < _gridSizeX; i++)

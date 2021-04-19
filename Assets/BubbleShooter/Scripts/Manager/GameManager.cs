@@ -104,13 +104,17 @@ public class GameManager : MonoBehaviour
         Debug.Log("on finish main grid bubbles");
 
 
-        _gameState = Common.GameState.Gameover;
+        //_gameState = Common.GameState.Gameover;
 
-        pusher.OnPause();
+        //pusher.OnPause();
 
-        gun.BlockGun();
+        //gun.BlockGun();
 
-        uiManager.DisplayWin();
+
+        //uiManager.DisplayWin();
+
+        ballManager.SwitchGridsPosition();
+
 
         AudioManager.Instance.PlaySound(AudioManager.Instance.win);
 

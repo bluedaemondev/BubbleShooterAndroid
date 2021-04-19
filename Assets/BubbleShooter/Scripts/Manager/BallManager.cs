@@ -90,6 +90,15 @@ public class BallManager : MonoBehaviour
         return ball;
     }
 
+    public void SwitchGridsPosition()
+    {
+        var gridtemp = this._secondaryGridManager;
+        Debug.Log("Finished grid - switching to next");
+        _secondaryGridManager = _gridManager;
+        _gridManager = gridtemp;
+    
+    }
+
     void assignBallToGrid(Ball ball, int x, int y, bool useMain = true)
     {
         GridCell grid;
@@ -238,7 +247,9 @@ public class BallManager : MonoBehaviour
         // get list same colors
         List<GridCell> listSameColors;
         if (!bullet.isLineSpecial)
+        {
             listSameColors = _gridManager.GetListNeighborsSameColorRecursive(bullet);
+        }
         else
         {
             // es especial de linea
@@ -308,8 +319,8 @@ public class BallManager : MonoBehaviour
             {
                 if (_gridManager.IsOccupiedBall(i, j))
                     count++;
-                if (_secondaryGridManager.IsOccupiedBall(i, j))
-                    count++;
+                //if (_secondaryGridManager.IsOccupiedBall(i, j))
+                //    count++;
 
             }
         }
