@@ -79,7 +79,7 @@ public class GridManager
     {
         float pivotTopLeftX = (y % 2 == 0) ? 0 : _cellSizeX / 2.0f;
         float positionX = pivotTopLeftX + x * _cellSizeX + _cellSizeX / 2.0f;
-        float positionY = -y * _cellSizeY - _cellSizeY / 2.0f;
+        float positionY = -y * _cellSizeY - _cellSizeY / 2.0f - _offsetFromBasePivot.y;
         return new Vector3(positionX, positionY, 0);
     }
 
