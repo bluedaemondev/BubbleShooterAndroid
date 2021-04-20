@@ -21,4 +21,5 @@ public class LevelProfile  {
     public int GetNumColor(){
         return Mathf.Clamp(_numberOfDifferentColors,2,5);
     }
+
 }

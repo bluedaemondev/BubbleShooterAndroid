@@ -44,7 +44,7 @@ public class BallManager : MonoBehaviour
 
             if (level is ProceduralLevelProfile)
             {
-                _secondaryGridManager = new GridManager(8, 14, 120, 100);
+                _secondaryGridManager = new GridManager(8, 14, 120, 100, new Vector2(0, -_gridManager.GetCellSizeY()/2 * 19 - _gridManager.GetCellSizeY() / 2.0f));
             }
 
             _numberOfInitRow = level.GetInitRow();
