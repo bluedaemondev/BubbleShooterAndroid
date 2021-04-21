@@ -95,6 +95,7 @@ public class GameManager : MonoBehaviour
         uiManager.DisableText();
         uiManager.UpdateScore(0);
 
+
         AudioManager.Instance.PlayThemeGame();
 
     }

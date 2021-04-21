@@ -44,7 +44,7 @@ public class BallManager : MonoBehaviour
 
             if (level is ProceduralLevelProfile)
             {
-                _secondaryGridManager = new GridManager(8, 14, 120, 100, new Vector2(0, -_gridManager.GetCellSizeY()/2 * 19 - _gridManager.GetCellSizeY() / 2.0f));
+                _secondaryGridManager = new GridManager(8, 14, 120, 100, new Vector2(0, -_gridManager.GetCellSizeY() / 2 * 27 - _gridManager.GetCellSizeY() / 2.0f));
             }
 
             _numberOfInitRow = level.GetInitRow();
@@ -96,7 +96,7 @@ public class BallManager : MonoBehaviour
         Debug.Log("Finished grid - switching to next");
         _secondaryGridManager = _gridManager;
         _gridManager = gridtemp;
-    
+
     }
 
     void assignBallToGrid(Ball ball, int x, int y, bool useMain = true)
@@ -187,12 +187,12 @@ public class BallManager : MonoBehaviour
     {
         _gridManager.RemoveBallFromGridCell(cell);
     }
-    void AddToSecondaryGrid(GridCell cell)
+    void AddBallToSecondaryGridCell(GridCell cell)
     {
         var positionInSecondaryGrid = CalculateComplementaryGridCell(cell);
         if (_secondaryGridManager.IsValidGridPosition(positionInSecondaryGrid.x, positionInSecondaryGrid.y))
         {
-            var ball = instantiateNewBall(randomBallColor(5));
+            var ball = instantiateNewBall(randomBallColor(_numberOfDiffColor + 1));
             assignBallToGrid(ball, positionInSecondaryGrid.x, positionInSecondaryGrid.y, false);
             ball.FixPosition();
 
@@ -249,6 +249,10 @@ public class BallManager : MonoBehaviour
         if (!bullet.isLineSpecial)
         {
             listSameColors = _gridManager.GetListNeighborsSameColorRecursive(bullet);
+            if(_secondaryGridManager != null)
+            {
+                listSameColors.AddRange(_secondaryGridManager.GetListNeighborsSameColorRecursive(bullet));
+            }
         }
         else
         {
@@ -274,7 +278,7 @@ public class BallManager : MonoBehaviour
                 }
 
                 removeBallFromGrid(cell);
-                AddToSecondaryGrid(cell);
+                //AddToSecondaryGrid(cell);
             }
 
             // remove unrelated/ unhold balls
@@ -293,9 +297,37 @@ public class BallManager : MonoBehaviour
 
     public float PushDown()
     {
+
+        for (int rowEmpty = _secondaryGridManager.GetGridSizeY() - 1; rowEmpty >= 0; rowEmpty--)
+        {
+            // recorro desde abajo hacia arriba buscando la primera fila que no tenga nada
+            //para agregar una linea
+            if (!_secondaryGridManager.IsOccupiedBall(0, rowEmpty))
+            {
+                AddLineToSecondaryGrid(rowEmpty);
+                break;
+            }
+        }
+
         float heightDown = _gridManager.GetCellSizeY();
         PivotGrid.localPosition -= new Vector3(0, heightDown, 0);
+
         return heightDown;
+    }
+
+    private void AddLineToSecondaryGrid(int rowEmpty)
+    {
+        for (int x = 0; x < _secondaryGridManager.GetGridSizeX(); x++)
+        {
+            var targetCell = _gridManager.GetGridCell(x, rowEmpty);
+            this.AddBallToSecondaryGridCell(targetCell);
+            //if (_secondaryGridManager.IsValidGridPosition(x, rowEmpty))
+            //{
+            //var newball = instantiateNewBall(randomBallColor(_numberOfDiffColor + 1));
+            //assignBallToGrid(newball, x, rowEmpty, false);
+            //newball.FixPosition();
+            //}
+        }
     }
 
     public void ClearBalls()
@@ -306,6 +338,12 @@ public class BallManager : MonoBehaviour
             {
                 removeBallFromGame(_gridManager.GetGridCell(i, j).Ball);
                 removeBallFromGrid(_gridManager.GetGridCell(i, j));
+
+                if(_secondaryGridManager != null)
+                {
+                    removeBallFromGame(_secondaryGridManager.GetGridCell(i, j).Ball);
+                    removeBallFromGrid(_secondaryGridManager.GetGridCell(i, j));
+                }
             }
         }
     }
