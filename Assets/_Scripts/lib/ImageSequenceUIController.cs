@@ -19,7 +19,9 @@ public class ImageSequenceUIController : MonoBehaviour
     [Header("Configuracion de eventos disparados en skip de cinematica")]
     public UnityEvent onSkipSequence;
 
-    [SerializeField]string sceneLoadAfter = "Demo";
+    public float timeBetweenSlidesAutoChange = 1.62f;
+
+    [SerializeField] string sceneLoadAfter = "MainMenu";
 
     private void Awake()
     {
@@ -40,7 +42,13 @@ public class ImageSequenceUIController : MonoBehaviour
         if (comicSlides.Count > 0)
         {
             this.containerCurrentImg.sprite = comicSlides[0];
+            StartCoroutine(WaitForAutoNext());
         }
+    }
+    IEnumerator WaitForAutoNext()
+    {
+        yield return new WaitForSeconds(timeBetweenSlidesAutoChange);
+        GoToNextImage();
     }
 
     public void GoToNextImage()
@@ -49,6 +57,8 @@ public class ImageSequenceUIController : MonoBehaviour
         { // quedan imagenes disponibles
             this.currIdx++;
             SetImage(currIdx);
+            StopAllCoroutines();
+            StartCoroutine(WaitForAutoNext());
         }
         else
         {
