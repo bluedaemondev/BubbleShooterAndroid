@@ -58,7 +58,6 @@ public class UIManager : MonoBehaviour
     {
         if (_background)
         {
-
             _background.RedAlert();
         }
     }

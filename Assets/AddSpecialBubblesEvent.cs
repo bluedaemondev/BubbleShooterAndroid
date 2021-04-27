@@ -37,6 +37,7 @@ public class AddSpecialBubblesEvent : MonoBehaviour
         {
             ctr.ContinueTimer();
         }
+
         Debug.Log("loaded " + newSpecial.ToString());
     }
 }

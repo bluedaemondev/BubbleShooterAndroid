@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
     public Pusher pusher;
     public Deadline deadline;
 
-    public LevelProfile _level;
+    public ProceduralLevelProfile _level;
     public LevelProfile GetLevelProfile(){
         return _level;
     }
@@ -95,19 +95,27 @@ public class GameManager : MonoBehaviour
         uiManager.DisableText();
         uiManager.UpdateScore(0);
 
+
         AudioManager.Instance.PlayThemeGame();
 
     }
 
     public void OnWin()
     {
-        _gameState = Common.GameState.Gameover;
+        Debug.Log("on finish main grid bubbles");
 
-        pusher.OnPause();
 
-        gun.BlockGun();
+        //_gameState = Common.GameState.Gameover;
 
-        uiManager.DisplayWin();
+        //pusher.OnPause();
+
+        //gun.BlockGun();
+
+
+        //uiManager.DisplayWin();
+
+        ballManager.SwitchGridsPosition();
+
 
         AudioManager.Instance.PlaySound(AudioManager.Instance.win);
 
