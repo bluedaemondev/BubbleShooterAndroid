@@ -25,6 +25,10 @@ public class ShuffleMusicManager : MonoBehaviour
     public AnimatedBackgroundController backgroundController;
     List<BackgroundAndMusic> sceneLoops;
     int currentIndexSelected = 0;
+
+    public GameManager gameManager;
+
+
     public float TotalLoopTime
     {
         get { return sceneLoops[currentIndexSelected].ClipAssociated.length; }
@@ -60,14 +64,21 @@ public class ShuffleMusicManager : MonoBehaviour
         {
             // pasa a la siguiente cancion
             case ShuffleOptions.Next:
-                currentIndexSelected = Mathf.Clamp(currentIndexSelected + 1, 0, sceneLoops.Count - 1);
+                //currentIndexSelected = Mathf.Clamp(currentIndexSelected + 1, 0, sceneLoops.Count - 1);
+
+                currentIndexSelected++;
+                if (currentIndexSelected >= sceneLoops.Count) // termino y se sale
+                    gameManager.OnWin();
+
+                else
+                    PlayBackgroundAndMusic(sceneLoops[currentIndexSelected]);
+
                 //if (currentIndexSelected >= sceneLoops.Count - 1)
                 //{
                 //    //Debug.Log("Terminados todos los loops, saliendo.");
                 //    //break;
                 //}
                 //Debug.Log("Changin " + sceneLoops.Count + "" + currentIndexSelected + " ");
-                PlayBackgroundAndMusic(sceneLoops[currentIndexSelected]);
 
                 break;
 
@@ -123,6 +134,6 @@ public class ShuffleMusicManager : MonoBehaviour
         backgroundController.PlayState(clip.AnimatorStateName);
     }
 
-    
+
 
 }

@@ -39,7 +39,7 @@ public class UIManager : MonoBehaviour
     public void DisplayWin()
     {
         _centerText.gameObject.SetActive(true);
-        _centerText.text = "Win";
+        _centerText.text = "Thanks for playing!";
         if (_background)
             _background.StopMode();
     }

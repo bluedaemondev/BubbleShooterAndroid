@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour
     public Deadline deadline;
 
     public ProceduralLevelProfile _level;
+
+    [SerializeField] private string nameSceneAfterGame = "Ending";
     public LevelProfile GetLevelProfile(){
         return _level;
     }
@@ -100,24 +102,30 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public void OnWin()
+    public void OnFinishGrid()
     {
         Debug.Log("on finish main grid bubbles");
 
-
-        //_gameState = Common.GameState.Gameover;
-
-        //pusher.OnPause();
-
-        //gun.BlockGun();
-
-
-        //uiManager.DisplayWin();
-
         ballManager.SwitchGridsPosition();
 
-
         AudioManager.Instance.PlaySound(AudioManager.Instance.win);
+
+    }
+    public void OnWin()
+    {
+        Debug.Log("on win event");
+
+        _gameState = Common.GameState.Gameover;
+
+        pusher.OnPause();
+
+        gun.BlockGun();
+
+
+        uiManager.DisplayWin();
+        AudioManager.Instance.PlaySound(AudioManager.Instance.win);
+
+        ProgressSceneLoader.instance.LoadScene(nameSceneAfterGame);
 
     }
 
@@ -152,7 +160,7 @@ public class GameManager : MonoBehaviour
 
     void registerEventWin()
     {
-        ballManager.RegisterEventClearBall(OnWin);
+        ballManager.RegisterEventClearBall(OnFinishGrid);
     }
 
     void registerEventScore()

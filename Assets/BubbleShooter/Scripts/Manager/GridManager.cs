@@ -88,7 +88,7 @@ public class GridManager
         bool boundaryX = (x < _gridSizeX && x >= 0);
         bool boundaryY = (y < _gridSizeY && y >= 0);
         bool evenOrOdd = (y % 2) == 0 ? true : (x < _gridSizeX - 1);
-        Debug.Log("bX: " + boundaryX + " bY: " + boundaryY + " eo: " + evenOrOdd);
+        //Debug.Log("bX: " + boundaryX + " bY: " + boundaryY + " eo: " + evenOrOdd);
 
         return boundaryX && boundaryY && evenOrOdd;
     }

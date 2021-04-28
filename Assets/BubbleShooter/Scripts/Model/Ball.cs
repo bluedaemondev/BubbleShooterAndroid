@@ -147,7 +147,7 @@ public class Ball : MonoBehaviour {
     public void OnCollisionEnter2D(Collision2D other) {
         if (_isMoving && gameObject.tag.Equals(Common.LAYER_BULLET))
         {
-            Debug.Log("Hit " + other.collider.name);
+            //Debug.Log("Hit " + other.collider.name);
             string nameHit = other.gameObject.tag;
             if(nameHit.Equals(Common.LAYER_BALL) || nameHit.Equals(Common.LAYER_WALL)){
                 gameObject.tag = Common.LAYER_BALL;
@@ -156,12 +156,12 @@ public class Ball : MonoBehaviour {
 
                 if (nameHit.Equals(Common.LAYER_BALL))
                 {
-                    print("case LAYER_BALL");
+                    //print("case LAYER_BALL");
                     AssignBulletToGrid(other.gameObject.GetComponent<Ball>().GetGridPosition());
                 }
                 else
                 {
-                    print("case LAYER_BALL else");
+                    //print("case LAYER_BALL else");
                     AssignBulletToGrid(other.transform.localPosition);
                 }
 

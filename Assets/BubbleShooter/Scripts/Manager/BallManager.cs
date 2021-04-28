@@ -196,7 +196,7 @@ public class BallManager : MonoBehaviour
             assignBallToGrid(ball, positionInSecondaryGrid.x, positionInSecondaryGrid.y, false);
             ball.FixPosition();
 
-            Debug.Log("ball => " + ball.name + " " + ball.GetGridPosition());
+            //Debug.Log("ball => " + ball.name + " " + ball.GetGridPosition());
 
         }
     }
