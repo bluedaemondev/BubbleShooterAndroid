@@ -69,6 +69,8 @@ public class AdmobInterstitialScript : GoogleAdmobAd
         base.HandleOnAdClosed(sender, args);
 
         GameManagerActions.instance.StartCoroutine(GameManagerActions.instance.DelayedResume());
+        FindObjectOfType<Gun>().UnBlockGun();
+
         this.interstitial.OnAdClosed -= HandleOnAdClosed;
 
         //AdmobComponentsManager.instance.onSendToBackAds.Invoke();
@@ -77,6 +79,7 @@ public class AdmobInterstitialScript : GoogleAdmobAd
     public override void HandleOnAdFailedToLoad(object sender, AdFailedToLoadEventArgs args)
     {
         base.HandleOnAdFailedToLoad(sender, args);
+        FindObjectOfType<Gun>().UnBlockGun();
         GameManagerActions.instance.StartCoroutine(GameManagerActions.instance.DelayedResume());
 
         this.interstitial.OnAdFailedToLoad -= HandleOnAdFailedToLoad;

@@ -19,6 +19,7 @@ public class ShowRewardedAdOnClick : MonoBehaviour
 
         foreach(var ctr in GameObject.FindObjectsOfType<Counter>())
         {
+            FindObjectOfType<Gun>().BlockGun();
             ctr.StopTimer();
         }
         AdmobComponentsManager.instance.RequestRewardedAd();

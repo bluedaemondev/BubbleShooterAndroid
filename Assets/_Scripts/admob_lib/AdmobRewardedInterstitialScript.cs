@@ -71,6 +71,7 @@ public class AdmobRewardedInterstitialScript : GoogleAdmobAd
             rewardedInterstitial.OnPaidEvent += HandlePaidEvent;
 
             Debug.Log("Rewarded interstitial finalizado");
+
             //onAdLoadedCallback.Invoke();
         }
     }
@@ -86,6 +87,8 @@ public class AdmobRewardedInterstitialScript : GoogleAdmobAd
         {
             GameManagerActions.instance.StartCoroutine(GameManagerActions.instance.DelayedResume());
         }
+        FindObjectOfType<Gun>().UnBlockGun();
+
         //base.HandleOnAdOpened(sender, args);
     }
     public void HandleAdDidDismiss(object sender, EventArgs args)
@@ -98,6 +101,7 @@ public class AdmobRewardedInterstitialScript : GoogleAdmobAd
             GameManagerActions.instance.onResumeGame.Invoke();
         }
 
+        FindObjectOfType<Gun>().UnBlockGun();
 
         //base.HandleOnAdLoaded(sender, args);
     }
@@ -119,6 +123,8 @@ public class AdmobRewardedInterstitialScript : GoogleAdmobAd
             GameManagerActions.instance.StartCoroutine(GameManagerActions.instance.DelayedResume());
 
         }
+        FindObjectOfType<Gun>().UnBlockGun();
+
     }
 
 

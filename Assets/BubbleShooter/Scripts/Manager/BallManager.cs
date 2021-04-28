@@ -249,7 +249,7 @@ public class BallManager : MonoBehaviour
         if (!bullet.isLineSpecial)
         {
             listSameColors = _gridManager.GetListNeighborsSameColorRecursive(bullet);
-            if(_secondaryGridManager != null)
+            if (_secondaryGridManager != null)
             {
                 listSameColors.AddRange(_secondaryGridManager.GetListNeighborsSameColorRecursive(bullet));
             }
@@ -287,7 +287,7 @@ public class BallManager : MonoBehaviour
             if (_scoreEvent != null)
             {
                 int calScore = _score.CalculateScore(noBallsSameColor, noBallFallingDown);
-                _score.SetScore(_score.GetScore() + calScore);
+                _score.SetScore(Mathf.FloorToInt(_score.GetScore() + calScore * PointsManager.instance.GetComboMultiplier()));
                 _scoreEvent(_score.GetScore());
             }
         }
@@ -339,7 +339,7 @@ public class BallManager : MonoBehaviour
                 removeBallFromGame(_gridManager.GetGridCell(i, j).Ball);
                 removeBallFromGrid(_gridManager.GetGridCell(i, j));
 
-                if(_secondaryGridManager != null)
+                if (_secondaryGridManager != null)
                 {
                     removeBallFromGame(_secondaryGridManager.GetGridCell(i, j).Ball);
                     removeBallFromGrid(_secondaryGridManager.GetGridCell(i, j));

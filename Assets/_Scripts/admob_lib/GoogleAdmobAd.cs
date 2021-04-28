@@ -52,6 +52,7 @@ public class GoogleAdmobAd : MonoBehaviour
     public virtual void HandleOnAdClosed(object sender, EventArgs args)
     {
         MonoBehaviour.print("HandleAdClosed event received");
+        
     }
 
     public virtual void HandleOnAdLeavingApplication(object sender, EventArgs args)
