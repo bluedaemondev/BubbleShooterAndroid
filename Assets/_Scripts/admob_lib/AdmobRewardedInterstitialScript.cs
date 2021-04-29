@@ -56,6 +56,7 @@ public class AdmobRewardedInterstitialScript : GoogleAdmobAd
     private void UserEarnedRewardCallback(Reward reward)
     {
         Debug.Log("ver que devuelve esto.  T:" + reward.Type + " , Amt: " + reward.Amount);
+        GameObject.FindObjectOfType<Gun>().CheckIntegrity();
         //onRewardAfterAd.Invoke(reward);
     }
 

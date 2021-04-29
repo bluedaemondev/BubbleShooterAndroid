@@ -3,6 +3,7 @@
  *******************************************************/
 using UnityEngine;
 using System.Collections;
+using System;
 
 public class Gun : MonoBehaviour
 {
@@ -62,6 +63,20 @@ public class Gun : MonoBehaviour
             _bullet.WasShoot(BulletsRoot, force);
             _isGunReady = false;
             _gameManager.OnShootAction();
+        }
+    }
+
+    public void CheckIntegrity()
+    {
+        //Debug.Log("_isGunReady " + _isGunReady);
+        //Debug.Log("_blocked " + _isBlock);
+
+        _isGunReady = true;
+
+        if(_bullet == null || _preBullet == null)
+        {
+            Debug.Log(" bala vacia ");
+            //LoadBullets(_gameManager.ballManager.GenerateBallAsBullet());
         }
     }
 
