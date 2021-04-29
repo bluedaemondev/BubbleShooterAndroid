@@ -53,7 +53,7 @@ public class ImageSequenceUIController : MonoBehaviour
 
     public void GoToNextImage()
     {
-        if (currIdx < comicSlides.Count - 2)
+        if (currIdx < comicSlides.Count - 1)
         { // quedan imagenes disponibles
             this.currIdx++;
             SetImage(currIdx);
