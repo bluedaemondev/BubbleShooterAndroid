@@ -158,6 +158,7 @@ public class Ball : MonoBehaviour {
                 {
                     //print("case LAYER_BALL");
                     AssignBulletToGrid(other.gameObject.GetComponent<Ball>().GetGridPosition());
+                    //probable error aca
                 }
                 else
                 {

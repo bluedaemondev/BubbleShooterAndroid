@@ -119,6 +119,11 @@ public class Gun : MonoBehaviour
         _isGunReady = true;
     }
 
+    public Ball GetLastBulletInChain()
+    {
+        return this._bullet;
+    }
+
     public void BlockGun()
     {
         _isBlock = true;

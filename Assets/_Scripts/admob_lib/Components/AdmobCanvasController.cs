@@ -23,15 +23,15 @@ public class AdmobCanvasController : MonoBehaviour
     public void SendBack()
     {
         this.canvas.sortingOrder = 0;
-        Debug.Log("SENDBACK canvas : " + this.gameObject.name + " , sorting = " + this.canvas.sortingOrder);
+        //Debug.Log("SENDBACK canvas : " + this.gameObject.name + " , sorting = " + this.canvas.sortingOrder);
 
     }
     private void SendFront()
     {
-        Debug.Log("canvas : " + this.gameObject.name + " , sorting = " + this.canvas.sortingOrder);
+        //Debug.Log("canvas : " + this.gameObject.name + " , sorting = " + this.canvas.sortingOrder);
         //yield return new WaitForSeconds(0.2f);
         this.canvas.sortingOrder = 11;
-        Debug.Log("SENDFRONT canvas : " + this.gameObject.name + " , sorting = " + this.canvas.sortingOrder);
+        //Debug.Log("SENDFRONT canvas : " + this.gameObject.name + " , sorting = " + this.canvas.sortingOrder);
 
     }
 }

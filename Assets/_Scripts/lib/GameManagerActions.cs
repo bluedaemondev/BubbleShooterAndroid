@@ -62,12 +62,12 @@ public class GameManagerActions : MonoBehaviour
     }
     public void PauseGame()
     {
-        Debug.Log("paused game");
+        //Debug.Log("paused game");
         isPaused = true;
     }
     public void ResumeGame()
     {
-        Debug.Log("resuming game");
+        //Debug.Log("resuming game");
         isPaused = false;
 
     }

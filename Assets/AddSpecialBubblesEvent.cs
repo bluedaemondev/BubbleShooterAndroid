@@ -25,15 +25,35 @@ public class AddSpecialBubblesEvent : MonoBehaviour
 
     void AddBubbles()
     {
+        gameManager.gun.BlockGun();
+        var counters = GameObject.FindObjectsOfType<Counter>();
+        foreach (var ctr in counters)
+        {
+            ctr.StopTimer();
+        }
+
         var newSpecial = gameManager.ballManager.GenerateBallAsBullet();
+        var lastBullet = gameManager.gun.GetLastBulletInChain();
+
+        var lastBulletObjectRef = gameManager.ballManager.GenerateBallAsBullet();
+
+        gameManager.gun.ClearBullets();
+
+        lastBulletObjectRef = lastBullet;
+
         newSpecial.isLineSpecial = true;
         newSpecial.GetComponent<UnityEngine.UI.Image>().sprite = BubbleResources.GenerateSpecialBubbleType().sprite;
+        newSpecial.GetComponent<UnityEngine.UI.Image>().color = Color.white;
 
-        gameManager.gun.BlockGun();
-        gameManager.gun.LoadBullets(newSpecial);
+        //for (int i = 0; i < qtyGiven; i++)
+        //    gameManager.gun.LoadBullets(newSpecial);
+
+
+        gameManager.gun.LoadDoneBullets(newSpecial, lastBulletObjectRef);
 
         gameManager.gun.UnBlockGun();
-        foreach (var ctr in GameObject.FindObjectsOfType<Counter>())
+        
+        foreach (var ctr in counters)
         {
             ctr.ContinueTimer();
         }
