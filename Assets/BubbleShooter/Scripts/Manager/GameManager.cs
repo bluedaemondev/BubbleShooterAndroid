@@ -33,6 +33,9 @@ public class GameManager : MonoBehaviour
         registerEventScore();
         registerEventTouch();
         registerEventWin();
+
+        
+
         OnStartGame();
     }
 	
@@ -40,6 +43,8 @@ public class GameManager : MonoBehaviour
     #region Game state
     public void OnStartGame()
     {
+        uiManager.OnStartNewGame();
+
         _gameState = Common.GameState.Playing;
 
         gun.LoadDoneBullets(ballManager.GenerateBallAsBullet(), ballManager.GenerateBallAsBullet());

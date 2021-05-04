@@ -64,22 +64,12 @@ public class ShuffleMusicManager : MonoBehaviour
         {
             // pasa a la siguiente cancion
             case ShuffleOptions.Next:
-                //currentIndexSelected = Mathf.Clamp(currentIndexSelected + 1, 0, sceneLoops.Count - 1);
-
                 currentIndexSelected++;
                 if (currentIndexSelected >= sceneLoops.Count) // termino y se sale
                     gameManager.OnWin();
 
                 else
                     PlayBackgroundAndMusic(sceneLoops[currentIndexSelected]);
-
-                //if (currentIndexSelected >= sceneLoops.Count - 1)
-                //{
-                //    //Debug.Log("Terminados todos los loops, saliendo.");
-                //    //break;
-                //}
-                //Debug.Log("Changin " + sceneLoops.Count + "" + currentIndexSelected + " ");
-
                 break;
 
             // arma una nueva lista con los loops
@@ -99,7 +89,12 @@ public class ShuffleMusicManager : MonoBehaviour
     {
         while (currentIndexSelected < sceneLoops.Count)
         {
-            yield return new WaitForSeconds(timeRepeatLoopInvoker);
+            var tmp = sceneLoops[currentIndexSelected].timeRepeats;
+            Debug.Log("tmp = " + tmp + " , timer prev : " + timeRepeatLoopInvoker);
+
+
+            yield return new WaitForSeconds(tmp);
+
             ChangeMusicLoop();
         }
 

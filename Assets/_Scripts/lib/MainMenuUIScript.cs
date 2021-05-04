@@ -10,7 +10,9 @@ public class MainMenuUIScript : MonoBehaviour
     public GameObject howToPlayPanel;
 
     public string sceneLoadOnPlay = "ComicIntroSlides";
-    public string redSocialLink1 = "http://instagram.com/bluedaemonart";
+    public string redSocialLink1 = "https://lordfibonacci.bandcamp.com/";
+    public string redSocialLink2 = "https://lordfibonacci.bandcamp.com/track/judgment-break-drum-break";
+
 
 
 
@@ -25,7 +27,7 @@ public class MainMenuUIScript : MonoBehaviour
     }
     public void YoutubeLink()
     {
-        Application.OpenURL("https://www.youtube.com/channel/UC6yn5SLH7tFb5_-hEPkfx3Q");
+        Application.OpenURL(redSocialLink2);
     }
 
     public void ShowMainMenu()

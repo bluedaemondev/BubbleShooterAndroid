@@ -7,6 +7,6 @@ public class BackgroundAndMusic : ScriptableObject
 {
     public AudioClip ClipAssociated; 
     public string AnimatorStateName;
-
+    public float timeRepeats;
 
 }

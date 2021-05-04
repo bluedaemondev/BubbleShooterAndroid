@@ -95,6 +95,8 @@ public class BallManager : MonoBehaviour
         var gridtemp = this._secondaryGridManager;
         Debug.Log("Finished grid - switching to next");
         _secondaryGridManager = _gridManager;
+        ClearBalls();
+
         _gridManager = gridtemp;
 
     }
@@ -180,7 +182,12 @@ public class BallManager : MonoBehaviour
         bullet.transform.localScale = Vector3.one;
 
         GridCell nearestCell = _gridManager.FindNearestGridCell(gridCellClue, bullet.transform.localPosition);
+        
+        if (nearestCell != null)
+        {
         assignBallToGrid(bullet, nearestCell.X, nearestCell.Y);
+        }
+        
     }
 
     void removeBallFromGrid(GridCell cell)

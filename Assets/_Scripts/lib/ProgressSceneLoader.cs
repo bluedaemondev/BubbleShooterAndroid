@@ -85,6 +85,6 @@ public class ProgressSceneLoader : MonoBehaviour
     private void UpdateProgressUI(float progress)
     {
         progressBar.value = progress;
-        progressText.text = "Cargando... \n" + (int)(progress * 100f) + "%";
+        progressText.text = "Loading... \n" + (int)(progress * 100f) + "%";
     }
 }

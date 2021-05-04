@@ -28,10 +28,6 @@ public class AdmobComponentsManager : MonoBehaviour
 
         onSendToTopAds = new UnityEvent();
         onSendToBackAds = new UnityEvent();
-
-    }
-    private void Start()
-    {
         MobileAds.Initialize(initStatus => { });
     }
 

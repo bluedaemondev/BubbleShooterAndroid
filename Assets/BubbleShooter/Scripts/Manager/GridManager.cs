@@ -223,6 +223,9 @@ public class GridManager
 
     public List<GridCell> GetListNeighborsSameColorRecursive(Ball bullet)
     {
+        if (bullet == null)
+            return new List<GridCell>();
+
         List<GridCell> sameColors = new List<GridCell>();
         List<GridCell> neighbors = GetNeighborSameColorBalls(bullet.GetBallColor(),
                                        bullet.GetGridPosition().X, bullet.GetGridPosition().Y, false);

@@ -2,35 +2,38 @@
  * Copyright (C) 2016 Ngan Do - dttngan91@gmail
  *******************************************************/
 using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
 
     public Text _centerText;
-    public GameObject _gameoverUtils;
+    public List<GameObject> _gameoverUtils;
+    public List<GameObject> _winUtils;
+
+    public List<GameObject> animatedCanvas;
 
     public Text _score;
     public Parallax _background;
 
-    // Use this for initialization
-    //void Start()
-    //{
-    //}
-
-    //// Update is called once per frame
-    //void Update()
-    //{
-
-    //}
-
+    public void OnStartNewGame()
+    {
+        foreach (var item in _gameoverUtils)
+            item.SetActive(false);
+        foreach (var item in animatedCanvas)
+            item.SetActive(true);
+    }
     public void DisplayGameOver()
     {
         _centerText.gameObject.SetActive(true);
-        //_gameoverUtils.SetActive(true);
+        
+        foreach(var item in _gameoverUtils)
+            item.SetActive(true);
+        foreach (var item in animatedCanvas)
+            item.SetActive(false);
 
-        _centerText.text = "Game Over";
+        //_centerText.text = "Game Over";
 
         if (_background)
             _background.StopMode();
@@ -39,7 +42,13 @@ public class UIManager : MonoBehaviour
     public void DisplayWin()
     {
         _centerText.gameObject.SetActive(true);
-        _centerText.text = "Thanks for playing!";
+        //_centerText.text = "Thanks for playing!";
+        
+        foreach (var item in _winUtils)
+            item.SetActive(true);
+        foreach (var item in animatedCanvas)
+            item.SetActive(false);
+
         if (_background)
             _background.StopMode();
     }
