@@ -39,7 +39,7 @@ public class AddSpecialBubblesEvent : MonoBehaviour
 
         gameManager.gun.ClearBullets();
 
-        lastBulletObjectRef = lastBullet;
+        //lastBulletObjectRef = lastBullet;
 
         newSpecial.isLineSpecial = true;
         newSpecial.GetComponent<UnityEngine.UI.Image>().sprite = BubbleResources.GenerateSpecialBubbleType().sprite;
