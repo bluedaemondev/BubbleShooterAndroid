@@ -34,14 +34,23 @@ public class PauseDrawerUIController : MonoBehaviour
 
     public void Show(float delay = 0f)
     {
+        var counters = FindObjectsOfType<Counter>();
+        foreach (var _counter in counters)
+        {
+            if (_counter.CurrentState != Counter.CounterState.STOP)
+                _counter.StopTimer();
+            else
+                _counter.ContinueTimer();
+        }
+
         rectTransform.DOAnchorPosX(0, 0.3f, false);
-        GameManagerActions.instance.onPause.Invoke();
+        //GameManagerActions.instance.onPause.Invoke();
     }
 
     public void Hide(float delay = 0f)
     {
         rectTransform.DOAnchorPosX(-rectTransform.rect.width * 3, 0.3f).SetDelay(delay);
-        GameManagerActions.instance.onResumeGame.Invoke();
+        //GameManagerActions.instance.onResumeGame.Invoke();
     }
 
     public void BackToMenu()

@@ -8,7 +8,7 @@ public class EndingSceneLinkbuilder : MonoBehaviour
     {
         if (FindObjectOfType<AdmobBannerScript>() != null)
         {
-            Destroy(FindObjectOfType<AdmobBannerScript>().gameObject);
+            //Destroy(FindObjectOfType<AdmobBannerScript>().gameObject);
             Destroy(FindObjectOfType<AdmobCanvasController>().gameObject);
         }
     }

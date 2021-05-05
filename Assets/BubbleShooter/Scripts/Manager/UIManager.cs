@@ -20,14 +20,14 @@ public class UIManager : MonoBehaviour
 
     public void OnPause()
     {
-        var counters = FindObjectsOfType<Counter>();
-        foreach (var _counter in counters)
-        {
-            if (_counter.CurrentState != Counter.CounterState.STOP)
-                _counter.StopTimer();
-            else
-                _counter.ContinueTimer();
-        }
+        //var counters = FindObjectsOfType<Counter>();
+        //foreach (var _counter in counters)
+        //{
+        //    if (_counter.CurrentState != Counter.CounterState.STOP)
+        //        _counter.StopTimer();
+        //    else
+        //        _counter.ContinueTimer();
+        //}
 
         //if (pauseDrawer.activeSelf)
         //{
