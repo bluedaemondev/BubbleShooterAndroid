@@ -13,9 +13,36 @@ public class UIManager : MonoBehaviour
     public List<GameObject> _winUtils;
 
     public List<GameObject> animatedCanvas;
+    public GameObject pauseDrawer;
 
     public Text _score;
     public Parallax _background;
+
+    public void OnPause()
+    {
+        var counters = FindObjectsOfType<Counter>();
+        foreach (var _counter in counters)
+        {
+            if (_counter.CurrentState != Counter.CounterState.STOP)
+                _counter.StopTimer();
+            else
+                _counter.ContinueTimer();
+        }
+
+        //if (pauseDrawer.activeSelf)
+        //{
+        //    PauseDrawerUIController.Instance.Hide(0.2f);
+        //    //pauseDrawer.SetActive(false);
+
+        //}
+        //else
+        //{
+        //    //pauseDrawer.SetActive(true);
+        //    PauseDrawerUIController.Instance.Show(0.2f);
+        //}
+
+
+    }
 
     public void OnStartNewGame()
     {
@@ -27,8 +54,8 @@ public class UIManager : MonoBehaviour
     public void DisplayGameOver()
     {
         _centerText.gameObject.SetActive(true);
-        
-        foreach(var item in _gameoverUtils)
+
+        foreach (var item in _gameoverUtils)
             item.SetActive(true);
         foreach (var item in animatedCanvas)
             item.SetActive(false);
@@ -43,7 +70,7 @@ public class UIManager : MonoBehaviour
     {
         _centerText.gameObject.SetActive(true);
         //_centerText.text = "Thanks for playing!";
-        
+
         foreach (var item in _winUtils)
             item.SetActive(true);
         foreach (var item in animatedCanvas)

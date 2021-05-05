@@ -9,6 +9,8 @@ public class BubbleShooterSceneActions : MonoBehaviour
     void Start()
     {
         SetUpRequiredMechanics();
+        if (FindObjectOfType<AdmobBannerScript>() != null)
+            Destroy(FindObjectOfType<AdmobBannerScript>().gameObject);
     }
 
     void SetUpRequiredMechanics()

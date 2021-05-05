@@ -46,6 +46,6 @@ public class PauseDrawerUIController : MonoBehaviour
 
     public void BackToMenu()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1); // hardcode 0
+        ProgressSceneLoader.instance.LoadScene("MainMenu");
     }
 }

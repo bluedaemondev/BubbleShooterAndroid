@@ -33,11 +33,12 @@ public class AdmobInterstitialScript : GoogleAdmobAd
         this.interstitial.OnAdLeavingApplication += HandleOnAdLeavingApplication;
 
         // Create an empty ad request.
-        
+
         // Load the interstitial with the request.
         StartCoroutine(LoadAdDifferred());
 
-        Destroy(this.gameObject, 5.3f);
+        if (this.gameObject != null)
+            Destroy(this.gameObject, 5.3f);
 
         //base.RequestAd();
 
@@ -49,9 +50,9 @@ public class AdmobInterstitialScript : GoogleAdmobAd
     {
         AdRequest request = new AdRequest.Builder().Build();
         this.interstitial.LoadAd(request);
-        
+
         yield return null;
-        
+
         while (!this.interstitial.IsLoaded())
             yield return null;
 
