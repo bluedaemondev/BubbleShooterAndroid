@@ -8,4 +8,8 @@ public class EndingSceneLinkbuilder : MonoBehaviour
     {
         Application.OpenURL(url);
     }
+    public void ReloadMainMenu()
+    {
+        ProgressSceneLoader.instance.LoadScene("MainMenu");
+    }
 }

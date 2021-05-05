@@ -33,19 +33,28 @@ public class AdmobComponentsManager : MonoBehaviour
 
     public void RequestBannerAd()
     {
-        var bannerController = new AdmobBannerScript();
-        bannerController.RequestAd(AdPosition.Bottom);
+        //var bannerController = new AdmobBannerScript();
+        //bannerController.RequestAd(AdPosition.Bottom);
+        
+        var resultH = Instantiate(new GameObject());
+        var scriptRef = resultH.AddComponent<AdmobBannerScript>();
 
+        scriptRef.RequestAd(AdPosition.Bottom);
     }
     public void RequestInterstitialAd()
     {
-        var interstitialController = new AdmobInterstitialScript();
-        interstitialController.RequestAd();
+        //var interstitialController = new AdmobInterstitialScript();
+        var resultH = Instantiate(new GameObject());
+        var scriptRef = resultH.AddComponent<AdmobInterstitialScript>();
+        
+        scriptRef.RequestAd();
     }
     public void RequestRewardedAd()
     {
-        var rewardedInterstitialController = new AdmobRewardedInterstitialScript();
-        rewardedInterstitialController.RequestAd();
+        var resultH = Instantiate(new GameObject());
+        var scriptRef = resultH.AddComponent<AdmobRewardedInterstitialScript>();
+
+        scriptRef.RequestAd();
     }
 
 

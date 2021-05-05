@@ -27,7 +27,8 @@ public class MainMenuUIScript : MonoBehaviour
     }
     public void YoutubeLink()
     {
-        Application.OpenURL(redSocialLink2);
+        //Application.OpenURL(redSocialLink2);
+        ProgressSceneLoader.instance.LoadScene("Ending");
     }
 
     public void ShowMainMenu()

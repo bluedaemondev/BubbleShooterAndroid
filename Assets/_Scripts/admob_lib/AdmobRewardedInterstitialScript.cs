@@ -29,11 +29,21 @@ public class AdmobRewardedInterstitialScript : GoogleAdmobAd
     public override void RequestAd()
     {
 
-        AdRequest request = new AdRequest.Builder().Build();
-        RewardedInterstitialAd.LoadAd(componentTypeStringAdmob, request, AdLoadCallback);
-        ShowRewardedInterstitialAd();
-
+        StartCoroutine(CoAwaitForAdDisplay());
         base.RequestAd();
+
+
+    }
+    private IEnumerator CoAwaitForAdDisplay()
+    {
+        AdRequest request = new AdRequest.Builder().Build();
+
+        RewardedInterstitialAd.LoadAd(componentTypeStringAdmob, request, AdLoadCallback);
+
+        //while (rewardedInterstitial.)
+        //yield return null;
+        yield return new WaitForSeconds(2);
+        ShowRewardedInterstitialAd();
     }
 
     public void ShowRewardedInterstitialAd()

@@ -29,6 +29,8 @@ public class AdmobBannerScript : GoogleAdmobAd
         this.bannerView.LoadAd(request);
 
         base.RequestAd(positionOnScreen);
+
+        Destroy(this.gameObject, 5.3f);
     }
 
     

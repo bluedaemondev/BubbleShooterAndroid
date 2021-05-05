@@ -33,18 +33,39 @@ public class AdmobInterstitialScript : GoogleAdmobAd
         this.interstitial.OnAdLeavingApplication += HandleOnAdLeavingApplication;
 
         // Create an empty ad request.
-        AdRequest request = new AdRequest.Builder().Build();
+        
         // Load the interstitial with the request.
-        this.interstitial.LoadAd(request);
-        this.interstitial.Show();
+        StartCoroutine(LoadAdDifferred());
 
-        base.RequestAd();
+        Destroy(this.gameObject, 5.3f);
+
+        //base.RequestAd();
+
 
 
     }
+
+    private IEnumerator LoadAdDifferred()
+    {
+        AdRequest request = new AdRequest.Builder().Build();
+        this.interstitial.LoadAd(request);
+        
+        yield return null;
+        
+        while (!this.interstitial.IsLoaded())
+            yield return null;
+
+        this.interstitial.Show();
+
+
+    }
+
     public override void HandleOnAdOpened(object sender, EventArgs args)
     {
         base.HandleOnAdOpened(sender, args);
+
+        Debug.Log("ad opened =- interstitial");
+
         if (!GameManagerActions.instance.isPaused)
         {
             GameManagerActions.instance.onPause.Invoke();
@@ -88,6 +109,9 @@ public class AdmobInterstitialScript : GoogleAdmobAd
     public override void HandleOnAdLeavingApplication(object sender, EventArgs args)
     {
         base.HandleOnAdLeavingApplication(sender, args);
+        FindObjectOfType<Gun>().UnBlockGun();
+        GameManagerActions.instance.StartCoroutine(GameManagerActions.instance.DelayedResume());
+
         this.interstitial.OnAdLeavingApplication -= HandleOnAdLeavingApplication;
 
     }
