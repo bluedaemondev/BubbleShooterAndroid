@@ -172,7 +172,16 @@ public class BallManager : MonoBehaviour
         bullet.transform.localScale = Vector3.one;
 
         GridCell nearestCell = _gridManager.FindNearestGridCell(bullet.transform.localPosition);
-        assignBallToGrid(bullet, nearestCell.X, nearestCell.Y);
+        if (nearestCell != null)
+        {
+            assignBallToGrid(bullet, nearestCell.X, nearestCell.Y);
+        }
+        else
+        {
+            Debug.Log("assigning to sec grid A " + bullet.transform.localPosition + " cell = " + nearestCell.X + ", " + nearestCell.Y);
+            nearestCell = _secondaryGridManager.FindNearestGridCell(bullet.transform.localPosition);
+            assignBallToGrid(bullet, nearestCell.X, nearestCell.Y);
+        }
     }
 
     public void AssignBulletToGrid(Ball bullet, GridCell gridCellClue)
@@ -187,7 +196,15 @@ public class BallManager : MonoBehaviour
         {
         assignBallToGrid(bullet, nearestCell.X, nearestCell.Y);
         }
-        
+        else
+        {
+            Debug.Log("assigning to sec grid B " + gridCellClue + " cell = " + nearestCell.X + ", " + nearestCell.Y);
+
+            nearestCell = _secondaryGridManager.FindNearestGridCell(gridCellClue, bullet.transform.localPosition);
+            assignBallToGrid(bullet, nearestCell.X, nearestCell.Y);
+
+        }
+
     }
 
     void removeBallFromGrid(GridCell cell)
@@ -326,6 +343,7 @@ public class BallManager : MonoBehaviour
     {
         for (int x = 0; x < _secondaryGridManager.GetGridSizeX(); x++)
         {
+
             var targetCell = _gridManager.GetGridCell(x, rowEmpty);
             this.AddBallToSecondaryGridCell(targetCell);
             //if (_secondaryGridManager.IsValidGridPosition(x, rowEmpty))
