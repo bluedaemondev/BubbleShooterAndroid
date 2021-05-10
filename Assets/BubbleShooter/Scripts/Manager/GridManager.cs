@@ -99,6 +99,7 @@ public class GridManager
         {
             return generatedGridWithBalls[x, y].Ball != null;
         }
+
         return false;
     }
     #endregion
@@ -220,6 +221,56 @@ public class GridManager
         generatedGridWithBalls[cell.X, cell.Y].Ball = null;
     }
 
+    public List<GridCell> GetNeighborsSameColorComplementary(List<GridCell> clusterMainGrid)
+    {
+        if (clusterMainGrid == null)
+            return new List<GridCell>();
+
+        List<GridCell> neighbors = CalculateComplementaryFromBase(clusterMainGrid);
+
+        return neighbors;
+    }
+
+    private List<GridCell> CalculateComplementaryFromBase(List<GridCell> clusterMainGrid)
+    {
+        // la grilla principal esta abajo y empieza en 0 arriba, Max abajo
+        // la grilla secundaria convierte la posicion en una complementaria 
+        // la complementaria busca vecinos
+        // se devuelve la lista con las ball originales + todos los matches en la secundaria
+
+        // maximo - numero de fila del main grid
+        int upperRow = 999;
+        GridCell toRecurseWNeighbors = null;
+
+        foreach (var ball in clusterMainGrid)
+        {
+            if (ball.Y <= upperRow)
+            {
+                upperRow = ball.Y;
+                toRecurseWNeighbors = ball;
+            }
+        }
+
+        var foundMatchingColor = new List<GridCell>();
+        int complementaryY_value = generatedGridWithBalls.GetLength(1) - 1 - upperRow;
+        for (int x = 0; x < generatedGridWithBalls.GetLength(0); x++)
+        {
+            if (IsOccupiedBall(x, complementaryY_value) &&
+                    generatedGridWithBalls[x, complementaryY_value].Ball.GetBallColor() ==
+                    toRecurseWNeighbors.Ball.GetBallColor())
+            {
+                foundMatchingColor.Add(generatedGridWithBalls[x, complementaryY_value]);
+            }
+        }
+
+
+        foreach (var match in foundMatchingColor)
+        {
+            clusterMainGrid.AddRange(GetListNeighborsSameColorRecursive(match.Ball));
+        }
+
+        return clusterMainGrid;
+    }
 
     public List<GridCell> GetListNeighborsSameColorRecursive(Ball bullet)
     {

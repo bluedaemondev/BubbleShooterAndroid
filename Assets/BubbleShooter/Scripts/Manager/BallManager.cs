@@ -191,10 +191,10 @@ public class BallManager : MonoBehaviour
         bullet.transform.localScale = Vector3.one;
 
         GridCell nearestCell = _gridManager.FindNearestGridCell(gridCellClue, bullet.transform.localPosition);
-        
+
         if (nearestCell != null)
         {
-        assignBallToGrid(bullet, nearestCell.X, nearestCell.Y);
+            assignBallToGrid(bullet, nearestCell.X, nearestCell.Y);
         }
         else
         {
@@ -273,9 +273,22 @@ public class BallManager : MonoBehaviour
         if (!bullet.isLineSpecial)
         {
             listSameColors = _gridManager.GetListNeighborsSameColorRecursive(bullet);
-            if (_secondaryGridManager != null)
+            Debug.Log("previous search 2nd grid " + listSameColors.Count);
+
+            bool searchSecondary = false;
+            foreach (GridCell cell in listSameColors)
             {
-                listSameColors.AddRange(_secondaryGridManager.GetListNeighborsSameColorRecursive(bullet));
+                if (cell.Y == 0)
+                {
+                    searchSecondary = true;
+                    break;
+                }
+            }
+
+            if (_secondaryGridManager != null && searchSecondary)
+            {
+                listSameColors = _secondaryGridManager.GetNeighborsSameColorComplementary(listSameColors);
+                Debug.Log("post search 2nd grid " + listSameColors.Count);
             }
         }
         else
