@@ -198,6 +198,7 @@ public class GridManager
 
     GridCell findNearestGridCellInList(List<GridCell> listNeighbors, Vector3 position)
     {
+
         float smallestDistance = 9999;
         GridCell nearestCell = null;
         foreach (GridCell gridCell in listNeighbors)
@@ -213,6 +214,7 @@ public class GridManager
                 }
             }
         }
+        Debug.Log("nearest found = " + nearestCell.X + "," + nearestCell.Y);
         return nearestCell;
     }
 
@@ -253,16 +255,44 @@ public class GridManager
 
         var foundMatchingColor = new List<GridCell>();
         int complementaryY_value = generatedGridWithBalls.GetLength(1) - 1 - upperRow;
-        for (int x = 0; x < generatedGridWithBalls.GetLength(0); x++)
+        //for (int x = 0; x < generatedGridWithBalls.GetLength(0); x++)
+        //{
+        //    if (IsOccupiedBall(x, complementaryY_value) &&
+        //            generatedGridWithBalls[x, complementaryY_value].Ball.GetBallColor() ==
+        //            toRecurseWNeighbors.Ball.GetBallColor())
+        //    {
+        //        foundMatchingColor.Add(generatedGridWithBalls[x, complementaryY_value]);
+        //    }
+        //}
+
+        bool correspondingOccupied = IsOccupiedBall(toRecurseWNeighbors.X, complementaryY_value);
+        bool leftMostOccupied = IsOccupiedBall(toRecurseWNeighbors.X - 1, complementaryY_value);
+        bool rightMostOccupied = IsOccupiedBall(toRecurseWNeighbors.X + 1, complementaryY_value);
+
+        if (correspondingOccupied)
         {
-            if (IsOccupiedBall(x, complementaryY_value) &&
-                    generatedGridWithBalls[x, complementaryY_value].Ball.GetBallColor() ==
+            if(generatedGridWithBalls[toRecurseWNeighbors.X, complementaryY_value].Ball.GetBallColor() ==
                     toRecurseWNeighbors.Ball.GetBallColor())
             {
-                foundMatchingColor.Add(generatedGridWithBalls[x, complementaryY_value]);
+                foundMatchingColor.Add(generatedGridWithBalls[toRecurseWNeighbors.X, complementaryY_value]);
             }
         }
-
+        if (leftMostOccupied)
+        {
+            if (generatedGridWithBalls[toRecurseWNeighbors.X-1, complementaryY_value].Ball.GetBallColor() ==
+                    toRecurseWNeighbors.Ball.GetBallColor())
+            {
+                foundMatchingColor.Add(generatedGridWithBalls[toRecurseWNeighbors.X-1, complementaryY_value]);
+            }
+        }
+        if (rightMostOccupied)
+        {
+            if (generatedGridWithBalls[toRecurseWNeighbors.X + 1, complementaryY_value].Ball.GetBallColor() ==
+                    toRecurseWNeighbors.Ball.GetBallColor())
+            {
+                foundMatchingColor.Add(generatedGridWithBalls[toRecurseWNeighbors.X + 1, complementaryY_value]);
+            }
+        }
 
         foreach (var match in foundMatchingColor)
         {

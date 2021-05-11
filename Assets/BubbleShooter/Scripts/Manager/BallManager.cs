@@ -273,7 +273,7 @@ public class BallManager : MonoBehaviour
         if (!bullet.isLineSpecial)
         {
             listSameColors = _gridManager.GetListNeighborsSameColorRecursive(bullet);
-            Debug.Log("previous search 2nd grid " + listSameColors.Count);
+            //Debug.Log("previous search 2nd grid " + listSameColors.Count);
 
             bool searchSecondary = false;
             foreach (GridCell cell in listSameColors)
@@ -288,7 +288,7 @@ public class BallManager : MonoBehaviour
             if (_secondaryGridManager != null && searchSecondary)
             {
                 listSameColors = _secondaryGridManager.GetNeighborsSameColorComplementary(listSameColors);
-                Debug.Log("post search 2nd grid " + listSameColors.Count);
+                //Debug.Log("post search 2nd grid " + listSameColors.Count);
             }
         }
         else
