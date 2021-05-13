@@ -13,6 +13,7 @@ public class GridManager
 
     private int _gridSizeX;
     private Vector2 _offsetFromBasePivot;
+    private string name;
 
     public Vector2 GetOffsetFromPivot()
     {
@@ -43,7 +44,10 @@ public class GridManager
     {
         return _cellSizeY;
     }
-
+    public string GetName()
+    {
+        return name;
+    }
     public GridManager(int gridSizeX, int gridSizeY, int cellSizeX, int cellSizeY, Vector2 offsetFromPivot = new Vector2())
     {
         _gridSizeX = gridSizeX;
@@ -51,6 +55,7 @@ public class GridManager
         _cellSizeX = cellSizeX;
         _cellSizeY = cellSizeY;
         _offsetFromBasePivot = offsetFromPivot;
+        name = offsetFromPivot == null ? "main" : "sec";
 
         generatedGridWithBalls = new GridCell[_gridSizeX, _gridSizeY];
         for (int i = 0; i < _gridSizeX; i++)
@@ -214,7 +219,7 @@ public class GridManager
                 }
             }
         }
-        Debug.Log("nearest found = " + nearestCell.X + "," + nearestCell.Y);
+        Debug.Log("nearest found = " + nearestCell.X + "," + nearestCell.Y + " " + this.name);
         return nearestCell;
     }
 
@@ -250,11 +255,16 @@ public class GridManager
             {
                 upperRow = ball.Y;
                 toRecurseWNeighbors = ball;
+
+                if (ball.Y == 0)
+                    break;
             }
         }
 
+        Debug.Log("ball selected " + toRecurseWNeighbors.Ball.name + " " + this.name);
+
         var foundMatchingColor = new List<GridCell>();
-        int complementaryY_value = generatedGridWithBalls.GetLength(1) - 1 - upperRow;
+        int complementaryY_value = GetGridSizeY() /*- 1*/ - upperRow;
         //for (int x = 0; x < generatedGridWithBalls.GetLength(0); x++)
         //{
         //    if (IsOccupiedBall(x, complementaryY_value) &&
@@ -266,36 +276,43 @@ public class GridManager
         //}
 
         bool correspondingOccupied = IsOccupiedBall(toRecurseWNeighbors.X, complementaryY_value);
-        bool leftMostOccupied = IsOccupiedBall(toRecurseWNeighbors.X - 1, complementaryY_value);
-        bool rightMostOccupied = IsOccupiedBall(toRecurseWNeighbors.X + 1, complementaryY_value);
+        //bool leftMostOccupied = IsOccupiedBall(toRecurseWNeighbors.X - 1, complementaryY_value);
+        //bool rightMostOccupied = IsOccupiedBall(toRecurseWNeighbors.X + 1, complementaryY_value);
 
         if (correspondingOccupied)
         {
-            if(generatedGridWithBalls[toRecurseWNeighbors.X, complementaryY_value].Ball.GetBallColor() ==
-                    toRecurseWNeighbors.Ball.GetBallColor())
-            {
-                foundMatchingColor.Add(generatedGridWithBalls[toRecurseWNeighbors.X, complementaryY_value]);
-            }
+            foundMatchingColor.Add(generatedGridWithBalls[toRecurseWNeighbors.X, complementaryY_value]);
+            //if (generatedGridWithBalls[toRecurseWNeighbors.X, complementaryY_value].Ball.GetBallColor() ==
+            //        toRecurseWNeighbors.Ball.GetBallColor())
+            //{
+            //    Debug.Log("corresponding occupied = (" + toRecurseWNeighbors.X + ", " + complementaryY_value + ") type " + this.GetType());
+                
+            //}
         }
-        if (leftMostOccupied)
-        {
-            if (generatedGridWithBalls[toRecurseWNeighbors.X-1, complementaryY_value].Ball.GetBallColor() ==
-                    toRecurseWNeighbors.Ball.GetBallColor())
-            {
-                foundMatchingColor.Add(generatedGridWithBalls[toRecurseWNeighbors.X-1, complementaryY_value]);
-            }
-        }
-        if (rightMostOccupied)
-        {
-            if (generatedGridWithBalls[toRecurseWNeighbors.X + 1, complementaryY_value].Ball.GetBallColor() ==
-                    toRecurseWNeighbors.Ball.GetBallColor())
-            {
-                foundMatchingColor.Add(generatedGridWithBalls[toRecurseWNeighbors.X + 1, complementaryY_value]);
-            }
-        }
+        //if (leftMostOccupied)
+        //{
+        //    if (generatedGridWithBalls[toRecurseWNeighbors.X - 1, complementaryY_value].Ball.GetBallColor() ==
+        //            toRecurseWNeighbors.Ball.GetBallColor())
+        //    {
+        //        Debug.Log("leftMost occupied = (" + (toRecurseWNeighbors.X - 1) + ", " + complementaryY_value + ") type " + this.GetType());
+
+        //        foundMatchingColor.Add(generatedGridWithBalls[toRecurseWNeighbors.X - 1, complementaryY_value]);
+        //    }
+        //}
+        //if (rightMostOccupied)
+        //{
+        //    if (generatedGridWithBalls[toRecurseWNeighbors.X + 1, complementaryY_value].Ball.GetBallColor() ==
+        //            toRecurseWNeighbors.Ball.GetBallColor())
+        //    {
+        //        Debug.Log("rightMost occupied = (" + (toRecurseWNeighbors.X + 1) + ", " + complementaryY_value + ") type " + this.GetType());
+
+        //        foundMatchingColor.Add(generatedGridWithBalls[toRecurseWNeighbors.X + 1, complementaryY_value]);
+        //    }
+        //}
 
         foreach (var match in foundMatchingColor)
         {
+            Debug.Log("finding neighbors of " + match.Ball.name + this.name);
             clusterMainGrid.AddRange(GetListNeighborsSameColorRecursive(match.Ball));
         }
 

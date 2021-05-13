@@ -75,7 +75,7 @@ public class ShuffleMusicManager : MonoBehaviour
             // arma una nueva lista con los loops
             case ShuffleOptions.Reset:
                 currentIndexSelected = 0;
-                LoadSceneLoopList();
+                LoadSceneLoopListRandomOrder();
                 break;
 
             // elige un indice actual aleatorio dentro de la lista?
@@ -119,6 +119,29 @@ public class ShuffleMusicManager : MonoBehaviour
             for (int i = 0; i < (availableLoopsInRun <= collectionLoops.Count ? availableLoopsInRun : collectionLoops.Count); i++)
             {
                 sceneLoops.Add(collectionLoops[i]);
+            }
+            PlayBackgroundAndMusic(sceneLoops[currentIndexSelected]);
+        }
+    }
+    private void LoadSceneLoopListRandomOrder()
+    {
+        sceneLoops = new List<BackgroundAndMusic>();
+        int rand = 0;
+        int cond = (availableLoopsInRun <= collectionLoops.Count ? availableLoopsInRun : collectionLoops.Count);
+
+        if (collectionLoops.Count > 0)
+        {
+            //Cargo la cantidad requerida evitando loops repetidos
+            for (int i = 0; i < cond; i++)
+            {
+                rand = Random.Range(0, cond);
+                Debug.Log(rand);
+                while (sceneLoops.Contains(collectionLoops[rand]))
+                {
+                    rand = Random.Range(0, cond);
+                }
+                sceneLoops.Add(collectionLoops[rand]);
+                rand = 0;
             }
             PlayBackgroundAndMusic(sceneLoops[currentIndexSelected]);
         }

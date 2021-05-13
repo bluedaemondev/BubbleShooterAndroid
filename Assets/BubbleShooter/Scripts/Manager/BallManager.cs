@@ -190,6 +190,8 @@ public class BallManager : MonoBehaviour
         bullet.transform.parent = PivotGrid;
         bullet.transform.localScale = Vector3.one;
 
+        /// tengo que revisar este metodo en profundidad, el problema de perder cuando pones algo en la parte de arriba
+        /// es porque se esta encontrando aca un nearest pero no corresponde a la grilla que es
         GridCell nearestCell = _gridManager.FindNearestGridCell(gridCellClue, bullet.transform.localPosition);
 
         if (nearestCell != null)
@@ -214,24 +216,25 @@ public class BallManager : MonoBehaviour
     void AddBallToSecondaryGridCell(GridCell cell)
     {
         var positionInSecondaryGrid = CalculateComplementaryGridCell(cell);
-        if (_secondaryGridManager.IsValidGridPosition(positionInSecondaryGrid.x, positionInSecondaryGrid.y))
-        {
-            var ball = instantiateNewBall(randomBallColor(_numberOfDiffColor + 1));
-            assignBallToGrid(ball, positionInSecondaryGrid.x, positionInSecondaryGrid.y, false);
-            ball.FixPosition();
+        if (positionInSecondaryGrid != null)
+            if (_secondaryGridManager.IsValidGridPosition(positionInSecondaryGrid.X, positionInSecondaryGrid.Y))
+            {
+                var ball = instantiateNewBall(randomBallColor(_numberOfDiffColor + 1));
+                assignBallToGrid(ball, positionInSecondaryGrid.X, positionInSecondaryGrid.Y, false);
+                ball.FixPosition();
 
-            //Debug.Log("ball => " + ball.name + " " + ball.GetGridPosition());
+                //Debug.Log("ball => " + ball.name + " " + ball.GetGridPosition());
 
-        }
+            }
     }
 
-    private Vector2Int CalculateComplementaryGridCell(GridCell cell)
+    private GridCell CalculateComplementaryGridCell(GridCell cell)
     {
-        Vector2Int result = new Vector2Int();
-
-        result.x = cell.X;
-        result.y = cell.Y;
-
+        GridCell result = null;
+        if (_secondaryGridManager.IsValidGridPosition(cell.X, /*_secondaryGridManager.GetGridSizeY() -*/ cell.Y))
+        {
+            result = _secondaryGridManager.GetGridCell(cell.X, /*_secondaryGridManager.GetGridSizeY() -*/ cell.Y);
+        }
 
         return result;
     }
