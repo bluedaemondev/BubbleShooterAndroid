@@ -171,17 +171,29 @@ public class BallManager : MonoBehaviour
         bullet.transform.parent = PivotGrid;
         bullet.transform.localScale = Vector3.one;
 
-        GridCell nearestCell = _gridManager.FindNearestGridCell(bullet.transform.localPosition);
-        if (nearestCell != null)
+        GridCell nearestCell;
+
+        if (bullet.transform.position.y >= _gridManager.GetGridCell(0, 0).Ball.transform.position.y)
         {
-            assignBallToGrid(bullet, nearestCell.X, nearestCell.Y);
+            Debug.Log("COLON ENCONTRO AMERIOCA");
+            nearestCell = _secondaryGridManager.FindNearestGridCell(bullet.transform.localPosition);
         }
         else
         {
-            Debug.Log("assigning to sec grid A " + bullet.transform.localPosition + " cell = " + nearestCell.X + ", " + nearestCell.Y);
-            nearestCell = _secondaryGridManager.FindNearestGridCell(bullet.transform.localPosition);
-            assignBallToGrid(bullet, nearestCell.X, nearestCell.Y);
+            nearestCell = _gridManager.FindNearestGridCell(bullet.transform.localPosition);
         }
+
+
+        //if (nearestCell != null)
+        //{
+        assignBallToGrid(bullet, nearestCell.X, nearestCell.Y);
+        //}
+        //else
+        //{
+        //    Debug.Log("assigning to sec grid A " + bullet.transform.localPosition + " cell = " + nearestCell.X + ", " + nearestCell.Y);
+        //    nearestCell = _secondaryGridManager.FindNearestGridCell(bullet.transform.localPosition);
+        //    assignBallToGrid(bullet, nearestCell.X, nearestCell.Y);
+        //}
     }
 
     public void AssignBulletToGrid(Ball bullet, GridCell gridCellClue)
@@ -192,20 +204,37 @@ public class BallManager : MonoBehaviour
 
         /// tengo que revisar este metodo en profundidad, el problema de perder cuando pones algo en la parte de arriba
         /// es porque se esta encontrando aca un nearest pero no corresponde a la grilla que es
-        GridCell nearestCell = _gridManager.FindNearestGridCell(gridCellClue, bullet.transform.localPosition);
+        //GridCell nearestCell = _gridManager.FindNearestGridCell(gridCellClue, bullet.transform.localPosition);
 
-        if (nearestCell != null)
+        //if (nearestCell != null)
+        //{
+        //    assignBallToGrid(bullet, nearestCell.X, nearestCell.Y);
+        //}
+        //else
+        //{
+        //    Debug.Log("assigning to sec grid B " + gridCellClue + " cell = " + nearestCell.X + ", " + nearestCell.Y);
+
+        //    nearestCell = _secondaryGridManager.FindNearestGridCell(gridCellClue, bullet.transform.localPosition);
+        //    assignBallToGrid(bullet, nearestCell.X, nearestCell.Y);
+
+        //}
+
+        GridCell nearestCell;
+
+        if (bullet.transform.position.y >= _gridManager.GetGridCell(0, 0).Ball.transform.position.y)
         {
-            assignBallToGrid(bullet, nearestCell.X, nearestCell.Y);
+            Debug.Log("COLON ENCONTRO AMERIOCA");
+            nearestCell = _secondaryGridManager.FindNearestGridCell(bullet.transform.localPosition);
         }
         else
         {
-            Debug.Log("assigning to sec grid B " + gridCellClue + " cell = " + nearestCell.X + ", " + nearestCell.Y);
-
-            nearestCell = _secondaryGridManager.FindNearestGridCell(gridCellClue, bullet.transform.localPosition);
-            assignBallToGrid(bullet, nearestCell.X, nearestCell.Y);
-
+            nearestCell = _gridManager.FindNearestGridCell(gridCellClue, bullet.transform.localPosition);
         }
+
+
+        //if (nearestCell != null)
+        //{
+        assignBallToGrid(bullet, nearestCell.X, nearestCell.Y);
 
     }
 

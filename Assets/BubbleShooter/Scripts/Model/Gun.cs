@@ -18,7 +18,7 @@ public class Gun : MonoBehaviour
     Ball _preBullet;
 
     private GameManager _gameManager;
-    private Counter _counter;
+    public Counter _counter;
     private bool _isGunReady;
     private bool _isBlock;
 
@@ -28,11 +28,11 @@ public class Gun : MonoBehaviour
         registerEvents();
         _counter = GetComponent<Counter>();
     }
-	
-   
+
+
     public void InitGun(GameManager gameManager)
     {
-        _gameManager = gameManager;   
+        _gameManager = gameManager;
     }
 
     public void ClearBullets()
@@ -42,7 +42,13 @@ public class Gun : MonoBehaviour
         Destroy(_preBullet.gameObject);
     }
 
-    public void ResetGunDirection(){
+    public bool GetBlockedState()
+    {
+        return this._isBlock;
+    }
+
+    public void ResetGunDirection()
+    {
         transform.up = Vector3.up;
     }
 
@@ -52,11 +58,11 @@ public class Gun : MonoBehaviour
         Controller.RegisterEventDrag(rotateGun);
     }
 
-    void shoot(Vector3 position)
+    public void shoot(Vector3 position)
     {
         if (_isGunReady && !_isBlock)
         {
-            
+
             Vector3 direction = transform.up;
             Vector3 force = direction.normalized * Force * 1000;
             //Debug.Log("Shoot ball color " +  _bullet.GetBallColor() + " with force " + force);
@@ -73,11 +79,18 @@ public class Gun : MonoBehaviour
 
         _isGunReady = true;
 
-        if(_bullet == null || _preBullet == null)
+        if (_bullet == null || _preBullet == null)
         {
             Debug.Log(" bala vacia ");
             //LoadBullets(_gameManager.ballManager.GenerateBallAsBullet());
         }
+
+        if (_bullet.transform.parent.childCount > 1)
+        {
+            Debug.Log((_bullet.transform.parent.childCount > 1) + " name = " + _bullet.transform.parent.name);
+            Destroy(_bullet.gameObject);
+        }
+
     }
 
     void rotateGun(Vector3 position)
@@ -110,6 +123,7 @@ public class Gun : MonoBehaviour
         _bullet = first;
         _preBullet = second;
 
+        //Debug.Log(_bullet != null);
         _bullet.transform.parent = BulletTransform;
         _bullet.transform.localPosition = Vector3.zero;
 

@@ -12,6 +12,8 @@ public class PauseDrawerUIController : MonoBehaviour
 
     #region Getter
     static PauseDrawerUIController instance;
+    public GameObject QuitConfirmPanel;
+
     public static PauseDrawerUIController Instance
     {
         get
@@ -56,5 +58,18 @@ public class PauseDrawerUIController : MonoBehaviour
     public void BackToMenu()
     {
         ProgressSceneLoader.instance.LoadScene("MainMenu");
+    }
+    public void Quit()
+    {
+        if (!QuitConfirmPanel.activeSelf)
+        {
+            QuitConfirmPanel.SetActive(true);
+        }
+        else
+            Application.Quit();
+    }
+    public void CloseQuitConfirm()
+    {
+        QuitConfirmPanel.SetActive(false);
     }
 }

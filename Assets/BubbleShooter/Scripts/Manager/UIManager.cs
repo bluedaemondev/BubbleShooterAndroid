@@ -17,6 +17,7 @@ public class UIManager : MonoBehaviour
 
     public Text _score;
     public Parallax _background;
+    public GameManager gamemanager;
 
     public void OnPause()
     {
@@ -29,19 +30,24 @@ public class UIManager : MonoBehaviour
         //        _counter.ContinueTimer();
         //}
 
-        //if (pauseDrawer.activeSelf)
-        //{
-        //    PauseDrawerUIController.Instance.Hide(0.2f);
-        //    //pauseDrawer.SetActive(false);
+        if (!gamemanager.gun.GetBlockedState())
+        {
+            Debug.Log("blocked not");
+            //gamemanager.gun.shoot(Vector3.back);
+            //gamemanager.gun.Controller.UnRegisterEventTouch(gamemanager.gun.shoot);
+            gamemanager.gun.BlockGun();
+            //GameObject.FindObjectOfType<Gun>().CheckIntegrity();
+        }
+        else
+        {
+            Debug.Log("blocked not");
 
-        //}
-        //else
-        //{
-        //    //pauseDrawer.SetActive(true);
-        //    PauseDrawerUIController.Instance.Show(0.2f);
-        //}
+            gamemanager.gun.UnBlockGun();
+            gamemanager.gun.ClearBullets();
 
-
+            gamemanager.gun.LoadDoneBullets(gamemanager.ballManager.GenerateBallAsBullet(), gamemanager.ballManager.GenerateBallAsBullet());
+            //gamemanager.gun.Controller.RegisterEventTouch(gamemanager.gun.shoot);
+        }
     }
 
     public void OnStartNewGame()

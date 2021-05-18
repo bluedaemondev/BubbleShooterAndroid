@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
         registerEventTouch();
         registerEventWin();
 
-        
+        uiManager.gamemanager = this;
 
         OnStartGame();
     }
@@ -43,6 +43,7 @@ public class GameManager : MonoBehaviour
     #region Game state
     public void OnStartGame()
     {
+
         uiManager.OnStartNewGame();
 
         _gameState = Common.GameState.Playing;
@@ -61,6 +62,8 @@ public class GameManager : MonoBehaviour
     public void OnShootAction()
     {
         Ball newBullet = ballManager.GenerateBallAsBullet();
+        //if()
+        Debug.Log(gun.BulletTransform.name);
         gun.LoadBullets(newBullet);
         AudioManager.Instance.PlaySound(AudioManager.Instance.shoot);
     }
