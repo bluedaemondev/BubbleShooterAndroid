@@ -63,7 +63,7 @@ public class GameManager : MonoBehaviour
     {
         Ball newBullet = ballManager.GenerateBallAsBullet();
         //if()
-        Debug.Log(gun.BulletTransform.name);
+        //Debug.Log(gun.BulletTransform.name);
         gun.LoadBullets(newBullet);
         AudioManager.Instance.PlaySound(AudioManager.Instance.shoot);
     }

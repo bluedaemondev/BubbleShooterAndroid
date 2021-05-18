@@ -80,7 +80,7 @@ public class GridManager
         return generatedGridWithBalls[x, y];
     }
 
-    Vector3 transformGridToVectorPosition(int x, int y)
+    public Vector3 transformGridToVectorPosition(int x, int y)
     {
         float pivotTopLeftX = (y % 2 == 0) ? 0 : _cellSizeX / 2.0f;
         float positionX = pivotTopLeftX + x * _cellSizeX + _cellSizeX / 2.0f;
@@ -219,7 +219,7 @@ public class GridManager
                 }
             }
         }
-        Debug.Log("nearest found = " + nearestCell.X + "," + nearestCell.Y + " " + this.name);
+        //Debug.Log("nearest found = " + nearestCell.X + "," + nearestCell.Y + " " + this.name);
         return nearestCell;
     }
 
@@ -233,7 +233,7 @@ public class GridManager
         if (clusterMainGrid == null)
             return new List<GridCell>();
 
-        List<GridCell> neighbors = CalculateComplementaryFromBase(clusterMainGrid);
+        List<GridCell> neighbors = clusterMainGrid; //CalculateComplementaryFromBase(clusterMainGrid);
 
         return neighbors;
     }
