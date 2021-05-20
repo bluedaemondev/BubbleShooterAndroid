@@ -13,6 +13,7 @@ public class BallManager : MonoBehaviour
 
     GridManager _gridManager;
     GridManager _secondaryGridManager;
+    private Vector2 offsetPivotGrids;
 
     int _numberOfInitRow;
     int _numberOfDiffColor;
@@ -44,7 +45,8 @@ public class BallManager : MonoBehaviour
 
             if (level is ProceduralLevelProfile)
             {
-                _secondaryGridManager = new GridManager(8, 14, 120, 100, new Vector2(0, -_gridManager.GetCellSizeY() / 2 * 27 - _gridManager.GetCellSizeY() / 2.0f));
+                offsetPivotGrids = new Vector2(0, -_gridManager.GetCellSizeY() / 2 * 27 - _gridManager.GetCellSizeY() / 2.0f);
+                _secondaryGridManager = new GridManager(8, 14, 120, 100, offsetPivotGrids);
             }
 
             _numberOfInitRow = level.GetInitRow();
@@ -98,6 +100,7 @@ public class BallManager : MonoBehaviour
         ClearBalls();
 
         _gridManager = gridtemp;
+        _gridManager.SetOffsetFromPivot(_gridManager.GetOffsetFromPivot() + offsetPivotGrids);
 
     }
 
@@ -172,25 +175,49 @@ public class BallManager : MonoBehaviour
         bullet.transform.localScale = Vector3.one;
 
         GridCell nearestCell;
+        bool secondary = false;
 
-        var bulletPos = bullet.GetGridPosition();
+        nearestCell = _gridManager.FindNearestGridCell(bullet.transform.localPosition);
 
-        var pos = _gridManager.transformGridToVectorPosition(bulletPos.X, bulletPos.Y);
-
-        if (/*bullet.transform.position*/pos.y >= _gridManager.GetGridCell(0, 0).Ball.transform.position.y)
+        if (nearestCell == null)
         {
-            Debug.Log("COLON ENCONTRO AMERIOCA");
-            nearestCell = _secondaryGridManager.FindNearestGridCell(bullet.transform.localPosition);
+            nearestCell = _secondaryGridManager.FindNearestGridCell(bullet.transform.position);
+            secondary = true;
+        }
+
+        if (!secondary)
+        {
+            assignBallToGrid(bullet, nearestCell.X, nearestCell.Y);
+            Debug.Log("match clue = " + bullet.name);
+            Debug.Log("assigning to primary grid A " + bullet.name + " cell = " + nearestCell.X + ", " + nearestCell.Y);
+
         }
         else
         {
-            nearestCell = _gridManager.FindNearestGridCell(bullet.transform.localPosition);
+            Debug.Log("assigning to sec grid B " + bullet.name + " cell = " + nearestCell.X + ", " + nearestCell.Y);
+            Debug.Log("match clue = " + bullet.name);
+
+            //nearestCell = _secondaryGridManager.FindNearestGridCell(gridCellClue, bullet.transform.localPosition);
+            assignBallToGrid(bullet, nearestCell.X, nearestCell.Y, false);
+
         }
+
+        //var pos = _gridManager.transformGridToVectorPosition(bulletPos.X, bulletPos.Y);
+
+        //if (/*bullet.transform.position*/pos.y >= _gridManager.GetGridCell(0, 0).Ball.transform.position.y)
+        //{
+        //    Debug.Log("COLON ENCONTRO AMERIOCA");
+        //    nearestCell = _secondaryGridManager.FindNearestGridCell(bullet.transform.localPosition);
+        //}
+        //else
+        //{
+        //    nearestCell = _gridManager.FindNearestGridCell(bullet.transform.localPosition);
+        //}
 
 
         //if (nearestCell != null)
         //{
-        assignBallToGrid(bullet, nearestCell.X, nearestCell.Y);
+        //assignBallToGrid(bullet, nearestCell.X, nearestCell.Y);
         //}
         //else
         //{
@@ -206,14 +233,35 @@ public class BallManager : MonoBehaviour
         bullet.transform.parent = PivotGrid;
         bullet.transform.localScale = Vector3.one;
 
+        var test = _gridManager.GetGridSizeY() * _gridManager.GetCellSizeY() + _originalPosition.y;
+
+
+        Debug.Log("max cell top y " + test);
         /// tengo que revisar este metodo en profundidad, el problema de perder cuando pones algo en la parte de arriba
         /// es porque se esta encontrando aca un nearest pero no corresponde a la grilla que es
-        GridCell nearestCell = _gridManager.FindNearestGridCell(gridCellClue, bullet.transform.localPosition);
+        //GridCell nearestCell = _gridManager.FindNearestGridCell(gridCellClue, bullet.transform.localPosition);
 
-        if (nearestCell != null)
+        GridCell nearestCell;
+        bool secondary = false;
+
+        //if (gridCellClue != null)
+        //{
+        nearestCell = _gridManager.FindNearestGridCell(gridCellClue, bullet.transform.localPosition);
+        //}
+        //else
+        //{
+        //    nearestCell = _secondaryGridManager.FindNearestGridCell(bullet.transform.position);
+        //    secondary = true;
+        //}
+        Debug.Log(_gridManager.transformGridToVectorPosition(nearestCell.X, nearestCell.Y).y);
+
+        if (_gridManager.transformGridToVectorPosition(nearestCell.X, nearestCell.Y).y >= test)
+            secondary = true;
+
+        if (!secondary)
         {
             assignBallToGrid(bullet, nearestCell.X, nearestCell.Y);
-            Debug.Log("match clue = " + gridCellClue);
+            Debug.Log("match clue = " + bullet.name);
             Debug.Log("assigning to primary grid A " + gridCellClue + " cell = " + nearestCell.X + ", " + nearestCell.Y);
 
         }
@@ -222,11 +270,11 @@ public class BallManager : MonoBehaviour
             Debug.Log("assigning to sec grid B " + gridCellClue + " cell = " + nearestCell.X + ", " + nearestCell.Y);
             Debug.Log("match clue = " + gridCellClue);
 
-            nearestCell = _secondaryGridManager.FindNearestGridCell(gridCellClue, bullet.transform.localPosition);
-            assignBallToGrid(bullet, nearestCell.X, nearestCell.Y);
+            //nearestCell = _secondaryGridManager.FindNearestGridCell(gridCellClue, bullet.transform.localPosition);
+            assignBallToGrid(bullet, nearestCell.X, nearestCell.Y, false);
 
         }
-        
+
 
         //GridCell nearestCell;
         ////var bulletPos = bullet.GetGridPosition();
@@ -246,7 +294,7 @@ public class BallManager : MonoBehaviour
 
         ////if (nearestCell != null)
         ////{
-        assignBallToGrid(bullet, nearestCell.X, nearestCell.Y);
+        //assignBallToGrid(bullet, nearestCell.X, nearestCell.Y);
 
     }
 

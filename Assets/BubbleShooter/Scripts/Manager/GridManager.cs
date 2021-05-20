@@ -19,6 +19,10 @@ public class GridManager
     {
         return _offsetFromBasePivot;
     }
+    public void SetOffsetFromPivot(Vector2 offset)
+    {
+        this._offsetFromBasePivot = offset;
+    }
     public int GetGridSizeX()
     {
         return _gridSizeX;
